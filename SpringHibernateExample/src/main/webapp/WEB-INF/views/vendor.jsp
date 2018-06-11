@@ -54,6 +54,6 @@
 	</form:form>
 </div>
 </div>
-	Go back to <a href="<c:url value='/verdorlist' />">Server List</a>
+	Go back to <a href="<c:url value='/vendorlist' />">厂商列表</a>
 </body>
 </html>

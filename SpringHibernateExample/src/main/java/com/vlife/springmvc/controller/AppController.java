@@ -94,7 +94,7 @@ public class AppController {
 		String temp = new String(vendor.getName().getBytes("iso-8859-1"),"utf-8");
 		vendor.setName(temp);
 		vendor_service.saveVendor(vendor);
-		return "redirect:/themelist";
+		return "redirect:/vendorlist";
 	}
 
 	@RequestMapping(value = { "/edit-{id}-vendor" }, method = RequestMethod.GET,produces="text/html;charset=UTF-8" )
