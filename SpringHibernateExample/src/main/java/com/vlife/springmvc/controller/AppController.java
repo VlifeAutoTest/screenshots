@@ -1,6 +1,7 @@
 package com.vlife.springmvc.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -51,6 +54,32 @@ public class AppController {
 	
 	@Autowired
 	VendorService vendor_service;
+	
+	
+    public String getErrorString(BindingResult bindingResult){
+    	
+
+       
+/*        List<ObjectError> ls=bindingResult.getAllErrors();  
+        for (int i = 0; i < ls.size(); i++) {  
+            System.out.println("error:"+ls.get(i));  
+        } */
+    	List<FieldError>  err= bindingResult.getFieldErrors();
+        FieldError fe;
+        String field;
+        String errorMessage;
+        StringBuffer buffer = new StringBuffer("");
+        String temp;
+        for (int i = 0; i < err.size(); i++) {
+            fe=err.get(i);
+            field=fe.getField();
+            errorMessage=fe.getDefaultMessage();
+            temp = field +" : "+errorMessage;
+            buffer.append(temp);
+        }
+		    String errors = buffer.toString();
+		return errors;
+		}
 
 	
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
@@ -135,17 +164,25 @@ public class AppController {
 		return "addserver";
 	}
 
+	@Validated
 	@RequestMapping(value = { "/servernew" }, method = RequestMethod.POST)
 	public String saveServer(@Valid TestServer server, BindingResult result,
 			ModelMap model) {
 
 		if (result.hasErrors()) {
+			String errors = getErrorString(result);
+			model.addAttribute("errorInfo",errors);
+    		model.addAttribute("server", server);
+    		model.addAttribute("edit", false);
 			return "addserver";
 		}
 		
 		if(!tserver_service.isTestServerSsnUnique(server.getId(), server.getSsn())){
 			FieldError ssnError =new FieldError("server","ssn",messageSource.getMessage("non.unique.ssn", new String[]{server.getSsn()}, Locale.getDefault()));
 		    result.addError(ssnError);
+            model.addAttribute("errorInfo", ssnError.getDefaultMessage());
+    		model.addAttribute("server", server);
+    		model.addAttribute("edit", false);
 			return "addserver";
 		}
 		
@@ -174,6 +211,8 @@ public class AppController {
 		if(!tserver_service.isTestServerSsnUnique(server.getId(), server.getSsn())){
 			FieldError ssnError =new FieldError("server","ssn",messageSource.getMessage("non.unique.ssn", new String[]{server.getSsn()}, Locale.getDefault()));
 		    result.addError(ssnError);
+			model.addAttribute("server", server);
+			model.addAttribute("edit", true);
 			return "addserver";
 		}
 		

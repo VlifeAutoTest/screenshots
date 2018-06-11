@@ -36,15 +36,17 @@
 				<td><label for="ssn">SSN: </label> </td>
 				<td><form:input path="ssn" id="ssn"/></td>
 				<td><form:errors path="ssn" cssClass="error"/></td>
+				<td>${errorInfo}</td>
 		    </tr>
 	    
 			<tr>
 				<td><label for="address">Address: </label> </td>
 				<td><form:input path="address" id="address"/></td>
 				<td><form:errors path="address" cssClass="error"/></td>
+				<td></td>
 		    </tr>
 			<tr>
-				<td colspan="3">
+				<td colspan="4">
 					<c:choose>
 						<c:when test="${edit}">
 							<input type="submit" value="Update"/>

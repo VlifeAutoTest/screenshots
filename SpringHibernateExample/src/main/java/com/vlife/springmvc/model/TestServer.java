@@ -7,7 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -20,10 +20,11 @@ public class TestServer {
 	private int id;
 	
 
-	@NotEmpty
+	@NotEmpty(message="ssn 不能为空")
 	@Column(name = "ssn", unique=true, nullable = false)
 	private String ssn;
 	
+	@Pattern(message="IP address format is not right", regexp = "((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))")
 	@Column(name = "address", nullable = false)
 	private String address;
 	
