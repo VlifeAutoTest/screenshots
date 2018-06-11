@@ -1,0 +1,183 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<!DOCTYPE html>  
+<html lang="en">  
+<head>  
+<meta charset="utf-8" />  
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />  
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/bootstrap.js"></script>
+<title>Font&Theme Validate</title>  
+<style type="text/css"></style>  
+  
+<script>
+$(document).ready(function(){
+	$("#server").click(function(){
+ 		$.ajax({        //这是$.ajax()方法  
+            type:"GET",  
+            url:"serverlist", 
+            dataType:"html",//接受响应的数据类型，我的响应是一个页面，所以这里用“html”
+            success:function(data){
+            	$('#div1').html(data);},
+});
+
+	});
+});
+</script>
+<script type="text/javascript">
+
+	
+	var menuClick = function(menuUrl) {
+		$("#iframe-page-content").attr('src',menuUrl);
+	};
+	
+	$(function() {
+		var height=document.documentElement.clientHeight;
+		document.getElementById('iframe-page-content').style.height=height+'px';
+	});
+</script>
+
+</head>  
+<body> 
+<div class="navbar navbar-inverse">  
+    <div class="container-fluid">  
+        <div class="navbar-header">  
+            <div class="navbar-brand">  
+                <small class="glyphicon glyphicon-fire"></small>  
+                字体与主题审核 
+            </div>  
+        </div>  
+        <ul class="nav navbar-nav nav-stacked navbar-right">  
+            <li>  
+                <a href="#">  
+                    <span class="glyphicon glyphicon-tasks"></span>  
+                    <i class="badge">2</i>  
+                </a>  
+            </li>  
+            <li>  
+                <a href="#">  
+                    <span class="glyphicon glyphicon-bell"></span>  
+                    <i class="badge">1</i>  
+                </a>  
+            </li>  
+            <li>  
+                <a href="#">  
+                    <span class="glyphicon glyphicon-envelope"></span>  
+                    <i class="badge">1</i>  
+                </a>  
+            </li>  
+            <li>  
+                <a href="#" data-toggle="dropdown">  
+                    <img class="img-circle" src="user_photo.png" width="25" height="25"/>  
+                    <small>Welcome</small>  
+                    admin  
+                    <span class="caret"></span>  
+                </a>  
+                <ul class="nav nav-pills nav-stacked dropdown-menu">  
+                    <li class="active">  
+                        <a href="#">  
+                            <span class="glyphicon glyphicon-cog"></span>  Setting  
+                        </a>  
+                    </li>  
+                    <li class="divider"></li>  
+                    <li>  
+                        <a href="#">  
+                            <span class="glyphicon glyphicon-user"></span>  Profile  
+                        </a>  
+                    </li>  
+                    <li class="divider"></li>  
+                    <li>  
+                        <a href="#">  
+                            <span class="glyphicon glyphicon-off"></span>  Logout  
+                        </a>  
+                    </li>  
+                </ul>  
+            </li>  
+        </ul>  
+    </div>  
+</div>  
+<div style="width: 100%">
+		<!-- 左侧菜单栏 -->
+		
+	<div id="main-container">
+	    <div id="sidebar" class="col-md-2 column">  
+			<div class="col-md-12">
+	
+		        <div class="panel-group" id="box">  
+		            <div class="panel panel-success">  
+		                <div class="panel-heading">  
+		                    <a href="#collapseA" data-parent="#box" data-toggle="collapse" class="panel-title">系统管理</a>  
+		                </div>  
+		                <div class="panel-collapse collapse" id="collapseA">  
+		                    <div class="panel-body">  
+		                        <ul class="nav nav-pills nav-stacked">  
+		                            <li><a href="#">用户管理</a></li>  
+		                            <li><a href="#">角色分配</a></li>  
+		                        </ul>  
+		                    </div>  
+		                </div>      
+		            </div>  
+		            <div class="panel panel-success">  
+		                <div class="panel-heading">  
+		                    <a href="#collapseB" data-parent="#box" data-toggle="collapse" class="panel-title">资源管理</a>  
+		                </div>  
+		                <div class="panel-collapse collapse" id="collapseB">  
+		                    <div class="panel-body">  
+		                        <ul class="nav nav-pills nav-stacked">  
+		                            <li><a id=theme href="#" onclick="menuClick('themelist')">资源列表</a></li>  
+		                            <li><a href="#">上传资源</a></li>  
+		                        </ul>  
+		                    </div>  
+		                </div>      
+		            </div>
+		            <div class="panel panel-success">  
+		                <div class="panel-heading">  
+		                    <a href="#collapseD" data-parent="#box" data-toggle="collapse" class="panel-title">审核查询</a>  
+		                </div>  
+		                <div class="panel-collapse collapse" id="collapseD">  
+		                    <div class="panel-body">  
+		                        <ul class="nav nav-pills nav-stacked">  
+		                            <li><a href="#">增加审核</a></li>  
+		                            <li><a href="#">审核查询</a></li>  
+		                        </ul>  
+		                    </div>  
+		                </div>      
+		            </div>
+		            <div class="panel panel-success">  
+		                <div class="panel-heading">  
+		                    <a href="#collapseE" data-parent="#box" data-toggle="collapse" class="panel-title">基础信息</a>  
+		                </div>  
+		                <div class="panel-collapse collapse in" id="collapseE">  
+		                    <div class="panel-body">  
+		                        <ul class="nav nav-pills nav-stacked">  
+		                            <li><a href="#" onclick="menuClick('vendorlist')">厂商管理</a></li>  
+		                            <li><a href="#">手机管理</a></li>
+		                            <li><a id=server href="#" onclick="menuClick('serverlist')">服务器管理</a></li>
+		                            <li><a href="#">应用管理</a></li>
+		                        </ul>  
+		                    </div>  
+		                </div>      
+		            </div>  
+		        </div>  
+	    	</div>  
+	    </div>
+  
+	    <div class="col-sm-10">  
+	        <div class="bread-crumb" id="breadcrumbs">  
+	            <ul class="breadcrumb">  
+	                <li><span class="glyphicon glyphicon-home"></span><a href="#" onclick="menuClick('list')">Home</a></li>  
+<!-- 	                <li><a href="#">User</a></li>  --> 
+	            </ul>  
+	        </div>  
+	        
+			<div>
+				<iframe id="iframe-page-content" src="list" width="100%"  frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>
+			</div>		
+	
+	    </div>  
+	</div>
+</div>  
+</body>  
+</html>  
