@@ -11,7 +11,6 @@ public interface ApplicationService {
 
 	void saveApplication(Application application);
 	
-	
 	void updateApplication(Application application);
 	
 	List<Application> findApplicationByVendorID(Vendor id);	
