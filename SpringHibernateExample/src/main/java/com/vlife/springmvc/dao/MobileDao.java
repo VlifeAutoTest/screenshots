@@ -3,6 +3,7 @@ package com.vlife.springmvc.dao;
 import java.util.List;
 
 import com.vlife.springmvc.model.Mobile;
+import com.vlife.springmvc.model.Vendor;
 
 public interface MobileDao {
 
@@ -12,8 +13,10 @@ public interface MobileDao {
 	
 	List<Mobile> findAllMobile();
 	
-	List<Mobile> findMobileByVendor(String vendor);
+	List<Mobile> findMobileByVendor(Vendor vendor);
 
 	void deleteMobileByUid(String uid);
+	
+	Mobile findMobileByUid(String uid);
 
 }

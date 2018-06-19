@@ -33,7 +33,6 @@ public class TestServerDaoImpl extends AbstractDao<Integer, TestServer> implemen
 		query.executeUpdate();
 	}
 	
-	@SuppressWarnings("deprecation")
 	public int[] findAllServerId() {
 		
 //		Query query = getSession().createSQLQuery("select id from testserver");

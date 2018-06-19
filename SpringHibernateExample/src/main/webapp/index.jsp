@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"  pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<!DOCTYPE html>  
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">  
 <html lang="en">  
 <head>  
 <meta charset="utf-8" />  
@@ -33,10 +33,24 @@ $(document).ready(function(){
 		$("#iframe-page-content").attr('src',menuUrl);
 	};
 	
-	$(function() {
-		var height=document.documentElement.clientHeight;
+/*  	$(function() {
+		var height=document.documentElement.clientHeight; 
 		document.getElementById('iframe-page-content').style.height=height+'px';
-	});
+	});  */
+ 	
+ 	function autoResize(id){
+ 	    var newheight;
+ 	    var newwidth;
+
+ 	    if(document.getElementById){
+ 	        newheight=document.getElementById(id).contentWindow.document.body.scrollHeight;
+ 	        newwidth=document.getElementById(id).contentWindow.document.body.scrollWidth;
+ 	    }
+
+ 	    document.getElementById(id).height=(newheight) + "px";
+ 	    document.getElementById(id).width=(newwidth) + "px"; 
+ 	}
+	
 </script>
 
 </head>  
@@ -127,7 +141,7 @@ $(document).ready(function(){
 		                    <div class="panel-body">  
 		                        <ul class="nav nav-pills nav-stacked">  
 		                            <li><a id=theme href="#" onclick="menuClick('themelist')">资源列表</a></li>  
-		                            <li><a href="#">上传资源</a></li>  
+		                            <li><a id=upload href="#" onclick="menuClick('uploadfiles')">上传资源</a></li>  
 		                        </ul>  
 		                    </div>  
 		                </div>      
@@ -153,9 +167,9 @@ $(document).ready(function(){
 		                    <div class="panel-body">  
 		                        <ul class="nav nav-pills nav-stacked">  
 		                            <li><a href="#" onclick="menuClick('vendorlist')">厂商管理</a></li>  
-		                            <li><a href="#">手机管理</a></li>
+		                            <li><a href="#" onclick="menuClick('mobilelist')">手机管理</a></li>
 		                            <li><a id=server href="#" onclick="menuClick('serverlist')">服务器管理</a></li>
-		                            <li><a href="#">应用管理</a></li>
+		                            <li><a href="#" onclick="menuClick('applicationlist')">应用管理</a></li>
 		                        </ul>  
 		                    </div>  
 		                </div>      
@@ -164,7 +178,7 @@ $(document).ready(function(){
 	    	</div>  
 	    </div>
   
-	    <div class="col-sm-10">  
+	    <div class="col-md-10">  
 	        <div class="bread-crumb" id="breadcrumbs">  
 	            <ul class="breadcrumb">  
 	                <li><span class="glyphicon glyphicon-home"></span><a href="#" onclick="menuClick('list')">Home</a></li>  
@@ -173,7 +187,7 @@ $(document).ready(function(){
 	        </div>  
 	        
 			<div>
-				<iframe id="iframe-page-content" src="list" width="100%"  frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no" allowtransparency="yes"></iframe>
+				<iframe id="iframe-page-content" src="list" width="100%"  frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="no"  onload="autoResize('iframe-page-content')" allowtransparency="yes"></iframe>
 			</div>		
 	
 	    </div>  

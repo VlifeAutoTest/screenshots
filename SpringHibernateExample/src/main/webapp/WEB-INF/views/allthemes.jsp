@@ -1,15 +1,15 @@
 <%@ page language="java"  pageEncoding="UTF-8" isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>Themes and Fonts</title>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 	<style type="text/css"></style>  
+	<script src="http://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
 
 </head>
-
-
 <body>
 	<div class="panle panel-success">  
             <div class="panel-heading">  
@@ -22,16 +22,29 @@
                             <th>Name</th>  
                             <th>Path</th>  
                             <th></th>  
-                            <td><a href="<c:url value='/newtheme' />">+ Add Resource</a></td>  
+                            <th><a href="<c:url value='/newtheme' />">+ Add Resource</a></th>  
+                             <th>
+                             <form   method="post">
+                             <div class="input-group" style="width: 200px">             
+               					
+               <input type="text" name ="search" class="form-control" placeholder="请输入搜索关键字">
+                <span class="input-group-btn">
+                    <button class="btn btn-primary"  type="submit">搜索</button>
+                </span>
+            </div>
+                				 </form>
+            </th>  
                         </tr>  
                     </thead>  
 					   <tbody>
 							<c:forEach items="${themes}" var="theme">
 								<tr>
 								<td>${theme.name}</td>
-								<td>${theme.path}</td>
+								<%-- <td>  <a id ="aa" href="http://192.168.1.230:8080/${theme.path}" target="_blank">${theme.path}</a></td> --%>
+								<td>  <a id ="aa" href="http://192.168.1.230:8080/${fn:substring(theme.path, 7, -1)}" target="_blank">${theme.path}</a></td>
 								<td><a href="<c:url value='/edit-${theme.id}-theme' />">edit</a></td>
 								<td><a href="<c:url value='/delete-${theme.id}-theme' />">delete</a></td>
+								<td></td>
 								</tr>
 							</c:forEach>
 						</tbody>  

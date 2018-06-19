@@ -195,42 +195,7 @@ color:#6699ff;
 					</tr>
 				</tbody>
 			</table>
-			
-			<h4>QA4</h4>
-			<table id="table4" class="table">
-				<tbody>
-					<tr class="success">
-						<td>1</td>
-						<td>vivo</td>
-						<td>xplay5</td>
-						<td>Free</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>										
+								
 		</div>
 	</div>
 			

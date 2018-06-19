@@ -13,6 +13,7 @@ public interface ThemeDao {
 	List<Theme> findAllTheme();
 	
 	void deleteThemeByID(int id);
-
+	
+	 List<Theme> findByName(String  partName);
 
 }

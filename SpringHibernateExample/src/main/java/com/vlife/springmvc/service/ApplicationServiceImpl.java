@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vlife.springmvc.dao.ApplicationDao;
 import com.vlife.springmvc.model.Application;
+import com.vlife.springmvc.model.Vendor;
 
 @Service("applicationService")
 @Transactional
@@ -29,7 +30,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		dao.deleteApplicationByID(id);
 	}
 	
-	public List<Application> findApplicationByVendorID(int id){
+	public List<Application> findApplicationByVendorID(Vendor id){
 		return dao.findApplicationByVendorID(id);
 	}
 
@@ -37,5 +38,12 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return dao.findAllApplication();
 	}
 
+	public void updateApplication(Application app) {
+		Application entity = dao.findById(app.getId());
+		if(entity!=null){
+			entity.setName(app.getName());
+			entity.setVendor(app.getVendor());
+		}
+	}
 
 } 

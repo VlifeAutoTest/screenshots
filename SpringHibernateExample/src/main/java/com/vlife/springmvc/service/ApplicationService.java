@@ -3,6 +3,7 @@ package com.vlife.springmvc.service;
 import java.util.List;
 
 import com.vlife.springmvc.model.Application;
+import com.vlife.springmvc.model.Vendor;
 
 public interface ApplicationService {
 	
@@ -10,7 +11,10 @@ public interface ApplicationService {
 
 	void saveApplication(Application application);
 	
-	List<Application> findApplicationByVendorID(int id);	
+	
+	void updateApplication(Application application);
+	
+	List<Application> findApplicationByVendorID(Vendor id);	
 	
 	void deleteApplicationByID(int id);
 	

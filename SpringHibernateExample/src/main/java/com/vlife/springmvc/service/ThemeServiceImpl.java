@@ -44,4 +44,11 @@ public class ThemeServiceImpl implements ThemeService {
 		}
 	}
 
+	@Override
+	public List<Theme> searchByName(String name) {
+		// TODO 自动生成的方法存根
+		
+		return dao.findByName(name);
+	}
+
 } 

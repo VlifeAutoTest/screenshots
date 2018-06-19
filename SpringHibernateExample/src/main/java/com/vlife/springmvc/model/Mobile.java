@@ -1,9 +1,6 @@
 package com.vlife.springmvc.model;
 
 
-import java.util.Set;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +16,6 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.vlife.springmvc.model.TestServer;
 
 @Entity
 @Table(name="mobile")
@@ -31,39 +27,36 @@ public class Mobile {
 	private int id;
 
 	@NotNull
-	@Size(min=1, max=50)
+	@Size(min=1, max=32)
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@Size(min=1, max=50)
-	@Column(name = "vendor", nullable = false)
-	private String vendor;
-	
-
-	@Size(min=1, max=10)
-	@Column(name = "status", nullable = false)
-	private String status;
-
-
-	@ManyToOne(fetch=FetchType.LAZY,optional=true,cascade=CascadeType.ALL)
-	@JoinColumn(name="server_id",nullable = false)
-	private TestServer tserver;
-	public TestServer getTestServer() {
-		return this.tserver;
-	}
-	
-	public void setTestServer(TestServer tserver) {
-		this.tserver = tserver;
-	}
-	
 	@NotEmpty
-	@Column(name = "uid", unique=true, nullable = false)
+	@Column(name = "uid", nullable = false)
 	private String uid;
 	
-	public Mobile(String name, String vendor) {
-		this.name = name;
+
+	@Size(min=1, max=32)
+	@Column(name = "size", nullable = false)
+	private String size;
+	
+	@Size(min=1, max=32)
+	@Column(name = "os", nullable = false) 
+	private String os;
+
+
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="vendor_id",nullable = false)
+	private Vendor vendor;
+	public Vendor getVendor() {
+		return this.vendor;
+	}
+	
+	public void setVendor(Vendor vendor) {
 		this.vendor = vendor;
 	}
+
+	
 	
 	public Mobile() {
 		
@@ -85,22 +78,6 @@ public class Mobile {
 		this.name = name;
 	}
 
-	public String getVendor() {
-		return vendor;
-	}
-
-	public void setVendor(String vendor) {
-		this.vendor = vendor;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-	
 	public String getUid() {
 		return uid;
 	}
@@ -109,4 +86,19 @@ public class Mobile {
 		this.uid = uid;
 	}
 	
+	public String getSize() {
+		return size;
+	}
+
+	public void setSize(String size) {
+		this.size = size;
+	}
+	
+	public String getOs() {
+		return os;
+	}
+
+	public void setOs(String os) {
+		this.os = os;
+	}
 }

@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.vlife.springmvc.model.Application;
+import com.vlife.springmvc.model.Vendor;
 
 @Repository("applicationDao")
 public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implements ApplicationDao {
@@ -20,7 +22,7 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 	}
 
 	public void deleteApplicationByID(int id) {
-		Query query = getSession().createSQLQuery("delete from applications where id = :id");
+		Query query = getSession().createSQLQuery("delete from application where id = :id");
 		query.setInteger("id", id);
 		query.executeUpdate();
 	};
@@ -32,12 +34,15 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Application> findApplicationByVendorID(int id) {
+	public List<Application> findApplicationByVendorID(Vendor id) {
 		
-		String hql = "select new com.vlife.springmc.model.Application(name) from applications where ";
-		Query query = getSession().createQuery(hql);
-		List<Application> result = query.list();
+//		Query query = getSession().createSQLQuery("select * from application where vendor_id=1");
+////		query.setParameter("id", id);
+//		List<Application> result = query.list();
+		
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("vendor", id));
+		return (List<Application>) criteria.list();
 
-		return  result;
 	}
 }

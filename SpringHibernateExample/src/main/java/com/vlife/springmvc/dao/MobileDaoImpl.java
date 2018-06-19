@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import com.vlife.springmvc.model.Mobile;
+import com.vlife.springmvc.model.Vendor;
 
 @Repository("mobileDao")
 public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements MobileDao {
@@ -24,6 +26,13 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 		query.setString("uid", uid);
 		query.executeUpdate();
 	}
+	
+	public Mobile findMobileByUid(String uid) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("uid", uid));
+		return (Mobile) criteria.uniqueResult();
+	}
+ 
 
 	@SuppressWarnings("unchecked")
 	public List<Mobile> findAllMobile() {
@@ -32,14 +41,14 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Mobile> findMobileByVendor(String vendor) {
+	public List<Mobile> findMobileByVendor(Vendor vendor) {
 		
-//		Query query = getSession().createSQLQuery("select name, vendor from  mobile where vendor = :vendor");
-//		query.setString("vendor", vendor);
-//		List<Object[]> result = query.list();
-		String hql = "select new com.vlife.springmc.model.Mobile(name, vendor) from mobile";
-		Query query = getSession().createQuery(hql);
+		Query query = getSession().createSQLQuery("select * from mobile where vendor_id =:id");
+		query.setInteger("id", vendor.getId());
 		List<Mobile> result = query.list();
+/*		String hql = "select new com.vlife.springmc.model.Mobile(name, vendor) from mobile";
+		Query query = getSession().createQuery(hql);
+		List<Mobile> result = query.list();*/
 
 		return  result;
 	}

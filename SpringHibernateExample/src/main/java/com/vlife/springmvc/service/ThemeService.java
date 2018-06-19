@@ -15,6 +15,7 @@ public interface ThemeService {
 	List<Theme> findAllTheme();
 	
 	void updateTheme(Theme theme);
+	 List<Theme> searchByName (String name);
 
 
 }

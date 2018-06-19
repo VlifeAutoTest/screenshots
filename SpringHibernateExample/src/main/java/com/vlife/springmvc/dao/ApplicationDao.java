@@ -3,6 +3,7 @@ package com.vlife.springmvc.dao;
 import java.util.List;
 
 import com.vlife.springmvc.model.Application;
+import com.vlife.springmvc.model.Vendor;
 
 public interface ApplicationDao {
 
@@ -10,7 +11,7 @@ public interface ApplicationDao {
 
 	void saveApplication(Application application);
 	
-	List<Application> findApplicationByVendorID(int id);	
+	List<Application> findApplicationByVendorID(Vendor id);	
 	
 	void deleteApplicationByID(int id);
 	
