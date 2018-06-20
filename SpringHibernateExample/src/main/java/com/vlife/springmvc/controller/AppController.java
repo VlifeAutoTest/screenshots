@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.vlife.springmvc.model.Theme;
 import com.vlife.springmvc.model.Vendor;
 import com.vlife.springmvc.service.ThemeService;
@@ -24,9 +26,11 @@ import com.vlife.springmvc.service.UploadFilesServices;
 import com.vlife.springmvc.service.VendorService;
 import com.vlife.springmvc.model.Application;
 import com.vlife.springmvc.model.Mobile;
+import com.vlife.springmvc.model.Runinfo;
 import com.vlife.springmvc.service.ApplicationService;
 import com.vlife.springmvc.service.MobileService;
 import com.vlife.springmvc.service.MobileStatusService;
+import com.vlife.springmvc.service.RuninfoService;
 import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.TestServerService;
 
@@ -61,6 +65,9 @@ public class AppController {
 	
 	@Autowired
 	MobileStatusService status_services;
+	
+	@Autowired
+	RuninfoService runinfo_services;
 
 	
     @ModelAttribute("vendors")
@@ -103,13 +110,46 @@ public class AppController {
 		return errors;
 		}
 
-	
+	@RequestMapping(value = { "/check" }, method = RequestMethod.GET, produces="text/html;charset=UTF-8")
+	public String checkResource(ModelMap model)  {
+		
+		List<Vendor> vendors = vendor_service.findAllVendor();
+		List<Mobile> mobiles = mobile_service.findAllMobile();
+		List<Theme> resources = theme_service.findAllTheme();
+		List<Application> apps = app_service.findAllApplication();
+		
+		Runinfo runinfo = new Runinfo();
+		
+		model.addAttribute("runinfo", runinfo);
+		model.addAttribute("vendors", vendors);
+		model.addAttribute("mobiles",mobiles);
+		model.addAttribute("resources", resources);
+		model.addAttribute("apps",apps);
+		
+		
+		return "check";
+	}
+    
+	@RequestMapping(value = { "/check" }, method = RequestMethod.POST, produces="text/html;charset=UTF-8")
+	public String saveRuninfo(@Valid Runinfo runinfo, BindingResult result,
+			ModelMap model) throws UnsupportedEncodingException {
+
+		if (result.hasErrors()) {
+			return "check";
+		}
+		
+		runinfo_services.saveRuninfo(runinfo);
+		return "check";
+	}
+    
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
 	public String showMobile(ModelMap model) {
 		
 		List<Object[]> status = status_services.findDeviceStatus();
+		List<Object[]> devinfo = status_services.deviceStatusInfo();
 		
 		model.addAttribute("status", status);
+		model.addAttribute("devinfo",devinfo);
 		
 		
 		return "mobilestatus";
@@ -506,6 +546,13 @@ public class AppController {
 		return "allthemes";
 	}
 	
+	@RequestMapping(value = { "/list-apps-by-{vendorid}" }, method = RequestMethod.GET)
+    @ResponseBody
+    public List<Application> List(@PathVariable int vendorid,ModelMap model){
+		Vendor vendor = vendor_service.findById(vendorid);
+		List<Application>  apps= app_service.findApplicationByVendorID(vendor);   
+        return  apps;
+    }
 	
 	
 } 

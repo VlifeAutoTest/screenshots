@@ -51,140 +51,33 @@ color:#6699ff;
 						</tbody>
 					</table>
 
-			<table id="table1" class="table">
+			<table id="table1" class="table table-striped table-hover">
 				<thead>
 					<tr>
-						<th>编号</th>
-						<th>厂商</th>
-						<th>型号</th>
+						<th>服务器</th>
 						<th>状态</th>
+						<th>厂商</th>
+						<th>名字</th>
+						<th>Uid</th>
+						<th>Os</th>
+						<th>Size</th>
+						
 					</tr>
 				</thead>
 				<tbody>
-					<tr><td><font size="3" color="#6699ff">QA1</font></td></tr>
-					<tr class="success">
-						<td>1</td>
-						<td>vivo</td>
-						<td>xplay5</td>
-						<td>Free</td>
-					</tr>
-					<tr class="success">
-						<td>2</td>
-						<td>oppo</td>
-						<td>x20</td>
-						<td>Free</td>
-					</tr>
-					<tr class="info">
-						<td>3</td>
-						<td>vivo</td>
-						<td>xxxxx</td>
-						<td>Busy</td>
-					</tr>
-					<tr class="warning">
-						<td>4</td>
-						<td>huawei</td>
-						<td>mate9</td>
-						<td>Pending</td>
-					</tr>
-					<tr class="success">
-						<td>5</td>
-						<td>haier</td>
-						<td>xxxxx</td>
-						<td>Free</td>
-					</tr>
-					<tr><td><font size="3" color="#6699ff">QA2</font></td></tr>
-					<tr class="success">
-						<td>1</td>
-						<td>vivo</td>
-						<td>xplay7</td>
-						<td>Free</td>
-					</tr>
-					<tr class="warning">
-						<td>2</td>
-						<td>oppo</td>
-						<td>x20</td>
-						<td>Free</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr><td><font size="3" color="#6699ff">QA3</font></td></tr>
-					<tr>
-						<td>1</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr><td><font size="3" color="#6699ff">QA4</font></td></tr>
-					<tr class="success">
-						<td>1</td>
-						<td>vivo</td>
-						<td>xplay5</td>
-						<td>Free</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-					<tr>
-						<td>5</td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
+					<c:forEach items="${devinfo}" var="df">
+						<tr>
+							<td>${df[0]}</td>
+							<td>${df[1]}</td>
+							<td>${df[2]}</td>
+							<td>${df[3]}</td>
+							<td>${df[4]}</td>
+							<td>${df[5]}</td>
+							<td>${df[6]}</td>
+
+						</tr>
+					</c:forEach>
+					
 				</tbody>
 			</table>
 								

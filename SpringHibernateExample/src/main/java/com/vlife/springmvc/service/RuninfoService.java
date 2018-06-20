@@ -1,5 +1,9 @@
 package com.vlife.springmvc.service;
 
-public class RuninfoService {
+import com.vlife.springmvc.model.Runinfo;
+
+public interface RuninfoService {
+	
+	void saveRuninfo(Runinfo runinfo);
 
 }

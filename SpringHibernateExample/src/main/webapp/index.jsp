@@ -153,7 +153,7 @@ $(document).ready(function(){
 		                <div class="panel-collapse collapse" id="collapseD">  
 		                    <div class="panel-body">  
 		                        <ul class="nav nav-pills nav-stacked">  
-		                            <li><a href="#">增加审核</a></li>  
+		                            <li><a href="#" onclick="menuClick('check')">增加审核</a></li>  
 		                            <li><a href="#">审核查询</a></li>  
 		                        </ul>  
 		                    </div>  

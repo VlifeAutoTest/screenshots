@@ -16,7 +16,7 @@ public class MobileStatusDaoImpl extends AbstractDao<Integer, MobileStatus> impl
 	
 	public List countDeviceByServer() {
 		
-		String hql = "SELECT mobile.sid, COUNT(mobile.mid) FROM MobileStatus mobile GROUP BY mobile.sid";
+		String hql = "SELECT mobile.sid, COUNT(mobile.mid), mobile.status FROM MobileStatus mobile GROUP BY mobile.sid, mobile.status";
 		List list = getSession().createQuery(hql).list();
 		return list;
 			
@@ -24,13 +24,21 @@ public class MobileStatusDaoImpl extends AbstractDao<Integer, MobileStatus> impl
 	}
 	
 	
-//	public Object[] deviceStatusByServer(int id) {
-//		
-//		
-//	}
-//	
-//	public Mobile getConnectDevices() {
-//		
-//	}
+	public List deviceStatusByServer() {
+		
+		String hql = "SELECT mobile.sid, mobile.mid, mobile.status FROM MobileStatus mobile ORDER BY mobile.sid";
+		List list = getSession().createQuery(hql).list();
+		return list;
+	}
+	
+	public List getConnectDevices() {
+		
+		String hql = "SELECT mobile.mid FROM MobileStatus mobile WHERE mobile.status LIKE 'free%'";
+		List list = getSession().createQuery(hql).list();
+		
+		return list;
+
+		}
+		
 
 }
