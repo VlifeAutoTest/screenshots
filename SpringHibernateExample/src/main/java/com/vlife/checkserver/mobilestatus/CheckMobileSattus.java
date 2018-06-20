@@ -14,7 +14,7 @@ public  class CheckMobileSattus  extends TimerTask{
 	
 	
 	@Override
-	public void run() {
+	public void run()  {
 		// TODO 自动生成的方法存根
 		
 			System.out.println();
