@@ -29,32 +29,24 @@ color:#6699ff;
 
 						<tbody>
 							<tr align="center">
-								<td>
-									<img src="assets/img/blue.jpg" class="img-responsive img-circle"  alt="Cinque Terre" width="200" height="200"> 
-								</td>
-								<td>
-									<img src="assets/img/blue.jpg" class="img-responsive img-circle" alt="Cinque Terre" width="200" height="200"> 
-								</td>
-								<td>
-									<img src="assets/img/red.jpg" class="img-responsive img-circle" alt="Cinque Terre" width="200" height="200"> 
-								</td>
-								<td>
-									<img src="assets/img/blue.jpg" class="img-responsive img-circle" alt="Cinque Terre" width="200" height="200"> 
-								</td>
+								<c:forEach items="${status}" var="st">
+									<td>
+										<c:choose>
+											<c:when test="${st[1] > 0}">
+												<img src="assets/img/blue.jpg" class="img-responsive img-circle" alt="Cinque Terre" width="200" height="200">
+											</c:when>
+											<c:otherwise>
+												<img src="assets/img/red.jpg" class="img-responsive img-circle" alt="Cinque Terre" width="200" height="200"> 
+											</c:otherwise>
+										</c:choose>
+									</td>
+								</c:forEach>
 							</tr>
-							<tr  align="center">
-								<td >
-									qa1 Devices: 5
-								</td>
-								<td>
-									qa2 Devices: 2
-								</td>
-								<td>
-									qa3 Devices: 0
-								</td>
-								<td>
-									qa4 Devices: 1
-								</td>
+							<tr align="center">
+								<c:forEach items="${status}" var="st">
+	
+									<td>${st[0]} Devices: ${st[1]} </td>
+								</c:forEach>
 							</tr>
 						</tbody>
 					</table>

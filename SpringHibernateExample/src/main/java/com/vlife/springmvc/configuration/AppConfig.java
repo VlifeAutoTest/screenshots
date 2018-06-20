@@ -15,7 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-//import com.vlife.springmvc.converter.NameToVendorEntityConverter;;
+import com.vlife.springmvc.converter.NameToVendorEntityConverter;;
 
 @Configuration
 @EnableWebMvc
@@ -23,8 +23,8 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackages = "com.vlife.springmvc")
 public class AppConfig extends WebMvcConfigurerAdapter{
 	
-//	@Autowired
-//	NameToVendorEntityConverter vendorConverter;
+	@Autowired
+	NameToVendorEntityConverter vendorConverter;
 	
 	@Bean
 	public ViewResolver viewResolver() {
@@ -45,10 +45,10 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 
     }
 	
-//	@Override
-//	public void addFormatters(FormatterRegistry registry) {
-//	    registry.addConverter(vendorConverter);
-//	}
+	@Override
+	public void addFormatters(FormatterRegistry registry) {
+	    registry.addConverter(vendorConverter);
+	}
 	
 	
 	@Bean

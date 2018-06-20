@@ -39,6 +39,8 @@ public class TestServerServiceImpl implements TestServerService {
 		TestServer entity = dao.findById(tserver.getId());
 		if(entity!=null){
 			entity.setAddress(tserver.getAddress());
+			entity.setUname(tserver.getUname());
+			entity.setPasswd(tserver.getPasswd());
 			entity.setSsn(tserver.getSsn());
 			
 		}

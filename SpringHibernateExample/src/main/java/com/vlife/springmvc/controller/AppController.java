@@ -26,6 +26,7 @@ import com.vlife.springmvc.model.Application;
 import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.service.ApplicationService;
 import com.vlife.springmvc.service.MobileService;
+import com.vlife.springmvc.service.MobileStatusService;
 import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.TestServerService;
 
@@ -54,8 +55,12 @@ public class AppController {
 	
 	@Autowired
 	VendorService vendor_service;
+	
 	@Autowired
 	UploadFilesServices upload_files;
+	
+	@Autowired
+	MobileStatusService status_services;
 
 	
     @ModelAttribute("vendors")
@@ -101,7 +106,12 @@ public class AppController {
 	
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
 	public String showMobile(ModelMap model) {
-
+		
+		List<Object[]> status = status_services.findDeviceStatus();
+		
+		model.addAttribute("status", status);
+		
+		
 		return "mobilestatus";
 	}
 	
@@ -156,7 +166,7 @@ public class AppController {
 	
 	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.POST)
 	public String updatemobile(@Valid Mobile mobile, BindingResult result,
-			ModelMap model) {
+			ModelMap model) throws UnsupportedEncodingException {
 
 		if (result.hasErrors()) {
 			return "mobile";
@@ -167,6 +177,9 @@ public class AppController {
 		    result.addError(ssnError);
 			return "mobile";
 		}
+		
+		String temp = new String(mobile.getName().getBytes("iso-8859-1"),"utf-8");
+		mobile.setName(temp);
 		
 		mobile_service.updateMobile(mobile);
 
@@ -258,7 +271,7 @@ public class AppController {
 	@Validated
 	@RequestMapping(value = { "/servernew" }, method = RequestMethod.POST)
 	public String saveServer(@Valid TestServer server, BindingResult result,
-			ModelMap model) {
+			ModelMap model) throws UnsupportedEncodingException {
 
 		if (result.hasErrors()) {
 			String errors = getErrorString(result);
@@ -276,7 +289,8 @@ public class AppController {
     		model.addAttribute("edit", false);
 			return "addserver";
 		}
-		
+		String temp = new String(server.getSsn().getBytes("iso-8859-1"),"utf-8");
+		server.setSsn(temp);
 		tserver_service.saveTestServer(server);
 
 		return "redirect:/serverlist";
@@ -293,7 +307,7 @@ public class AppController {
 	
 	@RequestMapping(value = { "/edit-{ssn}-testserver" }, method = RequestMethod.POST)
 	public String updateServer(@Valid TestServer server, BindingResult result,
-			ModelMap model) {
+			ModelMap model) throws UnsupportedEncodingException {
 
 		if (result.hasErrors()) {
 			return "addserver";
@@ -306,6 +320,9 @@ public class AppController {
 			model.addAttribute("edit", true);
 			return "addserver";
 		}
+		
+		String temp = new String(server.getSsn().getBytes("iso-8859-1"),"utf-8");
+		server.setSsn(temp);
 		
 		tserver_service.updateTestServer(server);
 
@@ -412,12 +429,13 @@ public class AppController {
 
 	@RequestMapping(value = { "/newapplication" }, method = RequestMethod.POST)
 	public String saveApplication(@Valid Application app, BindingResult result,
-			ModelMap model) {
+			ModelMap model) throws UnsupportedEncodingException {
 
 		if (result.hasErrors()) {
 			return "application";
 		}
-
+		String temp = new String(app.getName().getBytes("iso-8859-1"),"utf-8");
+		app.setName(temp);
 		app_service.saveApplication(app);
 		return "redirect:/applicationlist";
 	}

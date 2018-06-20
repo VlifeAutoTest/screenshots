@@ -45,6 +45,19 @@
 				<td><form:errors path="address" cssClass="error"/></td>
 				<td></td>
 		    </tr>
+		    
+		    <tr>
+				<td><label for="uname">User Name: </label> </td>
+				<td><form:input path="uname" id="uname"/></td>
+				<td><form:errors path="uname" cssClass="error"/></td>
+				<td></td>
+		    </tr>
+		    <tr>
+				<td><label for="passwd">Password: </label> </td>
+				<td><form:input path="passwd" id="passwd" type="password"/></td>
+				<td><form:errors path="passwd" cssClass="error"/></td>
+				<td></td>
+		    </tr>
 			<tr>
 				<td colspan="4">
 					<c:choose>

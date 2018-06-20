@@ -11,7 +11,7 @@
 
 <body>
 	<div class="panle panel-success">  
-            <div class="panel-heading">  
+            <div class="panel-heading" >  
                 <a class="panel-title">测试服务器</a>  
             </div>  
             <div class="panel-body">  
@@ -19,7 +19,9 @@
                     <thead>  
                         <tr>  
                             <th>Ssn</th>  
-                            <th>Address</th>  
+                            <th>Address</th>
+                            <th>User Name</th>
+                            <th>Password</th>   
                             <th></th>  
                             <td><a href="<c:url value='/servernew' />">+ Add Server</a></td>  
                         </tr>  
@@ -29,6 +31,8 @@
 								<tr>
 								<td>${server.ssn}</td>
 								<td>${server.address}</td>
+								<td>${server.uname}</td>
+								<td>******</td>
 								<td><a href="<c:url value='/edit-${server.ssn}-testserver' />">edit</a></td>
 								<td><a href="<c:url value='/delete-${server.ssn}-testserver' />">delete</a></td>
 								</tr>

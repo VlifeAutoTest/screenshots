@@ -36,7 +36,7 @@
 									<option value="${vendor.getId()}">${vendor.getName()}<option/>
 								</c:forEach>
 							</select></td>
-							 <td><a href="<c:url value='/list-1-application' />">test</a></td> 
+<%-- 							 <td><a href="<c:url value='/list-1-application' />">test</a></td>  --%>
                         </tr>  
                     </thead>  
                     <tbody>  

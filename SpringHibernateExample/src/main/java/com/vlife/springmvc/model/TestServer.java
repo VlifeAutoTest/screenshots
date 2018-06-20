@@ -30,6 +30,14 @@ public class TestServer {
 	
 
 	
+	@NotEmpty(message="pass word 不能为空")
+	@Column(name = "passwd", nullable = false)
+	private String passwd;
+	
+	@NotEmpty(message="user name 不能为空")
+	@Column(name = "uname", nullable = false)
+	private String uname;
+	
 	public TestServer() {
 		
 	}
@@ -60,6 +68,22 @@ public class TestServer {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	
+	public String getUname() {
+		return uname;
+	}
+
+	public void setUname(String username) {
+		this.uname = username;
+	}
+	
+	public String getPasswd() {
+		return passwd;
+	}
+
+	public void setPasswd(String passwd) {
+		this.passwd = passwd;
 	}
 	
 	@Override
