@@ -68,6 +68,23 @@
 		            }  
 		        });  
 		    }); 
+		    
+		    $("#vendor").change(function(){  
+		        var vid = $("#vendor").val();
+		        $.ajax({  
+		            type:"GET",  
+		            url :"list-all-resources",  
+		            dataType:"json",  
+		            success:function(data){
+		                $("#resource").empty();  
+		                $("#resource").append("<option value=''>----请选择----</option>");  
+		                $.each(data,function(index,item){  
+		                    console.info("item:"+item.id);  
+		                    $("#resource").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
+		                });  
+		            }  
+		        });  
+		    }); 
 		      
 		}); 
 </script>
@@ -96,20 +113,22 @@
 		    </tr>
 		    
 		    <tr>
+		    	<td><label for="resource">资源: </label> </td>
+				<td><form:select path="resource" multiple="multiple" itemValue="id" itemLabel="name"  id="resource"/></td>
+				<td><form:errors path="resource" cssClass="error"/></td>
+		    </tr>
+		    
+		    
+		    <tr>
 		    	<td><label for="mid">手机: </label> </td>
 				<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" /></td>
 				<td><form:errors path="mid" cssClass="error"/></td>
 		    </tr>
 		    
-		    <tr>
-		    	<td><label for="resource">资源: </label> </td>
-				<td><form:select path="resource" items="${resources}" multiple="multiple" itemValue="id" itemLabel="name" /></td>
-				<td><form:errors path="resource" cssClass="error"/></td>
-		    </tr>
-		    
+
 		    <tr>
 		    	<td><label for="app">应用: </label> </td>
-				<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="app" /></td>
+				<td><form:select path="app" multiple="multiple" itemValue="id" itemLabel="name" id="app"/></td>
 				<td><form:errors path="app" cssClass="error"/></td>
 		    </tr>
 	

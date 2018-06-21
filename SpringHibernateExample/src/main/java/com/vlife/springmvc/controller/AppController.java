@@ -1,7 +1,10 @@
 package com.vlife.springmvc.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import javax.validation.Valid;
@@ -110,35 +113,83 @@ public class AppController {
 		    String errors = buffer.toString();
 		return errors;
 		}
+    
+    public String[] getDetailInfo(Runinfo rinfo) {
+    	
+    	String[] res = new String[3];
+    	
+    	// e_time, s_time
+		Date day=new Date();  
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");  
+        String time = simpleDateFormat.format(day).trim();
+        res[2] = time;
+        
+        //get mobile uid and vendor name
+        int id = rinfo.getMid();
+        String uid = mobile_service.findById(id).getUid().trim();
+        String name = mobile_service.findById(id).getName().trim();
+        id = rinfo.getVid();
+        String vname = vendor_service.findById(id).getName().trim();
+        
+        // image_path
+        res[0] = "/picture" + "/" + vname + "/" + name + "_" + uid + "/" + time;
+        //zip_file
+        res[1] = vname + "_" + name + "_" + uid + "_" + time + ".zip";
+    	
+    	return res;
+    	
+    }
 
 	@RequestMapping(value = { "/check" }, method = RequestMethod.GET, produces="text/html;charset=UTF-8")
 	public String checkResource(ModelMap model)  {
 		
 		List<Vendor> vendors = vendor_service.findAllVendor();
-		List<Mobile> mobiles = mobile_service.findAllMobile();
-		List<Theme> resources = theme_service.findAllTheme();
-		List<Application> apps = app_service.findAllApplication();
 		
 		Runinfo runinfo = new Runinfo();
 		
 		model.addAttribute("runinfo", runinfo);
 		model.addAttribute("vendors", vendors);
-		model.addAttribute("resources", resources);
-		
 		
 		return "check";
 	}
     
 	@RequestMapping(value = { "/check" }, method = RequestMethod.POST, produces="text/html;charset=UTF-8")
-	public String saveRuninfo(@Valid Runinfo runinfo, BindingResult result,
+	public void saveRuninfo(@Valid Runinfo runinfo, BindingResult result,
 			ModelMap model) throws UnsupportedEncodingException {
-
-		if (result.hasErrors()) {
-			return "check";
-		}
 		
+		String[] tmp = getDetailInfo(runinfo);
+        runinfo.setStime(tmp[2]);
+        runinfo.setEtime(tmp[2]);
+        runinfo.setStatus("Running");
+        runinfo.setImagepath(tmp[0]);
+        runinfo.setZip(tmp[1]);
+        
+        // set sid
+        List infos = status_services.getOriginStatusInfo();
+        int mid = runinfo.getMid();
+        String uid = mobile_service.findById(mid).getUid();
+    	Iterator it = infos.iterator();
+    		
+    	while(it.hasNext()) {
+    			
+    		Object[] temp = (Object[]) it.next();
+    		
+    		// get mid
+    		int cmid = Integer.parseInt(temp[1].toString());
+    		
+    		if (mid == cmid) {
+    			int sid = Integer.parseInt(temp[0].toString());
+    			runinfo.setSid(sid);
+    		}
+        }
+        
 		runinfo_services.saveRuninfo(runinfo);
-		return "check";
+		
+		// need runid for python program 
+		int runid = runinfo.getId();
+		
+		System.out.println(runid);
+		
 	}
     
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
@@ -186,7 +237,9 @@ public class AppController {
 		}
 		
 		String temp = new String(mobile.getName().getBytes("iso-8859-1"),"utf-8");
-		mobile.setName(temp);
+		
+		//delete spaces
+		mobile.setName(temp.trim().replace(" ", ""));
 		
 		mobile_service.saveMobile(mobile);
 		return "redirect:/mobilelist";
@@ -218,7 +271,7 @@ public class AppController {
 		}
 		
 		String temp = new String(mobile.getName().getBytes("iso-8859-1"),"utf-8");
-		mobile.setName(temp);
+		mobile.setName(temp.trim().replace(" ", ""));
 		
 		mobile_service.updateMobile(mobile);
 
@@ -551,6 +604,13 @@ public class AppController {
 		Vendor vendor = vendor_service.findById(vendorid);
 		List<Application>  apps= app_service.findApplicationByVendorID(vendor);   
         return  apps;
+    }
+	
+	@RequestMapping(value = { "/list-all-resources" }, method = RequestMethod.GET)
+    @ResponseBody
+    public List<Theme> listResources(ModelMap model){
+		List<Theme>  themes= theme_service.findAllTheme();   
+        return  themes;
     }
 	
 	@RequestMapping(value = { "/list-mobiles-by-{vendorid}" }, method = RequestMethod.GET)

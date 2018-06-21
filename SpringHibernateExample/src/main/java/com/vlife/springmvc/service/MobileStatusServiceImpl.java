@@ -50,6 +50,13 @@ public class MobileStatusServiceImpl implements MobileStatusService {
 			
 	}
 	
+	public List getOriginStatusInfo() {
+		
+		List mylist = dao.deviceStatusByServer();
+		return mylist;
+		
+	}
+	
 	public List<Object[]> deviceStatusInfo(){
 		
 		List mylist = dao.deviceStatusByServer();
