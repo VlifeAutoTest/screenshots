@@ -1,6 +1,7 @@
 package com.vlife.springmvc.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import javax.validation.Valid;
@@ -122,9 +123,7 @@ public class AppController {
 		
 		model.addAttribute("runinfo", runinfo);
 		model.addAttribute("vendors", vendors);
-		model.addAttribute("mobiles",mobiles);
 		model.addAttribute("resources", resources);
-		model.addAttribute("apps",apps);
 		
 		
 		return "check";
@@ -548,11 +547,26 @@ public class AppController {
 	
 	@RequestMapping(value = { "/list-apps-by-{vendorid}" }, method = RequestMethod.GET)
     @ResponseBody
-    public List<Application> List(@PathVariable int vendorid,ModelMap model){
+    public List<Application> listApps(@PathVariable int vendorid,ModelMap model){
 		Vendor vendor = vendor_service.findById(vendorid);
 		List<Application>  apps= app_service.findApplicationByVendorID(vendor);   
         return  apps;
     }
 	
-	
+	@RequestMapping(value = { "/list-mobiles-by-{vendorid}" }, method = RequestMethod.GET)
+    @ResponseBody
+    public List<Mobile> listMobiles(@PathVariable int vendorid,ModelMap model){
+		List<Mobile> res = new ArrayList<>();
+		List<Mobile> conn = status_services.getFreeDevices();
+		for (int i=0; i < conn.size(); i++) {
+			
+			int tmp = conn.get(i).getVendor().getId();
+			
+			if (tmp == vendorid) {
+				
+				res.add(conn.get(i));	
+			}	
+		}
+        return  res;
+    }
 } 

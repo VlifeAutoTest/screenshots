@@ -34,8 +34,9 @@ public class MobileStatusServiceImpl implements MobileStatusService {
 	
 	public List<Mobile> getFreeDevices(){
 		
-		List mylist = dao.getConnectDevices();
+		
 		List<Mobile> res = new ArrayList<Mobile>();
+		List mylist = dao.getConnectDevices();
 		
 		Iterator it = mylist.iterator();
 		while(it.hasNext()){

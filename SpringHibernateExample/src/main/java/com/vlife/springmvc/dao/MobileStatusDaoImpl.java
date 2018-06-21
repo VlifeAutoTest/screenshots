@@ -33,7 +33,7 @@ public class MobileStatusDaoImpl extends AbstractDao<Integer, MobileStatus> impl
 	
 	public List getConnectDevices() {
 		
-		String hql = "SELECT mobile.mid FROM MobileStatus mobile WHERE mobile.status LIKE 'free%'";
+		String hql = "SELECT mobile.mid, mobile.status FROM MobileStatus mobile WHERE mobile.status LIKE 'free%'";
 		List list = getSession().createQuery(hql).list();
 		
 		return list;
