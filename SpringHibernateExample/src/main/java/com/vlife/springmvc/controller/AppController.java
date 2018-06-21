@@ -116,7 +116,7 @@ public class AppController {
     
     public String[] getDetailInfo(Runinfo rinfo) {
     	
-    	String[] res = new String[3];
+    	String[] res = new String[4];
     	
     	// e_time, s_time
 		Date day=new Date();  
@@ -135,6 +135,9 @@ public class AppController {
         res[0] = "/picture" + "/" + vname + "/" + name + "_" + uid + "/" + time;
         //zip_file
         res[1] = vname + "_" + name + "_" + uid + "_" + time + ".zip";
+        
+        //log_file
+        res[3] = vname + "_" + name + "_" + uid + "_" + time + ".html";
     	
     	return res;
     	
@@ -163,6 +166,7 @@ public class AppController {
         runinfo.setStatus("Running");
         runinfo.setImagepath(tmp[0]);
         runinfo.setZip(tmp[1]);
+        runinfo.setLogFile(tmp[3]);
         
         // set sid
         List infos = status_services.getOriginStatusInfo();

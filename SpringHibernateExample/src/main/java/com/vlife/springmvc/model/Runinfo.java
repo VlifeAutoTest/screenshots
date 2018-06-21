@@ -27,6 +27,7 @@ public class Runinfo {
 	private String s_time;
 	private String e_time;
 	private String image_path;
+	private String log_file;
 	private String zip_file;
 	private String status;
 	
@@ -120,5 +121,13 @@ public class Runinfo {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	public String getLogFile() {
+		return log_file;
+	}
+
+	public void setLogFile(String lfile) {
+		this.log_file = lfile;
 	}
 }
