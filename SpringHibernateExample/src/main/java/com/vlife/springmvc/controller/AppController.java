@@ -132,7 +132,7 @@ public class AppController {
         String vname = vendor_service.findById(id).getName().trim();
         
         // image_path
-        res[0] = "/picture" + "/" + vname + "/" + name + "_" + uid + "/" + time;
+        res[0] = "/" + vname + "/" + name + "_" + uid + "/" + time;
         //zip_file
         res[1] = vname + "_" + name + "_" + uid + "_" + time + ".zip";
         
@@ -142,6 +142,39 @@ public class AppController {
     	return res;
     	
     }
+    
+	@RequestMapping(value = { "/query" }, method = RequestMethod.GET, produces="text/html;charset=UTF-8")
+	public String queryResult(ModelMap model)  {
+		
+		List<Vendor> vendors = vendor_service.findAllVendor();
+		Runinfo runinfo = new Runinfo();
+		
+		model.addAttribute("runinfo", runinfo);
+		
+		model.addAttribute("vendors", vendors);
+		
+		model.addAttribute("queryflag", false);
+		
+		return "query";
+	}
+	
+	@RequestMapping(value = { "/query" }, method = RequestMethod.POST, produces="text/html;charset=UTF-8")
+	public String queryResult2(@Valid Runinfo runinfo, BindingResult result,
+			ModelMap model) throws UnsupportedEncodingException {
+		
+		List<Vendor> vendors = vendor_service.findAllVendor();
+		List<Runinfo> qresult = runinfo_services.findAllRuninfo();
+		List<Object[]> detail = runinfo_services.translaterinfo(qresult);
+		
+		model.addAttribute("runinfo", runinfo);
+		model.addAttribute("vendors", vendors);
+		model.addAttribute("queryflag", true);
+//		model.addAttribute("qresult", qresult);
+		model.addAttribute("detail", detail);
+		
+		
+		return "query";
+	}
 
 	@RequestMapping(value = { "/check" }, method = RequestMethod.GET, produces="text/html;charset=UTF-8")
 	public String checkResource(ModelMap model)  {

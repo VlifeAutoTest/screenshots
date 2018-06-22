@@ -1,12 +1,259 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=utf-8"
+    pageEncoding="utf-8"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>厂商应用列表</title>
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/bootstrap.js"></script>
+	<style type="text/css"></style> 
+	<style>
+		select{
+	    box-sizing: border-box;
+	    -webkit-box-sizing: border-box;
+	    -moz-box-sizing: border-box;
+	    border: 1px solid #C2C2C2;
+	    box-shadow: 1px 1px 4px #EBEBEB;
+	    -moz-box-shadow: 1px 1px 4px #EBEBEB;
+	    -webkit-box-shadow: 1px 1px 4px #EBEBEB;
+	    border-radius: 3px;
+	    -webkit-border-radius: 3px;
+	    -moz-border-radius: 3px;
+	    padding: 7px;
+	    outline: none; 
+	    width: 18%;
+	}
+	</style>
+	
+	<script>
+
+		$(function(){  
+		
+		    $("#vendor").change(function(){  
+		        var vid = $("#vendor").val();
+		        $.ajax({  
+		            type:"GET",  
+		            url :"list-apps-by-"+vid,  
+		            dataType:"json",  
+		            success:function(data){
+		                $("#app").empty();  
+		                $("#app").append("<option value=''>----请选择----</option>");  
+		                $.each(data,function(index,item){  
+		                    console.info("item:"+item.id);  
+		                    $("#app").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
+		                });  
+		            }  
+		        });  
+		    });  
+		      
+		 
+		    $("#vendor").change(function(){  
+		        var vid = $("#vendor").val();
+		        $.ajax({  
+		            type:"GET",  
+		            url :"list-mobiles-by-"+vid,  
+		            dataType:"json",  
+		            success:function(data){
+		                $("#mobile").empty();  
+		                $("#mobile").append("<option value=''>----请选择----</option>");  
+		                $.each(data,function(index,item){  
+		                    console.info("item:"+item.id);  
+		                    $("#mobile").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
+		                });  
+		            }  
+		        });  
+		    }); 
+		    
+		    $("#vendor").change(function(){  
+		        var vid = $("#vendor").val();
+		        $.ajax({  
+		            type:"GET",  
+		            url :"list-all-resources",  
+		            dataType:"json",  
+		            success:function(data){
+		                $("#resource").empty();  
+		                $("#resource").append("<option value=''>----请选择----</option>");  
+		                $.each(data,function(index,item){  
+		                    console.info("item:"+item.id);  
+		                    $("#resource").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
+		                });  
+		            }  
+		        });  
+		    }); 
+		      
+		}); 
+		
+		
+	   function queryinfo() {
+		
+	        var vid = $("#vendor").val();
+	        var rtable = document.getElementById("result_table");
+        	var tbody = document.createElement("tbody");
+	        $.ajax({  
+	            type:"GET",  
+	            url :"list-all-resources",  
+	            dataType:"json",  
+	            success:function(data){
+	                $.each(data,function(index,item){  
+// 	                	var tr = document.createElement("tr");
+// 	                	var td = document.createElement("td");
+// 	                	td.innerHtml = "<td>abcdddd</td>";
+// 	                	tr.appendChild(td);
+// 	                	var td1 = document.createElement("td");
+// 	                	td1.innerHtml = item.name;
+// 	                	tr.appendChild(td1);
+// 						tbody.appendChild(tr); 
+	                	var x=document.getElementById('result_table').insertRow(-1);
+	                	var y=x.insertCell(0);
+	                	var z=x.insertCell(1);
+	                	y.innerHTML=item.id;
+	                	z.innerHTML=item.name;
+						
+	                }); 
+
+	            } 
+	        	
+	        });
+	        
+			
+		};
+		
+		
+// 		$(document).ready(function () { 
+
+// 			  if( ${edit}==true){
+			   
+// 				  queryinfo();
+			 
+// 			  }	 
+			  
+// 	   });
+</script>
+
 </head>
+
+
+
 <body>
 
+	<div class="panle panel-success">  
+            <div class="panel-heading">  
+                <a class="panel-title">审核查询</a>  
+            </div>  
+    <div class="panel-body">  
+ 
+ 	<div class="panel-body table-responsive">  
+		<form:form method="POST" modelAttribute="runinfo">
+			<table class="table">
+			    
+			    <tr>
+			    	<td><label for="vendor">厂商: </label> </td>
+					<td><form:select path="vid" items="${vendors}" multiple="false" itemValue="id" itemLabel="name"  id="vendor">
+						<form:options  items="${vendors}" itemValue="id" itemLabel="name"/>
+					</form:select></td>
+					<td><form:errors path="vid" cssClass="error"/></td>
+			    </tr>
+			    
+			    <tr>
+			    	<td><label for="resource">资源: </label> </td>
+					<td><form:select path="resource" multiple="false" itemValue="id" itemLabel="name"  id="resource"/></td>
+					<td><form:errors path="resource" cssClass="error"/></td>
+			    </tr>
+			    
+			    
+			    <tr>
+			    	<td><label for="mid">手机: </label> </td>
+					<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" /></td>
+					<td><form:errors path="mid" cssClass="error"/></td>
+			    </tr>
+			    
+	
+			    <tr>
+			    	<td><label for="app">应用: </label> </td>
+					<td><form:select path="app" multiple="false" itemValue="id" itemLabel="name" id="app"/></td>
+					<td><form:errors path="app" cssClass="error"/></td>
+			    </tr>
+		
+				<tr>
+					<td colspan="3">
+						<input type="submit" value="查询"/>
+					</td>
+				</tr>
+			</table>
+			
+			<table class="table table-striped table-hover table-nonfluid table-responsive" id="result_table">  
+  				<thead>
+                 <tr>  
+                     <th>厂商</th>  
+                     <th>手机</th>
+                     <th>资源</th>
+                     <th>应用</th>
+                     <th>开始时间</th>
+                     <th>结束时间</th>
+                     <th>ZIP文件</th>
+                     <th>日志</th>
+
+                 </tr>  
+           		<thead>
+           		<tbody>
+	           		<c:choose>
+						<c:when test="${queryflag}">
+
+							<c:forEach items="${detail}" var="dt">
+								<tr>
+<%-- 								<td>${qr.getVid()}</td> --%>
+<%-- 								<td>${qr.getMid()}</td> --%>
+<%-- 								<td>${qr.getResource()}</td> --%>
+<%-- 								<td>${qr.getApp()}</td> --%>
+<%-- 								<td>${qr.getStime()}</td> --%>
+<%-- 								<td>${qr.getEtime()}</td> --%>
+<%-- 							    <td><a>${qr.getZip()}</a></td> --%>
+<%-- 								<td><a>${qr.getLogFile()}</a></td> --%>
+								<td>${dt[0]}</td>
+								<td>${dt[1]}</td>
+								<td>${dt[3]}</td>
+								<td>${dt[4]}</td>
+								<td>${dt[5]}</td>
+								<td>${dt[6]}</td>
+							    <td><a>${dt[8]}</a></td>
+								<td><a>${dt[9]}</a></td>
+								</tr>
+							</c:forEach>
+	
+						</c:when>
+							
+						<c:otherwise>
+
+						</c:otherwise>
+					</c:choose>
+           		</tbody>
+				<tfoot>  
+                        <tr>  
+                            <td colspan="8">  
+                                <ul class="pagination">  
+                                    <li><a href="#">«</a></li>  
+                                    <li><a href="#">1</a></li>  
+                                    <li><a href="#">2</a></li>  
+                                    <li><a href="#">3</a></li>  
+                                    <li><a href="#">4</a></li>  
+                                    <li><a href="#">5</a></li>  
+                                    <li><a href="#">»</a></li>  
+                                </ul>  
+                            </td>  
+                        </tr>  
+                </tfoot>  
+ 
+         </table>
+		</form:form>
+			
+	</div>
+
+</div>
+</div>
 </body>
 </html>
