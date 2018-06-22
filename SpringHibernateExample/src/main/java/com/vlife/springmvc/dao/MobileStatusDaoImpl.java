@@ -26,7 +26,7 @@ public class MobileStatusDaoImpl extends AbstractDao<Integer, MobileStatus> impl
 	
 	public List deviceStatusByServer() {
 		
-		String hql = "SELECT mobile.sid, mobile.mid, mobile.status FROM MobileStatus mobile ORDER BY mobile.sid";
+		String hql = "SELECT mobile.sid, mobile.mid, mobile.status FROM MobileStatus mobile ORDER BY mobile.status  DESC , mobile.sid ";
 		List list = getSession().createQuery(hql).list();
 		return list;
 	}

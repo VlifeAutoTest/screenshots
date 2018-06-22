@@ -28,6 +28,8 @@ import com.vlife.springmvc.model.Vendor;
 import com.vlife.springmvc.service.ThemeService;
 import com.vlife.springmvc.service.UploadFilesServices;
 import com.vlife.springmvc.service.VendorService;
+import com.jcraft.jsch.Session;
+import com.vlife.checkserver.mobilestatus.CheckMobileSattus;
 import com.vlife.springmvc.model.Application;
 import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.model.Runinfo;
@@ -132,7 +134,7 @@ public class AppController {
         String vname = vendor_service.findById(id).getName().trim();
         
         // image_path
-        res[0] = "/" + vname + "/" + name + "_" + uid + "/" + time;
+        res[0] = "/picture/" + vname + "/" + name + "_" + uid + "/" + time;
         //zip_file
         res[1] = vname + "_" + name + "_" + uid + "_" + time + ".zip";
         
@@ -190,7 +192,7 @@ public class AppController {
 	}
     
 	@RequestMapping(value = { "/check" }, method = RequestMethod.POST, produces="text/html;charset=UTF-8")
-	public void saveRuninfo(@Valid Runinfo runinfo, BindingResult result,
+	public String  saveRuninfo(@Valid Runinfo runinfo, BindingResult result,
 			ModelMap model) throws UnsupportedEncodingException {
 		
 		String[] tmp = getDetailInfo(runinfo);
@@ -224,11 +226,39 @@ public class AppController {
 		
 		// need runid for python program 
 		int runid = runinfo.getId();
+		int sid =runinfo.getSid();
+		TestServer server=  runinfo_services.getTestServer(sid);
 		
-		System.out.println(runid);
+		Session session =runinfo_services.getSession(server.getAddress(), 22,server.getUname(), server.getPasswd());
+		//执行脚本会返回执行时的信息
+		String str =runinfo_services.execCommand(session, "/home/gaoyaxuan/test.py", "1");
+		//结束本次的ssh连接
+		runinfo_services.endSSH();
+		
+//		try {
+//			Thread.sleep(5000);
+//		} catch (InterruptedException e) {
+//			// TODO 自动生成的 catch 块
+//			e.printStackTrace();
+//		}
+		//String browserAddress="file://192.168.1.230/FileShare/vivo/37bce839/201805231613/DroidSansChinese/";
+	//	System.out.println("2222222222"+runinfo.getImagepath());
+		
+		model.addAttribute("istrue",true);
+		model.addAttribute("runinfo",runinfo);
+		
+		return "check";
+		
 		
 	}
-    
+	@RequestMapping(value = { "refresh" }, method = RequestMethod.GET)
+	public String refreshMobileStatus(ModelMap model) {
+		
+		CheckMobileSattus cms =new CheckMobileSattus();
+		cms.run();
+		return "redirect:/";
+	}
+
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
 	public String showMobile(ModelMap model) {
 		

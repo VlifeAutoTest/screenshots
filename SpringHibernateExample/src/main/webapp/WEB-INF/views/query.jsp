@@ -178,7 +178,12 @@
 					<td><form:select path="app" multiple="false" itemValue="id" itemLabel="name" id="app"/></td>
 					<td><form:errors path="app" cssClass="error"/></td>
 			    </tr>
-		
+				
+				 <tr>
+			    	<td><label for="">日期: </label> </td>
+					<td><input type="datetime-local" name="begintime" value="2015-09-24T13:59:59" min="" max=""/>-<input type="datetime-local" name="endtime" value="2015-09-24T13:59:59" min="" max=""/></td>
+					<td><form:errors path="app" cssClass="error"/></td>
+			    </tr>
 				<tr>
 					<td colspan="3">
 						<input type="submit" value="查询"/>
@@ -220,8 +225,9 @@
 								<td>${dt[4]}</td>
 								<td>${dt[5]}</td>
 								<td>${dt[6]}</td>
-							    <td><a>${dt[8]}</a></td>
-								<td><a>${dt[9]}</a></td>
+							    <td><a href="http://192.168.1.230:8080${dt[7]}/${dt[8]} " target="_blank">${dt[8]}</a></td>
+							   <%--  <td><a href="${dt[7]}">${dt[8]}</a></td>  --%>
+								<td><a href="http://192.168.1.230:8080${dt[7]}/${dt[9]}" target="_blank" >${dt[9]}</a></td>
 								</tr>
 							</c:forEach>
 	

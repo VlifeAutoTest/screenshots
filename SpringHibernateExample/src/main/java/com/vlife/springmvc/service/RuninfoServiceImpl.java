@@ -1,5 +1,7 @@
 package com.vlife.springmvc.service;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,19 +9,29 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.apache.commons.io.IOUtils;
+import com.jcraft.jsch.Session;
 import com.vlife.springmvc.dao.MobileDao;
 import com.vlife.springmvc.dao.RuninfoDao;
+import com.vlife.springmvc.dao.TestServerDao;
 import com.vlife.springmvc.model.Runinfo;
+import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.VendorService;
-
+import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
+import com.jcraft.jsch.Session;
 @Service("runinfoService")
 @Transactional
 public class RuninfoServiceImpl implements RuninfoService{
-	
+	JSch jsch = new JSch();
+	Session session = null;
+	ChannelExec channelExec = null;
+	InputStream in = null;
 	@Autowired
 	private RuninfoDao dao;
-	
+	@Autowired
+	private TestServerDao tdao;
 	@Autowired
 	private VendorService vendor_service;
 	
@@ -103,5 +115,55 @@ public class RuninfoServiceImpl implements RuninfoService{
 		return res;	
 		
 	}
+
+	//获取本次连接
+			public Session getSession(String host, int port, String user, String password) {
+				try {
+					session = jsch.getSession(user, host, port);
+					session.setConfig("StrictHostKeyChecking", "no");
+					session.setPassword(password);
+					session.connect();
+				} catch (JSchException e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+				}
+				return session;
+			}
+
+			//结束本次连接
+			public void endSSH() {
+				channelExec.disconnect();
+				session.disconnect();
+
+			}
+			//执行命令
+			public String execCommand(Session session, String pythonPath,String parameters) {
+				String result = null;
+				try {
+					channelExec = (ChannelExec) session.openChannel("exec");
+					in = channelExec.getInputStream();
+					channelExec.setCommand( "python  "+ pythonPath+"  "+parameters  );
+					channelExec.setErrStream(System.err);
+					channelExec.connect();
+					result = IOUtils.toString(in, "UTF-8");
+					in.close();
+				} catch (JSchException e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+				}
+				return result;
+			}
+
+
+			@Override
+			public TestServer getTestServer(int sid) {
+				// TODO 自动生成的方法存根
+				
+			return	tdao.findById(sid);
+				
+			}
 
 }

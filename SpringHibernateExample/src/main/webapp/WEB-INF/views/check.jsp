@@ -86,6 +86,11 @@
 		        });  
 		    }); 
 		      
+		    
+		    
+		    
+		    
+		    
 		}); 
 </script>
 
@@ -103,7 +108,7 @@
  
 	<form:form method="POST" modelAttribute="runinfo">
 		<table class="table table-striped table-hover table-responsive">
-		    
+		  <b hidden="true"}"  id ="bpath">${runinfo.getImagepath()}</b>
 		    <tr>
 		    	<td><label for="vendor">厂商: </label> </td>
 				<td><form:select path="vid" items="${vendors}" multiple="false" itemValue="id" itemLabel="name"  id="vendor">
@@ -134,7 +139,8 @@
 	
 			<tr>
 				<td colspan="3">
-					<input type="submit" value="开始截图"/>
+					<input id ="open" type="submit" value="开始截图"/>
+					
 				</td>
 			</tr>
 		</table>
@@ -142,4 +148,27 @@
 </div>
 </div>
 </body>
+
+
+<script type="text/javascript">
+
+ $(document).ready(function () { 
+	 //alert(${browserAddress }) ;
+	 if( ${istrue}==true ){
+		 //alert("2222") ;
+		var bpath="ftp://192.168.1.230"+$("#bpath").text();
+		
+		//alert("3333") ;
+		
+		setTimeout(function () {window.open(bpath); }, 5000);
+		
+	 }
+	 
+	 
+ });
+		
+	
+
+
+</script>
 </html>

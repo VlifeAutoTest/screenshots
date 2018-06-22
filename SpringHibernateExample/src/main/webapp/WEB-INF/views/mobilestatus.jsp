@@ -1,11 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
+     <%@   page   import= "com.vlife.checkserver.mobilestatus.*" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
 
 <head>
+<script src="assets/js/jquery.min.js"></script>
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>主题与字体资源</title>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
@@ -16,10 +18,22 @@ font-size:18px;
 color:#6699ff;
 }</style>
 
+<script type="text/javascript">
+$(document).ready(function(){
+$("#fresh").click(function(){
+	setTimeout(function () { <%CheckMobileSattus cms =new CheckMobileSattus();cms.run();%> window.location.reload() ;}, 3000);  
+  });
+});
+</script>
+
 
 </head>
 
 <body>
+ <div class="panle panel-success">  
+            <div class="panel-heading" >  
+           <span class="glyphicon glyphicon-refresh" ></span> <b> &nbsp; 插入新手机时,请 </b><a  id ="fresh" href="#"   >Click here</a>
+            </div>  
 
 <div class="container">
 	<div class="row clearfix">
@@ -85,6 +99,6 @@ color:#6699ff;
 	</div>
 			
 </div>
-
+</div>
 </body>
 </html>
