@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,10 @@ public class RuninfoServiceImpl implements RuninfoService{
 	
 	public List<Runinfo> findAllRuninfo(){
 		return dao.findAllRuninfo();
+	}
+	
+	public List<Runinfo> queryData(Map<String, String> conditions){
+		return dao.queryData(conditions);
 	}
 	
 	

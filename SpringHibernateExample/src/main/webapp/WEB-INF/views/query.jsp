@@ -32,7 +32,7 @@
 	
 	<script>
 
-		$(function(){  
+		$(function(){
 		
 		    $("#vendor").change(function(){  
 		        var vid = $("#vendor").val();
@@ -41,7 +41,7 @@
 		            url :"list-apps-by-"+vid,  
 		            dataType:"json",  
 		            success:function(data){
-		                $("#app").empty();  
+		                $("#app").empty();
 		                $("#app").append("<option value=''>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
@@ -59,7 +59,7 @@
 		            url :"list-mobiles-by-"+vid,  
 		            dataType:"json",  
 		            success:function(data){
-		                $("#mobile").empty();  
+		                $("#mobile").empty();
 		                $("#mobile").append("<option value=''>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
@@ -120,19 +120,35 @@
 	        	
 	        });
 	        
-			
 		};
 		
+		function getNowFormatDate() {
+		    var date = new Date();
+		    var seperator1 = "-";
+		    var seperator2 = ":";
+		    var month = date.getMonth() + 1;
+		    var strDate = date.getDate();
+		    if (month >= 1 && month <= 9) {
+		        month = "0" + month;
+		    }
+		    if (strDate >= 0 && strDate <= 9) {
+		        strDate = "0" + strDate;
+		    }
+		    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+		            + "T" + date.getHours() + seperator2 + date.getMinutes()
+		            + seperator2 + date.getSeconds();
+		    return currentdate;
+		};
 		
-// 		$(document).ready(function () { 
-
-// 			  if( ${edit}==true){
-			   
-// 				  queryinfo();
-			 
-// 			  }	 
-			  
-// 	   });
+		$(document).ready(function(){
+			
+			curdate = getNowFormatDate();
+			$("#s_time").val(curdate);
+			$("#e_time").val(curdate);
+			
+		});
+		
+		
 </script>
 
 </head>
@@ -168,8 +184,7 @@
 			    
 			    <tr>
 			    	<td><label for="mid">手机: </label> </td>
-					<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" /></td>
-					<td><form:errors path="mid" cssClass="error"/></td>
+					<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" />
 			    </tr>
 			    
 	
@@ -179,15 +194,21 @@
 					<td><form:errors path="app" cssClass="error"/></td>
 			    </tr>
 				
-				 <tr>
-			    	<td><label for="">日期: </label> </td>
-					<td><input type="datetime-local" name="begintime" value="2015-09-24T13:59:59" min="" max=""/>-<input type="datetime-local" name="endtime" value="2015-09-24T13:59:59" min="" max=""/></td>
-					<td><form:errors path="app" cssClass="error"/></td>
-			    </tr>
+<!-- 				 <tr> -->
+<!-- 			    	<td><label for="">开始日期: </label> </td> -->
+<!-- 					<td><input id="s_time"  type="datetime-local" name="begintime"/> -->
+<!-- 			    </tr> -->
+			    
+<!-- 			    <tr> -->
+<!-- 			    	<td><label for="">结束日期: </label> </td> -->
+<!-- 					<td><input id="e_time" type="datetime-local" name="endtime"/> -->
+	
+<!-- 			    </tr> -->
 				<tr>
-					<td colspan="3">
+					<td>
 						<input type="submit" value="查询"/>
 					</td>
+					<td><font size="3" color="red">${message}</font></td>
 				</tr>
 			</table>
 			

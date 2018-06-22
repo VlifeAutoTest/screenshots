@@ -4,9 +4,12 @@ import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
 import javax.validation.Valid;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,16 +168,31 @@ public class AppController {
 			ModelMap model) throws UnsupportedEncodingException {
 		
 		List<Vendor> vendors = vendor_service.findAllVendor();
-		List<Runinfo> qresult = runinfo_services.findAllRuninfo();
-		List<Object[]> detail = runinfo_services.translaterinfo(qresult);
+		Map<String, String> cmap = new HashMap<String, String>();
+		cmap.put("vid", Integer.toString(runinfo.getVid()));
+		cmap.put("mid", Integer.toString(runinfo.getMid()));
+		cmap.put("resource", runinfo.getResource());
+		cmap.put("app", runinfo.getApp());
+		cmap.put("stime", "");
+		cmap.put("etime", "");
+		
+		List<Runinfo> qresult = runinfo_services.queryData(cmap);
+		
+		if (qresult.size() > 0) {
+			List<Object[]> detail = runinfo_services.translaterinfo(qresult);
+			model.addAttribute("detail", detail);
+			model.addAttribute("queryflag", true);
+			model.addAttribute("message", "");
+		}
+		else {
+			model.addAttribute("detail", "");
+			model.addAttribute("queryflag", false);
+			model.addAttribute("message", "没有符合条件的记录!");
+		}
 		
 		model.addAttribute("runinfo", runinfo);
 		model.addAttribute("vendors", vendors);
-		model.addAttribute("queryflag", true);
-//		model.addAttribute("qresult", qresult);
-		model.addAttribute("detail", detail);
-		
-		
+			
 		return "query";
 	}
 
