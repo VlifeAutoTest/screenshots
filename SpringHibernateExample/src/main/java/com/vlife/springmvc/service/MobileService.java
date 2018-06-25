@@ -23,5 +23,6 @@ public interface MobileService {
 	Mobile findMobileByUid(String uid);
 	
 	boolean isMobileUidUnique(Integer id, String uid);
+	List<Mobile> findMobileByPage(int offset, int length);
 
 }

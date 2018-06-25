@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
@@ -89,62 +88,34 @@
 		}); 
 		
 		
-	   function queryinfo() {
-		
-	        var vid = $("#vendor").val();
-	        var rtable = document.getElementById("result_table");
-        	var tbody = document.createElement("tbody");
-	        $.ajax({  
-	            type:"GET",  
-	            url :"list-all-resources",  
-	            dataType:"json",  
-	            success:function(data){
-	                $.each(data,function(index,item){  
-// 	                	var tr = document.createElement("tr");
-// 	                	var td = document.createElement("td");
-// 	                	td.innerHtml = "<td>abcdddd</td>";
-// 	                	tr.appendChild(td);
-// 	                	var td1 = document.createElement("td");
-// 	                	td1.innerHtml = item.name;
-// 	                	tr.appendChild(td1);
-// 						tbody.appendChild(tr); 
-	                	var x=document.getElementById('result_table').insertRow(-1);
-	                	var y=x.insertCell(0);
-	                	var z=x.insertCell(1);
-	                	y.innerHTML=item.id;
-	                	z.innerHTML=item.name;
-						
-	                }); 
-
-	            } 
-	        	
-	        });
-	        
-		};
-		
-		function getNowFormatDate() {
+		function getNowFormatDate(interval) {
 		    var date = new Date();
 		    var seperator1 = "-";
 		    var seperator2 = ":";
 		    var month = date.getMonth() + 1;
-		    var strDate = date.getDate();
+		    var strDate = date.getDate() + interval;
 		    if (month >= 1 && month <= 9) {
 		        month = "0" + month;
 		    }
 		    if (strDate >= 0 && strDate <= 9) {
 		        strDate = "0" + strDate;
 		    }
-		    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-		            + "T" + date.getHours() + seperator2 + date.getMinutes()
-		            + seperator2 + date.getSeconds();
+// 		    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+// 		            + " " + date.getHours() + seperator2 + date.getMinutes();
+		    
+		    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate;
+
+		    
 		    return currentdate;
 		};
 		
 		$(document).ready(function(){
 			
-			curdate = getNowFormatDate();
-			$("#s_time").val(curdate);
-			$("#e_time").val(curdate);
+			sdate = getNowFormatDate(-3);
+			edate = getNowFormatDate(0);
+
+			$("#s_time").val(sdate);
+ 			$("#e_time").val(edate);
 			
 		});
 		
@@ -194,16 +165,16 @@
 					<td><form:errors path="app" cssClass="error"/></td>
 			    </tr>
 				
-<!-- 				 <tr> -->
-<!-- 			    	<td><label for="">开始日期: </label> </td> -->
-<!-- 					<td><input id="s_time"  type="datetime-local" name="begintime"/> -->
-<!-- 			    </tr> -->
+				 <tr>
+			    	<td><label for="">开始日期: </label> </td>
+					<td><form:input path="stime" id="s_time" type = "date"  value="" pattern ="yyyy-MM-dd" name="begintime"/></td>
+			    </tr>
 			    
-<!-- 			    <tr> -->
-<!-- 			    	<td><label for="">结束日期: </label> </td> -->
-<!-- 					<td><input id="e_time" type="datetime-local" name="endtime"/> -->
+			    <tr>
+			    	<td><label for="">结束日期: </label> </td>
+					<td><form:input path="etime" id="e_time" type = "date"  value="" pattern ="yyyy-MM-dd" name="endtime"/></td>
 	
-<!-- 			    </tr> -->
+			    </tr>
 				<tr>
 					<td>
 						<input type="submit" value="查询"/>

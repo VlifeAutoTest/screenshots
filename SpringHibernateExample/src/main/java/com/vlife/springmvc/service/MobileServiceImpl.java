@@ -62,5 +62,13 @@ public class MobileServiceImpl implements MobileService {
 		return ( mobile == null || ((id != null) && (mobile.getId() == id)));
 	}
 
+	@Override
+	public List<Mobile> findMobileByPage(int offset, int length) {
+		// TODO 自动生成的方法存根
+		return dao.findMobileByPage(offset, length);
+		
+		
+	}
+
 
 } 

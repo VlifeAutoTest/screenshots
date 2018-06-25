@@ -1,14 +1,18 @@
 package com.vlife.springmvc.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonSubTypes.Type;
 
 
 @Entity
@@ -26,8 +30,11 @@ public class Runinfo {
 	private int sid;
 	private String resource;
 	private String app;
-	private Date s_time;
-	private Date e_time;
+	
+	private Date stime;
+	
+
+	private Date etime;
 	private String image_path;
 	private String log_file;
 	private String zip_file;
@@ -86,19 +93,25 @@ public class Runinfo {
 	}
 	
 	public Date getStime() {
-		return s_time;
+		return stime;
 	}
 
-	public void setStime(Date stime) {
-		this.s_time = stime;
+	public void setStime(String stime) throws ParseException {
+		Date sdate = null;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+		sdate = format.parse(stime);
+		this.stime = sdate;
 	}
 	
 	public Date getEtime() {
-		return e_time;
+		return etime;
 	}
 
-	public void setEtime(Date etime) {
-		this.e_time = etime;
+	public void setEtime(String etime) throws ParseException {
+		Date edate = null;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd"); 
+		edate = format.parse(etime);
+		this.etime = edate;
 	}
 	
 	public String getImagepath() {

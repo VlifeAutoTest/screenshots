@@ -16,6 +16,6 @@ public interface ThemeService {
 	
 	void updateTheme(Theme theme);
 	 List<Theme> searchByName (String name);
-
+	 List<Theme> findThemeByPage(int offset, int length);
 
 }

@@ -174,10 +174,19 @@ public class AppController {
 		cmap.put("mid", Integer.toString(runinfo.getMid()));
 		cmap.put("resource", runinfo.getResource());
 		cmap.put("app", runinfo.getApp());
-		cmap.put("stime", "");
-		cmap.put("etime", "");
 		
-		List<Runinfo> qresult = runinfo_services.queryData(cmap);
+		Date[] mytime = new Date[2];
+		
+		if (runinfo.getStime() != null && runinfo.getEtime() != null) {
+			mytime[0] = runinfo.getStime();
+			mytime[1] = runinfo.getEtime();
+		}
+		else {
+			mytime[0] = null;
+			mytime[1] = null;
+		}
+		
+		List<Runinfo> qresult = runinfo_services.queryData(cmap, mytime);
 		
 		if (qresult.size() > 0) {
 			List<Object[]> detail = runinfo_services.translaterinfo(qresult);
@@ -190,7 +199,7 @@ public class AppController {
 			model.addAttribute("queryflag", false);
 			model.addAttribute("message", "没有符合条件的记录!");
 		}
-		
+		runinfo = new Runinfo();
 		model.addAttribute("runinfo", runinfo);
 		model.addAttribute("vendors", vendors);
 			
@@ -218,8 +227,9 @@ public class AppController {
 		Date sdate = null;
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss"); 
 		sdate = format.parse(tmp[2]);
-        runinfo.setStime(sdate);
-        runinfo.setEtime(sdate);
+//		System.out.println(sdate);
+        runinfo.setStime(tmp[2]);
+        runinfo.setEtime(tmp[2]);
         runinfo.setStatus("Running");
         runinfo.setImagepath(tmp[0]);
         runinfo.setZip(tmp[1]);
@@ -303,11 +313,30 @@ public class AppController {
 	}
 	
 	
-	@RequestMapping(value = { "/mobilelist" }, method = RequestMethod.GET)
-	public String listMobiles(ModelMap model) {
-
-		List<Mobile> mobiles = mobile_service.findAllMobile();
+	@RequestMapping(value = { "/mobilelist-{page}" }, method = RequestMethod.GET)
+	public String listMobiles(ModelMap model,@PathVariable () int page ) {
+		//每页显示多少个手机
+		System.out.println("------------------------------"+page);
+		int pageSize=5;
+		List<Mobile> allMobiles = mobile_service.findAllMobile();
+		int totalPages= allMobiles .size()% pageSize == 0 ? allMobiles .size() / pageSize : allMobiles .size() / pageSize + 1;
+		int offset=1;
+		if(page<=0) {
+			offset=0;
+		}
+		else  if(page>totalPages){
+			offset=(totalPages-1)*pageSize;
+		}
+		else {
+			offset=(page-1)*pageSize;
+		}
+		List<Mobile> mobiles = mobile_service.findMobileByPage(offset, pageSize);
 		model.addAttribute("mobiles", mobiles);
+		//总页数
+		model.addAttribute("totalPages",totalPages);
+		//当前的页数
+		model.addAttribute("page",page);
+		
 		return "allmobiles";
 	}
 	
@@ -566,16 +595,33 @@ public class AppController {
 		return "redirect:/themelist";
 	}
 	
-	@RequestMapping(value = { "/themelist" }, method = RequestMethod.GET)
-	public String listThemes(ModelMap model) {
-
-		List<Theme> themes = theme_service.findAllTheme();
+	@RequestMapping(value = { "/themelist-{page}" }, method = RequestMethod.GET)
+	public String listThemes(ModelMap model,@PathVariable () int page ){
+		int pageSize=5;
+		List<Theme> allThemes = theme_service.findAllTheme();
+		int totalPages= allThemes .size()% pageSize == 0 ? allThemes .size() / pageSize : allThemes .size() / pageSize + 1;
+		int offset=1;
+		if(page<=0) {
+			offset=0;
+		}
+		else  if(page>totalPages){
+			offset=(totalPages-1)*pageSize;
+		}
+		else {
+			offset=(page-1)*pageSize;
+		}
+		
+		List<Theme> themes  = theme_service.findThemeByPage(offset, pageSize);
 		model.addAttribute("themes", themes);
+		//总页数
+		model.addAttribute("totalPages",totalPages);
+		//当前的页数
+		model.addAttribute("page",page);
 		return "allthemes";
 	}
 	
-	@RequestMapping(value = { "/themelist" }, method = RequestMethod.POST)
-	public String searchThemes(ModelMap model  ,HttpServletRequest request,@RequestParam(value="search" ,defaultValue="") String search) {
+	@RequestMapping(value = { "/themelist-{page}" }, method = RequestMethod.POST)
+	public String searchThemes(ModelMap model  ,@RequestParam(value="search" ,defaultValue="") String search,@PathVariable () int page) {
 		String temp="";
 		try {
 			temp = new String(search.getBytes("iso-8859-1"), "utf-8").trim();
@@ -584,9 +630,13 @@ public class AppController {
 			e.printStackTrace();
 			
 		}
-		System.out.println("sadasd"+temp);
-		List<Theme> themes = theme_service.searchByName(temp);
-		model.addAttribute("themes", themes);
+		int pageSize=5;
+		List<Theme> allThemes = theme_service.searchByName(temp);
+		int totalPages= allThemes .size()% pageSize == 0 ? allThemes .size() / pageSize : allThemes .size() / pageSize + 1;
+		
+		model.addAttribute("themes", allThemes);
+		model.addAttribute("totalPages",totalPages);
+		model.addAttribute("page",page);
 		return "allthemes";
 	}
 	

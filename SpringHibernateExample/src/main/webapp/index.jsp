@@ -22,7 +22,6 @@ $(document).ready(function(){
             success:function(data){
             	$('#div1').html(data);},
 });
-
 	});
 });
 </script>
@@ -52,6 +51,8 @@ $(document).ready(function(){
  	}
 	
 </script>
+
+
 
 </head>  
 <body> 
@@ -127,8 +128,8 @@ $(document).ready(function(){
 		                <div class="panel-collapse collapse" id="collapseA">  
 		                    <div class="panel-body">  
 		                        <ul class="nav nav-pills nav-stacked">  
-		                            <li><a href="#">用户管理</a></li>  
-		                            <li><a href="#">角色分配</a></li>  
+		                            <li class="on"><a href="#">用户管理</a></li>  
+		                            <li class="on" ><a href="#">角色分配</a></li>  
 		                        </ul>  
 		                    </div>  
 		                </div>      
@@ -140,8 +141,8 @@ $(document).ready(function(){
 		                <div class="panel-collapse collapse" id="collapseB">  
 		                    <div class="panel-body">  
 		                        <ul class="nav nav-pills nav-stacked">  
-		                            <li><a id=theme href="#" onclick="menuClick('themelist')">资源列表</a></li>  
-		                            <li><a id=upload href="#" onclick="menuClick('uploadfiles')">上传资源</a></li>  
+		                            <li class="on"><a id="theme"   href="#" onclick="menuClick('themelist-1')">资源列表</a></li>  
+		                            <li class="on" ><a id="upload" href="#" onclick="menuClick('uploadfiles')">上传资源</a></li>  
 		                        </ul>  
 		                    </div>  
 		                </div>      
@@ -153,8 +154,8 @@ $(document).ready(function(){
 		                <div class="panel-collapse collapse" id="collapseD">  
 		                    <div class="panel-body">  
 		                        <ul class="nav nav-pills nav-stacked">  
-		                            <li><a href="#" onclick="menuClick('check')">增加审核</a></li>  
-		                            <li><a href="#" onclick="menuClick('query')">审核查询</a></li>  
+		                            <li class="on" ><a href="#" onclick="menuClick('check')">增加审核</a></li>  
+		                            <li class="on" ><a href="#" onclick="menuClick('query')">审核查询</a></li>  
 		                        </ul>  
 		                    </div>  
 		                </div>      
@@ -166,10 +167,11 @@ $(document).ready(function(){
 		                <div class="panel-collapse collapse in" id="collapseE">  
 		                    <div class="panel-body">  
 		                        <ul class="nav nav-pills nav-stacked">  
-		                            <li><a href="#" onclick="menuClick('vendorlist')">厂商管理</a></li>  
-		                            <li><a href="#" onclick="menuClick('mobilelist')">手机管理</a></li>
-		                            <li><a id=server href="#" onclick="menuClick('serverlist')">服务器管理</a></li>
-		                            <li><a href="#" onclick="menuClick('applicationlist')">应用管理</a></li>
+		                            <li class="on"><a href="#" onclick="menuClick('vendorlist')">厂商管理</a></li>  
+		                            <li class="on"><a href="#" onclick="menuClick('mobilelist-1')">手机管理</a></li>
+		                            <li class="on" ><a id="server" href="#" onclick="menuClick('serverlist')">服务器管理</a></li>
+	                              <!--   <li onclick="add()" ><a href="#"  onclick="menuClick('applicationlist')">应用管理</a></li> -->
+		                            <li class="on"> <a href="#"  onclick="menuClick('applicationlist')">应用管理</a></li>
 		                        </ul>  
 		                    </div>  
 		                </div>      
@@ -181,8 +183,7 @@ $(document).ready(function(){
 	    <div class="col-md-10">  
 	        <div class="bread-crumb" id="breadcrumbs">  
 	            <ul class="breadcrumb">  
-	                <li><span class="glyphicon glyphicon-home"></span><a href="#" onclick="menuClick('list')">Home</a></li>  
-<!-- 	                <li><a href="#">User</a></li>  --> 
+	                <li id ="ddd"><span class="glyphicon glyphicon-home"></span><a  href="#" onclick="menuClick('list')">Home</a><span class="glyphicon glyphicon-remove clo" style="display:none"></span></li>  
 	            </ul>  
 	        </div>  
 	        
@@ -193,5 +194,44 @@ $(document).ready(function(){
 	    </div>  
 	</div>
 </div>  
+<script>
+/* $(document).ready(function(){
+$("#breadcrumbs").mouseenter(function(){
+	$(".clo").css("display","inline");
+  });
+$("#breadcrumbs").mouseleave(function(){
+	$(".clo").css("display","none");
+  });
+}); */
+</script>
+<script>
+
+  
+/* $(function(){  
+    $(".on").one("click",function(){  
+    	 var ab=this.innerHTML;
+    	 $(".breadcrumb").empty();  
+    	 
+    	 $(".breadcrumb").append("<li id ='ddd'><span class='glyphicon glyphicon-home'></span><a  href=''#' onclick='menuClick('list')'>Home</a><span class='glyphicon glyphicon-remove clo' style='display:none'></span></li>  ");
+  	  	$(".breadcrumb").append("<li>"+ab+"</li>");
+     
+    }) ;  
+}) ;   */
+	
+ 
+$(function(){  
+    $(".on").click(function(){  
+    	 var ab=this.innerHTML;
+    	 $(".breadcrumb").empty();  
+    	 
+    	 $(".breadcrumb").append("<li id ='ddd'><span class='glyphicon glyphicon-home'></span><a  href=''#' onclick='menuClick('list')'>Home</a><span class='glyphicon glyphicon-remove clo' style='display:none'></span></li>  ");
+  	  	$(".breadcrumb").append("<li>"+ab+"</li>");
+     
+    }) ;  
+}) ;  
+
+</script>
 </body>  
+
+
 </html>  

@@ -49,4 +49,15 @@ public class ThemeDaoImpl extends AbstractDao<Integer, Theme> implements ThemeDa
 		
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Theme> findThemeByPage(int offset, int length) {
+		// TODO 自动生成的方法存根
+		
+		Query query = getSession().createQuery("from Theme");
+        query.setFirstResult(offset);
+        query.setMaxResults(length);
+        return (List<Theme>) query.list();
+	}
+
 }

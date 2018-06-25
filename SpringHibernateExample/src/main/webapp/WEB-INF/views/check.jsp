@@ -11,13 +11,11 @@
 	<!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /> -->
 	<!-- <script src="assets/js/jquery.min.js"></script> -->
 	<!-- <script src="assets/js/bootstrap.js"></script> -->
-	
 	<script type="text/javascript" src="assets/js/jquery-1.10.2.min.js"></script>    
     <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>      
-    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.css">      
- 
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">    
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>    
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.css">      
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">    
     <script type="text/javascript">    
         $(window).on('load', function () {    
     
@@ -148,9 +146,6 @@
 		    <tr>
 		    	<td><label for="resource">资源: </label> </td>
 				<td><form:select path="resource" multiple="multiple" itemValue="id" itemLabel="name"  id="resource"  class="selectpicker bla bla bli" data-live-search="true"  /></td>
-		<!-- 		<td>  <select id="resource" class="selectpicker bla bla bli" multiple data-live-search="true"  path="resource">    
-					    </select>    
-     					</td> -->
 				<td><form:errors path="resource" cssClass="error"/></td>
 		    </tr>
 		    

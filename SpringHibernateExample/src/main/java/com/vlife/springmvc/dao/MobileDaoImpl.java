@@ -52,4 +52,14 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 
 		return  result;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Mobile> findMobileByPage(int offset, int length) {
+		// TODO 自动生成的方法存根
+		 Query query = getSession().createQuery("from Mobile");
+         query.setFirstResult(offset);
+         query.setMaxResults(length);
+         return (List<Mobile>) query.list();
+	}
 }

@@ -42,13 +42,16 @@
                         <tr>  
                             <td colspan="8">  
                                 <ul class="pagination">  
-                                    <li><a href="#">«</a></li>  
-                                    <li><a href="#">1</a></li>  
-                                    <li><a href="#">2</a></li>  
-                                    <li><a href="#">3</a></li>  
-                                    <li><a href="#">4</a></li>  
-                                    <li><a href="#">5</a></li>  
-                                    <li><a href="#">»</a></li>  
+                                    <li><a href="/mobilelist-${page-1}">&laquo</a></li>  
+                                <c:forEach  begin="1" end="${totalPages}" varStatus="loop">  
+                                 <c:set var="active" value="${loop.index==page?'active':''}"/>
+                              
+                    				<li class="${active}"><a href="<c:url value="/mobilelist-${loop.index}"/>">${loop.index}</a></li>
+                                
+                                 </c:forEach>
+                                
+                                     
+									<li><a href="<c:url value="/mobilelist-${page+1}"/>">&raquo;</a></li>
                                 </ul>  
                             </td>  
                         </tr>  

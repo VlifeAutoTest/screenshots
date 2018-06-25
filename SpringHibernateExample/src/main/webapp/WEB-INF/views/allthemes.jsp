@@ -24,9 +24,9 @@
                             <th></th>  
                             <th><a href="<c:url value='/newtheme' />">+ Add Resource</a></th>  
                              <th>
+                             <!--  页面搜索的代码 -->
                              <form   method="post">
                              <div class="input-group" style="width: 200px">             
-               					
                <input type="text" name ="search" class="form-control" placeholder="请输入搜索关键字">
                 <span class="input-group-btn">
                     <button class="btn btn-primary"  type="submit">搜索</button>
@@ -40,7 +40,6 @@
 							<c:forEach items="${themes}" var="theme">
 								<tr>
 								<td>${theme.name}</td>
-								<%-- <td>  <a id ="aa" href="http://192.168.1.230:8080/${theme.path}" target="_blank">${theme.path}</a></td> --%>
 								<td>  <a id ="aa" href="http://192.168.1.230:8080/${fn:substring(theme.path, 7, -1)}" target="_blank">${theme.path}</a></td>
 								<td><a href="<c:url value='/edit-${theme.id}-theme' />">edit</a></td>
 								<td><a href="<c:url value='/delete-${theme.id}-theme' />">delete</a></td>
@@ -51,15 +50,17 @@
                     <tfoot>  
                         <tr>  
                             <td colspan="8">  
-                                <ul class="pagination">  
-                                    <li><a href="#">«</a></li>  
-                                    <li><a href="#">1</a></li>  
-                                    <li><a href="#">2</a></li>  
-                                    <li><a href="#">3</a></li>  
-                                    <li><a href="#">4</a></li>  
-                                    <li><a href="#">5</a></li>  
-                                    <li><a href="#">»</a></li>  
+                            
+                             <ul class="pagination">  
+                                   <li><a href="/themelist-${page-1}">&laquo</a></li>  
+                                <c:forEach  begin="1" end="${totalPages}" varStatus="loop">  
+                                 <c:set var="active" value="${loop.index==page?'active':''}"/>
+                    				<li class="${active}"><a href="<c:url value="/themelist-${loop.index}"/>">${loop.index}</a></li>
+                                 </c:forEach>
+									<li><a href="<c:url value="/themelist-${page+1}"/>">&raquo;</a></li>
                                 </ul>  
+                                
+                                
                             </td>  
                         </tr>  
                     </tfoot>  

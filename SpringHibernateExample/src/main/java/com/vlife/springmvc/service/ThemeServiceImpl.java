@@ -51,4 +51,11 @@ public class ThemeServiceImpl implements ThemeService {
 		return dao.findByName(name);
 	}
 
+	@Override
+	public List<Theme> findThemeByPage(int offset, int length) {
+		// TODO 自动生成的方法存根
+		return 	dao.findThemeByPage(offset, length);
+		
+	}
+
 } 

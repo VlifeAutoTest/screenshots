@@ -18,5 +18,6 @@ public interface MobileDao {
 	void deleteMobileByUid(String uid);
 	
 	Mobile findMobileByUid(String uid);
+	List<Mobile> findMobileByPage(int offset, int length);
 
 }
