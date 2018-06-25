@@ -2,7 +2,9 @@ package com.vlife.springmvc.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -59,8 +61,8 @@ public class RuninfoServiceImpl implements RuninfoService{
 		return dao.findAllRuninfo();
 	}
 	
-	public List<Runinfo> queryData(Map<String, String> conditions){
-		return dao.queryData(conditions);
+	public List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime){
+		return dao.queryData(conditions, mytime);
 	}
 	
 	

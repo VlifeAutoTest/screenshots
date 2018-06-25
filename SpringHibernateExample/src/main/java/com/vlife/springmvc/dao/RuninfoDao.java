@@ -1,5 +1,6 @@
 package com.vlife.springmvc.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +14,6 @@ public interface RuninfoDao {
 	
 	List<Runinfo> findAllRuninfo();
 	
-	List<Runinfo> queryData(Map<String, String> conditions);
+	List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime);
 
 }

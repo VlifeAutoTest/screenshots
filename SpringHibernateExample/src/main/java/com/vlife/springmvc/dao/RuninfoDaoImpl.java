@@ -1,5 +1,6 @@
 package com.vlife.springmvc.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Runinfo> queryData(Map<String, String> conditions){
+	public List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime){
 		
 		Criteria criteria = createEntityCriteria();
 		if (conditions.get("vid") != null && (!conditions.get("vid").equals("0"))) {
@@ -44,6 +45,10 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 		
 		if (conditions.get("app") != null && conditions.get("app").length() >0) {
 			criteria.add(Restrictions.like("app", "%"+conditions.get("app")+"%"));
+		}
+		
+		if ( mytime[0] != null && mytime[1] != null) {
+			criteria.add(Restrictions.between("stime",mytime[0], mytime[1]));
 		}
 		
 		return (List<Runinfo>) criteria.list();

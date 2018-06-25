@@ -2,7 +2,10 @@ package com.vlife.springmvc.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -174,10 +177,19 @@ public class AppController {
 		cmap.put("mid", Integer.toString(runinfo.getMid()));
 		cmap.put("resource", runinfo.getResource());
 		cmap.put("app", runinfo.getApp());
-		cmap.put("stime", "");
-		cmap.put("etime", "");
 		
-		List<Runinfo> qresult = runinfo_services.queryData(cmap);
+		Date[] mytime = new Date[2];
+		
+		if (runinfo.getStime() != null && runinfo.getEtime() != null) {
+			mytime[0] = runinfo.getStime();
+			mytime[1] = runinfo.getEtime();
+		}
+		else {
+			mytime[0] = null;
+			mytime[1] = null;
+		}
+		
+		List<Runinfo> qresult = runinfo_services.queryData(cmap, mytime);
 		
 		if (qresult.size() > 0) {
 			List<Object[]> detail = runinfo_services.translaterinfo(qresult);
@@ -190,7 +202,7 @@ public class AppController {
 			model.addAttribute("queryflag", false);
 			model.addAttribute("message", "没有符合条件的记录!");
 		}
-		
+		runinfo = new Runinfo();
 		model.addAttribute("runinfo", runinfo);
 		model.addAttribute("vendors", vendors);
 			
@@ -218,8 +230,9 @@ public class AppController {
 		Date sdate = null;
 		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss"); 
 		sdate = format.parse(tmp[2]);
-        runinfo.setStime(sdate);
-        runinfo.setEtime(sdate);
+//		System.out.println(sdate);
+        runinfo.setStime(tmp[2]);
+        runinfo.setEtime(tmp[2]);
         runinfo.setStatus("Running");
         runinfo.setImagepath(tmp[0]);
         runinfo.setZip(tmp[1]);

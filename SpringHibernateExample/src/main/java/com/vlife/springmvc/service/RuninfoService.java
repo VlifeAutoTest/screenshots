@@ -1,5 +1,6 @@
 package com.vlife.springmvc.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,5 +24,5 @@ public interface RuninfoService {
 	
 	TestServer getTestServer(int sid);
 	
-	List<Runinfo> queryData(Map<String, String> conditions);
+	List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime);
 }
