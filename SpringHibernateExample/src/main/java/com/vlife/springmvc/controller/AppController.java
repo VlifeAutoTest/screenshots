@@ -1,6 +1,7 @@
 package com.vlife.springmvc.controller;
 
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -124,9 +125,9 @@ public class AppController {
     	String[] res = new String[4];
     	
     	// e_time, s_time
-		Date day=new Date();  
+		Date curday=new Date();  
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");  
-        String time = simpleDateFormat.format(day).trim();
+        String time = simpleDateFormat.format(curday).trim();
         res[2] = time;
         
         //get mobile uid and vendor name
@@ -211,11 +212,14 @@ public class AppController {
     
 	@RequestMapping(value = { "/check" }, method = RequestMethod.POST, produces="text/html;charset=UTF-8")
 	public String  saveRuninfo(@Valid Runinfo runinfo, BindingResult result,
-			ModelMap model) throws UnsupportedEncodingException {
+			ModelMap model) throws UnsupportedEncodingException, ParseException {
 		
 		String[] tmp = getDetailInfo(runinfo);
-        runinfo.setStime(tmp[2]);
-        runinfo.setEtime(tmp[2]);
+		Date sdate = null;
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss"); 
+		sdate = format.parse(tmp[2]);
+        runinfo.setStime(sdate);
+        runinfo.setEtime(sdate);
         runinfo.setStatus("Running");
         runinfo.setImagepath(tmp[0]);
         runinfo.setZip(tmp[1]);

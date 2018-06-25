@@ -1,5 +1,7 @@
 package com.vlife.springmvc.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,8 +26,8 @@ public class Runinfo {
 	private int sid;
 	private String resource;
 	private String app;
-	private String s_time;
-	private String e_time;
+	private Date s_time;
+	private Date e_time;
 	private String image_path;
 	private String log_file;
 	private String zip_file;
@@ -83,19 +85,19 @@ public class Runinfo {
 		this.app = app;
 	}
 	
-	public String getStime() {
+	public Date getStime() {
 		return s_time;
 	}
 
-	public void setStime(String stime) {
+	public void setStime(Date stime) {
 		this.s_time = stime;
 	}
 	
-	public String getEtime() {
+	public Date getEtime() {
 		return e_time;
 	}
 
-	public void setEtime(String etime) {
+	public void setEtime(Date etime) {
 		this.e_time = etime;
 	}
 	
