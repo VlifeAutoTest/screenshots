@@ -64,11 +64,13 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#app").empty();  
-		                $("#app").append("<option value=''>----请选择----</option>");  
+		               // $("#app").append("<option value=''>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#app").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
-		                });  
+		                }); 
+		                $("#app").selectpicker("refresh");
+		                $("#app").selectpicker("render");    
 		            }  
 		        });  
 		    });  
@@ -82,7 +84,7 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#mobile").empty();  
-		                //$("#mobile").append("<option value=''>----请选择----</option>");  
+		                $("#mobile").append("<option value=''>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#mobile").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
@@ -145,11 +147,10 @@
 		    
 		    <tr>
 		    	<td><label for="resource">资源: </label> </td>
-				<%-- <td><form:select path="resource" multiple="multiple" itemValue="id" itemLabel="name"  id="resource" /></td> --%>
-				<td>  <select id="resource" class="selectpicker bla bla bli" multiple data-live-search="true">    
-				
-    </select>    
-     </td>
+				<td><form:select path="resource" multiple="multiple" itemValue="id" itemLabel="name"  id="resource"  class="selectpicker bla bla bli" data-live-search="true"  /></td>
+		<!-- 		<td>  <select id="resource" class="selectpicker bla bla bli" multiple data-live-search="true"  path="resource">    
+					    </select>    
+     					</td> -->
 				<td><form:errors path="resource" cssClass="error"/></td>
 		    </tr>
 		    
@@ -163,7 +164,7 @@
 
 		    <tr>
 		    	<td><label for="app">应用: </label> </td>
-				<td><form:select path="app" multiple="multiple" itemValue="id" itemLabel="name" id="app"/></td>
+				<td><form:select path="app" multiple="multiple" itemValue="id" itemLabel="name" id="app" class="selectpicker bla bla bli" data-live-search="true"/></td>
 				<td><form:errors path="app" cssClass="error"/></td>
 		    </tr>
 	
