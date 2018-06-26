@@ -14,7 +14,7 @@
    function changeFunc() {
     var selectBox = document.getElementById("selectBox");
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-    var link = "list-" + selectedValue.toString() + "-application";
+    var link = "applicationlist-1-" + selectedValue.toString();
     window.location.href=link;
   
    }
@@ -48,7 +48,7 @@
 								<td>${app.name}</td>
 								<td>${app.getVendor().getName()}</td>
 								<td><a href="<c:url value='/edit-${app.id}-application' />">edit</a></td>
-								<td><a href="<c:url value='/delete-${app.id}-application' />">delete</a></td>
+								<td><a href="<c:url value='/delete-${app.id}-application-${page}' />">delete</a></td>
 								</tr>
 							</c:forEach>
                     </tbody>  
@@ -57,14 +57,14 @@
                             <td colspan="8"   id ="asd">  
                             
                              <ul class="pagination" >  
-                             <li><a href="<c:url value="/applicationlist-1"/>">首页</a></li>
-                                   <li><a href="/applicationlist-${page-1}">&laquo</a></li>  
+                             <li><a href="<c:url value="/applicationlist-1-0"/>">首页</a></li>
+                                   <li><a href="/applicationlist-${page-1<=0 ? 1 : page-1}-0"> &laquo; </a></li>  
                                 <c:forEach  begin="1" end="${totalPages}" varStatus="loop">  
                                  <c:set var="active" value="${loop.index==page?'active':''}"/>
-                    				<li class="${active}"><a href="<c:url value="/applicationlist-${loop.index}"/>">${loop.index}</a></li>
+                    				<li class="${active}"><a href="<c:url value="/applicationlist-${loop.index}-0"/>">${loop.index}</a></li>
                                  </c:forEach>
-									<li><a href="<c:url value="/applicationlist-${page+1}"/>">&raquo;</a></li>
-									<li><a href="<c:url value="/applicationlist-${totalPages}"/>">末页</a></li>
+									<li><a href="<c:url value="/applicationlist-${page+1}-0"/>"> &raquo;</a></li>
+									<li><a href="<c:url value="/applicationlist-${totalPages}-0"/>">末页</a></li>
                                 </ul>  
                                 
                                 

@@ -32,6 +32,7 @@ public class MobileStatusServiceImpl implements MobileStatusService {
 	
 	
 	
+	@SuppressWarnings("rawtypes")
 	public List<Mobile> getFreeDevices(){
 		
 		
@@ -50,6 +51,7 @@ public class MobileStatusServiceImpl implements MobileStatusService {
 			
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List getOriginStatusInfo() {
 		
 		List mylist = dao.deviceStatusByServer();
@@ -57,6 +59,7 @@ public class MobileStatusServiceImpl implements MobileStatusService {
 		
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List<Object[]> deviceStatusInfo(){
 		
 		List mylist = dao.deviceStatusByServer();
@@ -99,6 +102,7 @@ public class MobileStatusServiceImpl implements MobileStatusService {
 		return res;
 	}
 	
+	@SuppressWarnings("rawtypes")
 	public List<Object[]> findDeviceStatus() {
 		
 		List mylist =dao.countDeviceByServer();

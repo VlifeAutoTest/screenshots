@@ -171,7 +171,7 @@ $(document).ready(function(){
 		                            <li class="on"><a href="#" onclick="menuClick('mobilelist-1')">手机管理</a></li>
 		                            <li class="on" ><a id="server" href="#" onclick="menuClick('serverlist')">服务器管理</a></li>
 	                              <!--   <li onclick="add()" ><a href="#"  onclick="menuClick('applicationlist')">应用管理</a></li> -->
-		                            <li class="on"> <a href="#"  onclick="menuClick('applicationlist-1')">应用管理</a></li>
+		                            <li class="on"> <a href="#"  onclick="menuClick('applicationlist-0-0')">应用管理</a></li>
 		                        </ul>  
 		                    </div>  
 		                </div>      

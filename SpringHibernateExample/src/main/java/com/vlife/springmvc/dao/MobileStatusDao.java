@@ -1,14 +1,15 @@
 package com.vlife.springmvc.dao;
 
-import java.util.Iterator;
 import java.util.List;
 
-import com.vlife.springmvc.model.Mobile;
 
 public interface MobileStatusDao {
 	
+	@SuppressWarnings("rawtypes")
 	List countDeviceByServer();
+	@SuppressWarnings("rawtypes")
 	List deviceStatusByServer();
+	@SuppressWarnings("rawtypes")
 	List getConnectDevices();
 
 }

@@ -9,6 +9,7 @@ public interface MobileStatusService {
 	
 	List<Object[]> findDeviceStatus();
 	List<Object[]> deviceStatusInfo();
+	@SuppressWarnings("rawtypes")
 	List getOriginStatusInfo();
 	List<Mobile> getFreeDevices();
 

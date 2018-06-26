@@ -19,7 +19,7 @@ public interface ApplicationService {
 	
 	List<Application> findAllApplication();
 	List<Application>	findApplicationByPage(int offset, int length);
-
+	List<Application> findApplicationByVendorIDaAndPage(Vendor id,int offset, int length);
 }
 
 

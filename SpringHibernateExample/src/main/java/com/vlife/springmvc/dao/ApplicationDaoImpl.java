@@ -46,6 +46,7 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Application> findApplicationByPage(int offset, int length) {
 		// TODO 自动生成的方法存根
@@ -54,5 +55,17 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 		criteria.setMaxResults(length);
 		return (List<Application>) criteria.list();
 		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Application> findApplicationByVendorIDaAndPage(Vendor id, int offset, int length) {
+		// TODO 自动生成的方法存根
+		
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("vendor", id));
+		criteria .setFirstResult(offset);
+		criteria .setMaxResults(length);
+		return (List<Application>) criteria.list();
 	}
 }

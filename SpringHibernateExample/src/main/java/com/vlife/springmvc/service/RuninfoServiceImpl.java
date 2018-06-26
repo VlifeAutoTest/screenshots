@@ -2,10 +2,8 @@ package com.vlife.springmvc.service;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.io.IOUtils;
 import com.jcraft.jsch.Session;
-import com.vlife.springmvc.dao.MobileDao;
 import com.vlife.springmvc.dao.RuninfoDao;
 import com.vlife.springmvc.dao.TestServerDao;
 import com.vlife.springmvc.model.Runinfo;
@@ -23,7 +20,6 @@ import com.vlife.springmvc.service.VendorService;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
-import com.jcraft.jsch.Session;
 @Service("runinfoService")
 @Transactional
 public class RuninfoServiceImpl implements RuninfoService{

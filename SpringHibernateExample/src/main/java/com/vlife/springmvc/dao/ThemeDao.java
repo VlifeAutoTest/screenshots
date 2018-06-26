@@ -1,8 +1,6 @@
 package com.vlife.springmvc.dao;
 
 import java.util.List;
-
-import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.model.Theme;
 
 public interface ThemeDao {

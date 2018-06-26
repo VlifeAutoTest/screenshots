@@ -18,7 +18,6 @@
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">    
     <script type="text/javascript">    
         $(window).on('load', function () {    
-    
             $('.selectpicker').selectpicker({    
                 'selectedText': 'cat'    
             });    
@@ -26,11 +25,6 @@
             //$('.selectpicker').selectpicker('hide');    
         });    
     </script>  
-	
-	
-	
-	
-	
 	<style type="text/css"></style> 
 	<style>
 		select{
@@ -62,7 +56,6 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#app").empty();  
-		               // $("#app").append("<option value=''>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#app").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
@@ -100,7 +93,6 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#resource").empty();  
-		               // $("#resource").append("<option value=''>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#resource").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
@@ -110,13 +102,7 @@
 		                $("#resource").selectpicker("render");    
 		            }  
 		        });  
-		    }); 
-		      
-		    
-		    
-		    
-		    
-		    
+		    });  
 		}); 
 </script>
 
@@ -177,24 +163,11 @@
 
 
 <script type="text/javascript">
-
  $(document).ready(function () { 
-	 //alert(${browserAddress }) ;
 	 if( ${istrue }==true ){
-		 //alert("2222") ;
 		var bpath="ftp://192.168.1.230"+$("#bpath").text();
-		
-		//alert("3333") ;
-		
 		setTimeout(function () {window.open(bpath); }, 5000);
-		
 	 }
-	 
-	 
  } );
-		
-	
-
-
 </script>
 </html>

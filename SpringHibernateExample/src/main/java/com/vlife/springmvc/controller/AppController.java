@@ -46,7 +46,8 @@ import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.TestServerService;
 @Controller
 @RequestMapping("/")
-@SessionAttributes("searchValue")
+//searchValue
+@SessionAttributes("tvendorid")
 public class AppController {
 	
 	
@@ -212,15 +213,14 @@ public class AppController {
 	public String checkResource(ModelMap model)  {
 		
 		List<Vendor> vendors = vendor_service.findAllVendor();
-		
 		Runinfo runinfo = new Runinfo();
-		
 		model.addAttribute("runinfo", runinfo);
 		model.addAttribute("vendors", vendors);
 		
 		return "check";
 	}
     
+	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = { "/check" }, method = RequestMethod.POST, produces="text/html;charset=UTF-8")
 	public String  saveRuninfo(@Valid Runinfo runinfo, BindingResult result,
 			ModelMap model) throws UnsupportedEncodingException, ParseException {
@@ -293,6 +293,8 @@ public class AppController {
 	public String showMobile(ModelMap model) {
 		//主页初始化下session的值
 		model.addAttribute("searchValue", "");
+		model.addAttribute("tvendorid", "0");
+		
 		List<Object[]> status = status_services.findDeviceStatus();
 		List<Object[]> devinfo = status_services.deviceStatusInfo();
 		
@@ -670,26 +672,67 @@ public class AppController {
 	}
 	
 	
-	@RequestMapping(value = { "/applicationlist-{page}" }, method = RequestMethod.GET)
-	public String listApplications(ModelMap model,@PathVariable int  page) {
-		int pageSize=5;
-		List<Application> applications = app_service.findAllApplication();
-		int totalPages= applications .size()% pageSize == 0 ? applications .size() / pageSize : applications .size() / pageSize + 1;
-		int offset=1;
-		if(page<=0) {
-			offset=0;
+	@RequestMapping(value = { "/applicationlist-{page}-{vendorid}" }, method = RequestMethod.GET)
+	public String listApplications(ModelMap model,@PathVariable int  page,@PathVariable String vendorid,@ModelAttribute("tvendorid")String tvendorid ) {
+		//每页显示的数量
+		int pageSize=12;
+		if(page==0) {
+			model.addAttribute("tvendorid","0" );
+			tvendorid="0";
 		}
-		else  if(page>totalPages){
-			offset=(totalPages-1)*pageSize;
+		if(!vendorid.equals("0")) {
+			model.addAttribute("tvendorid", vendorid);
+			tvendorid=vendorid;
+		}
+		
+		if(tvendorid.equals("0")) {
+			List<Application> applications = app_service.findAllApplication();
+			int totalPages= applications .size()% pageSize == 0 ? applications .size() / pageSize : applications .size() / pageSize + 1;
+			int offset=1;
+			if(page<=0) {
+				offset=0;
+			}
+			else  if(page>totalPages){
+				offset=(totalPages-1)*pageSize;
+			}
+			else {
+				offset=(page-1)*pageSize;
+			}
+			List<Application> application =app_service.findApplicationByPage(offset, pageSize);
+			model.addAttribute("applications", application);
+			model.addAttribute("totalPages",totalPages);
+			model.addAttribute("page", page);
+			return "allapplications";
 		}
 		else {
-			offset=(page-1)*pageSize;
+			
+			int venid=Integer.parseInt(tvendorid.trim());
+			Vendor vendor = vendor_service.findById(venid);
+			List<Application>  apps= app_service.findApplicationByVendorID(vendor);
+			int totalPages= apps .size()% pageSize == 0 ? apps .size() / pageSize : apps .size() / pageSize + 1;
+			int offset=1;
+			if(page<=0) {
+				offset=0;
+			}
+			else  if(page>totalPages){
+				offset=(totalPages-1)*pageSize;
+			}
+			else {
+				offset=(page-1)*pageSize;
+			}
+			List<Application>  applica=app_service.findApplicationByVendorIDaAndPage(vendor, offset, pageSize);
+			
+			model.addAttribute("totalPages",totalPages);
+			model.addAttribute("page", page);
+			model.addAttribute("applications", applica);
+			return "allapplications";
+			
+			
+			
+			
+			
 		}
-		List<Application> application =app_service.findApplicationByPage(offset, pageSize);
-		model.addAttribute("applications", application);
-		model.addAttribute("totalPages",totalPages);
-		model.addAttribute("page", page);
-		return "allapplications";
+		
 		
 		
 	}
@@ -712,7 +755,7 @@ public class AppController {
 		String temp = new String(app.getName().getBytes("iso-8859-1"),"utf-8");
 		app.setName(temp);
 		app_service.saveApplication(app);
-		return "redirect:/applicationlist";
+		return "redirect:/applicationlist-0-0";
 	}
 	
 	@RequestMapping(value = { "/edit-{id}-application" }, method = RequestMethod.GET,produces="text/html;charset=UTF-8" )
@@ -737,23 +780,23 @@ public class AppController {
 		app.setName(temp);
 		app_service.updateApplication(app);
 		
-		return "redirect:/applicationlist";
+		return "redirect:/applicationlist-0-0";
 	}
 	
-	@RequestMapping(value = { "/delete-{id}-application" }, method = RequestMethod.GET)
-	public String deleteApplication(@PathVariable int id) {
+	@RequestMapping(value = { "/delete-{id}-application-{page}" }, method = RequestMethod.GET)
+	public String deleteApplication(@PathVariable int id,@PathVariable String  page) {
 		app_service.deleteApplicationByID(id);
-		return "redirect:/applicationlist";
+		return "redirect:/applicationlist-"+page+"-0";
 	}
 	
-	@RequestMapping(value = { "/list-{vendorid}-application" }, method = RequestMethod.GET)
-	public String listApplicationByVendor(@PathVariable int vendorid,ModelMap model) {
-
-		Vendor vendor = vendor_service.findById(vendorid);
-		List<Application>  apps= app_service.findApplicationByVendorID(vendor);
-		model.addAttribute("applications", apps);
-		return "allapplications";
-	}
+//	@RequestMapping(value = { "/alist-{vendorid}-application" }, method = RequestMethod.GET)
+//	public String listApplicationByVendor(@PathVariable int vendorid,ModelMap model) {
+//
+//		Vendor vendor = vendor_service.findById(vendorid);
+//		List<Application>  apps= app_service.findApplicationByVendorID(vendor);
+//		model.addAttribute("applications", apps);
+//		return "allapplications";
+//	}
 
 	@RequestMapping(value = { "/uploadfiles" }, method = RequestMethod.GET)
 	public String uploadFiles(ModelMap model) {
@@ -811,4 +854,8 @@ public class AppController {
 		}
         return  res;
     }
+
+	
+	
+	
 } 

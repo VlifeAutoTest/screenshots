@@ -52,4 +52,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return dao.findApplicationByPage(offset, length);
 	}
 
+	@Override
+	public List<Application> findApplicationByVendorIDaAndPage(Vendor id, int offset, int length) {
+		// TODO 自动生成的方法存根
+		return dao.findApplicationByVendorIDaAndPage(id, offset, length);
+	}
+
 } 
