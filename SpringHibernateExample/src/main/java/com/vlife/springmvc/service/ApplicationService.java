@@ -18,7 +18,7 @@ public interface ApplicationService {
 	void deleteApplicationByID(int id);
 	
 	List<Application> findAllApplication();
-
+	List<Application>	findApplicationByPage(int offset, int length);
 
 }
 

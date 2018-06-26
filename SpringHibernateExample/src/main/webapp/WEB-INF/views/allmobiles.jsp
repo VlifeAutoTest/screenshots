@@ -34,7 +34,7 @@
 								<td>${mobile.os}</td>
 								<td>${mobile.getVendor().getName()}</td>
 								<td><a href="<c:url value='/edit-${mobile.uid}-mobile' />">edit</a></td>
-								<td><a href="<c:url value='/delete-${mobile.uid}-mobile' />">delete</a></td>
+								<td><a href="<c:url value='/delete-${mobile.uid}-mobile-${page}' />">delete</a></td>
 								</tr>
 							</c:forEach>
                     </tbody>  

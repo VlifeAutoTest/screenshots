@@ -46,4 +46,10 @@ public class ApplicationServiceImpl implements ApplicationService {
 		}
 	}
 
+	@Override
+	public List<Application> findApplicationByPage(int offset, int length) {
+		// TODO 自动生成的方法存根
+		return dao.findApplicationByPage(offset, length);
+	}
+
 } 

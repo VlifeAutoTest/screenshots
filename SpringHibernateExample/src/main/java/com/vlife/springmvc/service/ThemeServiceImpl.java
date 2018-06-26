@@ -58,4 +58,9 @@ public class ThemeServiceImpl implements ThemeService {
 		
 	}
 
+	@Override
+	public List<Theme> findThemeByNameAndPage(String partName, int offset, int length) {
+		return dao.findThemeByNameAndPage(partName, offset, length);
+	}
+
 } 

@@ -141,7 +141,7 @@ $(document).ready(function(){
 		                <div class="panel-collapse collapse" id="collapseB">  
 		                    <div class="panel-body">  
 		                        <ul class="nav nav-pills nav-stacked">  
-		                            <li class="on"><a id="theme"   href="#" onclick="menuClick('themelist-1')">资源列表</a></li>  
+		                            <li class="on"><a id="theme"   href="#" onclick="menuClick('themelist-0')">资源列表</a></li>  
 		                            <li class="on" ><a id="upload" href="#" onclick="menuClick('uploadfiles')">上传资源</a></li>  
 		                        </ul>  
 		                    </div>  
@@ -171,7 +171,7 @@ $(document).ready(function(){
 		                            <li class="on"><a href="#" onclick="menuClick('mobilelist-1')">手机管理</a></li>
 		                            <li class="on" ><a id="server" href="#" onclick="menuClick('serverlist')">服务器管理</a></li>
 	                              <!--   <li onclick="add()" ><a href="#"  onclick="menuClick('applicationlist')">应用管理</a></li> -->
-		                            <li class="on"> <a href="#"  onclick="menuClick('applicationlist')">应用管理</a></li>
+		                            <li class="on"> <a href="#"  onclick="menuClick('applicationlist-1')">应用管理</a></li>
 		                        </ul>  
 		                    </div>  
 		                </div>      

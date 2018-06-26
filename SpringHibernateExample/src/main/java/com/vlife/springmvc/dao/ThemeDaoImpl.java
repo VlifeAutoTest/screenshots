@@ -60,4 +60,17 @@ public class ThemeDaoImpl extends AbstractDao<Integer, Theme> implements ThemeDa
         return (List<Theme>) query.list();
 	}
 
+	@Override
+	public List<Theme> findThemeByNameAndPage(String partName, int offset, int length) {
+		// TODO 自动生成的方法存根
+		String strSQL="from Theme WHERE themename like :name order by id desc";
+		Query query = getSession().createQuery(strSQL);
+		query.setString("name", "%"+partName+"%");
+		query.setFirstResult(offset);
+        query.setMaxResults(length);
+		@SuppressWarnings("unchecked")
+		List <Theme> result=query.list();		
+	   return result;
+	}
+
 }

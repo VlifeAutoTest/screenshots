@@ -30,7 +30,8 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 	
 	@Autowired
 	private ThemeDao dao;
-	String savePath="/diskb/uploadfiles";
+//	String savePath="/diskb/uploadfiles";
+	String savePath="F:\\abc";
 	private String name;
 	
 	private String  filename2;
@@ -52,7 +53,8 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 
 		// 创建一个DiskFileItemfactory工厂类
 		DiskFileItemFactory factory = new DiskFileItemFactory();
-		factory.setRepository(new File("/diskb/tempData"));// 指定临时文件的存储目录
+//		factory.setRepository(new File("/diskb/tempData"));// 指定临时文件的存储目录
+		factory.setRepository(new File("F:\\abc\\ap"));// 指定临时文件的存储目录
 		// 创建一个ServletFileUpload核心对象
 		ServletFileUpload sfu = new ServletFileUpload(factory);
 		// 解决上传表单项乱码问题
@@ -208,10 +210,10 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 			//fieldvalue = new String(fieldvalue.getBytes("iso-8859-1"),"utf-8");
 			
 			if(fieldname.equals("name")) {
-				Date  date =new Date();
+				/*Date  date =new Date();
 				 DateFormat dateformat= new SimpleDateFormat("yyyyMMdd-HHmmss");
-				 String date1 = dateformat.format(date);
-				name=date1+fieldvalue;
+				 String date1 = dateformat.format(date);*/
+				name=fieldvalue;
 			}
 			if(fieldname.equals("path")) {
 				

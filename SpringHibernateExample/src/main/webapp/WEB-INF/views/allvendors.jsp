@@ -33,7 +33,7 @@
 							</c:forEach>
                     </tbody>  
                     <tfoot>  
-                        <tr>  
+                  <!--       <tr>  
                             <td colspan="8">  
                                 <ul class="pagination">  
                                     <li><a href="#">«</a></li>  
@@ -45,7 +45,7 @@
                                     <li><a href="#">»</a></li>  
                                 </ul>  
                             </td>  
-                        </tr>  
+                        </tr>   -->
                     </tfoot>  
                 </table>
 

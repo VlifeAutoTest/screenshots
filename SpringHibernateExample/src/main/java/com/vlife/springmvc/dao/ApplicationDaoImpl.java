@@ -45,4 +45,14 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 		return (List<Application>) criteria.list();
 
 	}
+
+	@Override
+	public List<Application> findApplicationByPage(int offset, int length) {
+		// TODO 自动生成的方法存根
+		Criteria criteria = createEntityCriteria();
+		criteria.setFirstResult(offset);
+		criteria.setMaxResults(length);
+		return (List<Application>) criteria.list();
+		
+	}
 }

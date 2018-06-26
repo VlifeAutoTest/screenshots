@@ -5,6 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>厂商应用列表</title>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	 <script src="assets/js/jquery.min.js"></script> 
 	<style type="text/css"></style>  
 </head>
 
@@ -13,8 +14,13 @@
    function changeFunc() {
     var selectBox = document.getElementById("selectBox");
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
+
+    
     var link = "list-" + selectedValue.toString() + "-application";
+    $("#asd").empty();
+    
     window.location.href=link;
+  
    }
 
   </script>
@@ -31,12 +37,13 @@
                             <th>Name</th>  
                             <th>Vendor</th>
                             <td><a href="<c:url value='/newapplication' />">+ Add Application</a></td> 
+                            
                             <td>厂商筛选：<select id="selectBox" onchange="changeFunc();">
  							    <c:forEach items="${vendors}" var="vendor">
-									<option value="${vendor.getId()}">${vendor.getName()}<option/>
+									<option value=" ${vendor.getId()} ">${vendor.getName()}</option>
 								</c:forEach>
 							</select></td>
-<%-- 							 <td><a href="<c:url value='/list-1-application' />">test</a></td>  --%>
+							
                         </tr>  
                     </thead>  
                     <tbody>  
@@ -50,19 +57,23 @@
 							</c:forEach>
                     </tbody>  
                     <tfoot>  
-                        <tr>  
-                            <td colspan="8">  
-                                <ul class="pagination">  
-                                    <li><a href="#">«</a></li>  
-                                    <li><a href="#">1</a></li>  
-                                    <li><a href="#">2</a></li>  
-                                    <li><a href="#">3</a></li>  
-                                    <li><a href="#">4</a></li>  
-                                    <li><a href="#">5</a></li>  
-                                    <li><a href="#">»</a></li>  
+                         <tr>  
+                            <td colspan="8"   id ="asd">  
+                            
+                             <ul class="pagination" >  
+                             <li><a href="<c:url value="/applicationlist-1"/>">首页</a></li>
+                                   <li><a href="/applicationlist-${page-1}">&laquo</a></li>  
+                                <c:forEach  begin="1" end="${totalPages}" varStatus="loop">  
+                                 <c:set var="active" value="${loop.index==page?'active':''}"/>
+                    				<li class="${active}"><a href="<c:url value="/applicationlist-${loop.index}"/>">${loop.index}</a></li>
+                                 </c:forEach>
+									<li><a href="<c:url value="/applicationlist-${page+1}"/>">&raquo;</a></li>
+									<li><a href="<c:url value="/applicationlist-${totalPages}"/>">末页</a></li>
                                 </ul>  
+                                
+                                
                             </td>  
-                        </tr>  
+                        </tr> 
                     </tfoot>  
                 </table>
 

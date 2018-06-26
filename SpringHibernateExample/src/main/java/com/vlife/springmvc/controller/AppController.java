@@ -2,10 +2,7 @@ package com.vlife.springmvc.controller;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -29,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.vlife.springmvc.model.Theme;
 import com.vlife.springmvc.model.Vendor;
@@ -46,10 +44,12 @@ import com.vlife.springmvc.service.MobileStatusService;
 import com.vlife.springmvc.service.RuninfoService;
 import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.TestServerService;
-
 @Controller
 @RequestMapping("/")
+@SessionAttributes("searchValue")
 public class AppController {
+	
+	
 
 /*	@Autowired
 	EmployeeService service;*/
@@ -129,7 +129,7 @@ public class AppController {
     	
     	// e_time, s_time
 		Date curday=new Date();  
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");  
+	     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");  
         String time = simpleDateFormat.format(curday).trim();
         res[2] = time;
         
@@ -144,7 +144,6 @@ public class AppController {
         res[0] = "/picture/" + vname + "/" + name + "_" + uid + "/" + time;
         //zip_file
         res[1] = vname + "_" + name + "_" + uid + "_" + time + ".zip";
-        
         //log_file
         res[3] = vname + "_" + name + "_" + uid + "_" + time + ".html";
     	
@@ -152,7 +151,7 @@ public class AppController {
     	
     }
     
-	@RequestMapping(value = { "/query" }, method = RequestMethod.GET, produces="text/html;charset=UTF-8")
+    @RequestMapping(value = { "/query" }, method = RequestMethod.GET, produces="text/html;charset=UTF-8")
 	public String queryResult(ModelMap model)  {
 		
 		List<Vendor> vendors = vendor_service.findAllVendor();
@@ -227,10 +226,6 @@ public class AppController {
 			ModelMap model) throws UnsupportedEncodingException, ParseException {
 		
 		String[] tmp = getDetailInfo(runinfo);
-		Date sdate = null;
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss"); 
-		sdate = format.parse(tmp[2]);
-//		System.out.println(sdate);
         runinfo.setStime(tmp[2]);
         runinfo.setEtime(tmp[2]);
         runinfo.setStatus("Running");
@@ -296,7 +291,8 @@ public class AppController {
 
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
 	public String showMobile(ModelMap model) {
-		
+		//主页初始化下session的值
+		model.addAttribute("searchValue", "");
 		List<Object[]> status = status_services.findDeviceStatus();
 		List<Object[]> devinfo = status_services.deviceStatusInfo();
 		
@@ -319,8 +315,7 @@ public class AppController {
 	@RequestMapping(value = { "/mobilelist-{page}" }, method = RequestMethod.GET)
 	public String listMobiles(ModelMap model,@PathVariable () int page ) {
 		//每页显示多少个手机
-		System.out.println("------------------------------"+page);
-		int pageSize=5;
+		int pageSize=12;
 		List<Mobile> allMobiles = mobile_service.findAllMobile();
 		int totalPages= allMobiles .size()% pageSize == 0 ? allMobiles .size() / pageSize : allMobiles .size() / pageSize + 1;
 		int offset=1;
@@ -363,7 +358,7 @@ public class AppController {
 		mobile.setName(temp.trim().replace(" ", ""));
 		
 		mobile_service.saveMobile(mobile);
-		return "redirect:/mobilelist";
+		return "redirect:/mobilelist-1";
 	}
 	
 	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.GET, produces="text/html;charset=UTF-8")
@@ -380,7 +375,6 @@ public class AppController {
 	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.POST)
 	public String updatemobile(@Valid Mobile mobile, BindingResult result,
 			ModelMap model) throws UnsupportedEncodingException {
-
 		if (result.hasErrors()) {
 			return "mobile";
 		}
@@ -396,13 +390,13 @@ public class AppController {
 		
 		mobile_service.updateMobile(mobile);
 
-		return "redirect:/mobilelist";
+		return "redirect:/mobilelist-1";
 	}
 	
-	@RequestMapping(value = { "/delete-{uid}-mobile" }, method = RequestMethod.GET)
-	public String deleteMobile(@PathVariable String uid) {
+	@RequestMapping(value = { "/delete-{uid}-mobile-{page}" }, method = RequestMethod.GET)
+	public String deleteMobile(@PathVariable String uid,@PathVariable String page) {
 		mobile_service.deleteMobileByUid(uid);
-		return "redirect:/mobilelist";
+		return "redirect:/mobilelist-"+page;
 	}
 	
 	@RequestMapping(value = { "/serverlist" }, method = RequestMethod.GET)
@@ -568,7 +562,7 @@ public class AppController {
 		theme.setName(upload_files.getName());
 		theme.setPath(upload_files.getDirectory());
 		upload_files.saveTheme(theme);
-		return "redirect:/themelist";
+		return "redirect:/themelist-1";
 	}
 	
 	
@@ -588,21 +582,99 @@ public class AppController {
 		theme.setName(upload_files.getUpdateName());
 		theme.setPath(upload_files.getUpdatePath());
 		upload_files.updateTheme(theme);
-		return "redirect:/themelist";
+		return "redirect:/themelist-1";
 	}
 
 	
-	@RequestMapping(value = { "/delete-{id}-theme" }, method = RequestMethod.GET)
-	public String deleteTheme(@PathVariable int id) {
+	@RequestMapping(value = { "/delete-{id}-theme-{page}" }, method = RequestMethod.GET)
+	public String deleteTheme(@PathVariable int id,@PathVariable String page) {
 		theme_service.deleteThemeByID(id);
-		return "redirect:/themelist";
+		return "redirect:/themelist-"+page;
+	}
+	@RequestMapping(value = { "/themelist-{page}" }, method = RequestMethod.GET)
+	public String listThemes(ModelMap model,@PathVariable () int page ,@ModelAttribute("searchValue")String searchValue ){
+		//每页显示多少条数据
+		int pageSize=12;
+		if(page==0) {
+			model.addAttribute("searchValue","");
+			searchValue="";
+		}
+		
+		if(searchValue.length()==0) {
+			List<Theme> allThemes = theme_service.findAllTheme();
+			int totalPages= allThemes .size()% pageSize == 0 ? allThemes .size() / pageSize : allThemes .size() / pageSize + 1;
+			int offset=1;
+			if(page<=0) {
+				offset=0;
+			}
+			else  if(page>totalPages){
+				offset=(totalPages-1)*pageSize;
+			}
+			else {
+				offset=(page-1)*pageSize;
+			}
+			
+			List<Theme> themes  = theme_service.findThemeByPage(offset, pageSize);
+			model.addAttribute("themes", themes);
+			//总页数
+			model.addAttribute("totalPages",totalPages);
+			//当前的页数
+			model.addAttribute("page",page);
+			return "allthemes";
+		}
+		
+		else {
+			List<Theme> allThemes = theme_service.searchByName(searchValue);
+			int totalPages= allThemes .size()% pageSize == 0 ? allThemes .size() / pageSize : allThemes .size() / pageSize + 1;
+			int offset=1;
+			if(page<=0) {
+				offset=0;
+			}
+			else  if(page>totalPages){
+				offset=(totalPages-1)*pageSize;
+			}
+			else {
+				offset=(page-1)*pageSize;
+			}
+			List<Theme> Themes=theme_service.findThemeByNameAndPage(searchValue, offset, pageSize);
+			
+			model.addAttribute("themes", Themes);
+			model.addAttribute("totalPages",totalPages);
+			model.addAttribute("page",page);
+			return "allthemes";
+		}
+		
+	
+		
+	}
+	@RequestMapping(value = { "/themelist-{page}" }, method = RequestMethod.POST)
+	public String searchThemes(ModelMap model  ,@RequestParam(value="search" ,defaultValue="") String search) {
+		
+		try {
+			search = new String(search.getBytes("iso-8859-1"), "utf-8").trim();
+		} catch (UnsupportedEncodingException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+			
+		}
+		if(search.length()!=0) {
+			model.addAttribute("searchValue",search);
+			return "redirect:/themelist-1";
+		}
+		else {
+			model.addAttribute("searchValue","");
+			return "redirect:/themelist-1";
+			
+		}
+		
 	}
 	
-	@RequestMapping(value = { "/themelist-{page}" }, method = RequestMethod.GET)
-	public String listThemes(ModelMap model,@PathVariable () int page ){
+	
+	@RequestMapping(value = { "/applicationlist-{page}" }, method = RequestMethod.GET)
+	public String listApplications(ModelMap model,@PathVariable int  page) {
 		int pageSize=5;
-		List<Theme> allThemes = theme_service.findAllTheme();
-		int totalPages= allThemes .size()% pageSize == 0 ? allThemes .size() / pageSize : allThemes .size() / pageSize + 1;
+		List<Application> applications = app_service.findAllApplication();
+		int totalPages= applications .size()% pageSize == 0 ? applications .size() / pageSize : applications .size() / pageSize + 1;
 		int offset=1;
 		if(page<=0) {
 			offset=0;
@@ -613,46 +685,15 @@ public class AppController {
 		else {
 			offset=(page-1)*pageSize;
 		}
-		
-		List<Theme> themes  = theme_service.findThemeByPage(offset, pageSize);
-		model.addAttribute("themes", themes);
-		//总页数
+		List<Application> application =app_service.findApplicationByPage(offset, pageSize);
+		model.addAttribute("applications", application);
 		model.addAttribute("totalPages",totalPages);
-		//当前的页数
-		model.addAttribute("page",page);
-		return "allthemes";
-	}
-	
-	@RequestMapping(value = { "/themelist-{page}" }, method = RequestMethod.POST)
-	public String searchThemes(ModelMap model  ,@RequestParam(value="search" ,defaultValue="") String search,@PathVariable () int page) {
-		String temp="";
-		try {
-			temp = new String(search.getBytes("iso-8859-1"), "utf-8").trim();
-		} catch (UnsupportedEncodingException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
-			
-		}
-		int pageSize=5;
-		List<Theme> allThemes = theme_service.searchByName(temp);
-		int totalPages= allThemes .size()% pageSize == 0 ? allThemes .size() / pageSize : allThemes .size() / pageSize + 1;
-		
-		model.addAttribute("themes", allThemes);
-		model.addAttribute("totalPages",totalPages);
-		model.addAttribute("page",page);
-		return "allthemes";
-	}
-	
-	
-	@RequestMapping(value = { "/applicationlist" }, method = RequestMethod.GET)
-	public String listApplications(ModelMap model) {
-
-		List<Application> applications = app_service.findAllApplication();
-		model.addAttribute("applications", applications);
+		model.addAttribute("page", page);
 		return "allapplications";
+		
+		
 	}
 
-	
 	@RequestMapping(value = { "/newapplication" }, method = RequestMethod.GET)
 	public String newApplication(ModelMap model) {
 		Application app = new Application();
@@ -710,7 +751,6 @@ public class AppController {
 
 		Vendor vendor = vendor_service.findById(vendorid);
 		List<Application>  apps= app_service.findApplicationByVendorID(vendor);
-		List<Application> applications = app_service.findAllApplication();
 		model.addAttribute("applications", apps);
 		return "allapplications";
 	}

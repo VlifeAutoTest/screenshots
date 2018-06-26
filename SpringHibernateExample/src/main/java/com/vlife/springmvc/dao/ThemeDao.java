@@ -2,6 +2,7 @@ package com.vlife.springmvc.dao;
 
 import java.util.List;
 
+import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.model.Theme;
 
 public interface ThemeDao {
@@ -16,4 +17,5 @@ public interface ThemeDao {
 	
 	 List<Theme> findByName(String  partName);
 	 List<Theme>findThemeByPage (int offset, int length);
+	 List<Theme> findThemeByNameAndPage(String  partName,int offset, int length);
 }

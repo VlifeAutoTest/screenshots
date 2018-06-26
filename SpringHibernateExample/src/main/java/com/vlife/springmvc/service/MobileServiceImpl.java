@@ -52,7 +52,7 @@ public class MobileServiceImpl implements MobileService {
 			entity.setVendor(mobile.getVendor());
 			entity.setUid(mobile.getUid());
 			entity.setSize(mobile.getSize());
-			entity.setOs(mobile.getSize());
+			entity.setOs(mobile.getOs());
 
 		}
 	}
