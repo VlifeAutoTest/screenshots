@@ -128,9 +128,9 @@ public class AppController {
     	String[] res = new String[4];
     	
     	// e_time, s_time
-		Date curday=new Date();  
-	     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");  
-        String time = simpleDateFormat.format(curday).trim();
+    	Date curday=new Date(); 
+    	  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");  
+          String time = simpleDateFormat.format(curday).trim();
         res[2] = time;
         
         //get mobile uid and vendor name

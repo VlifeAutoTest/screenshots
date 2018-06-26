@@ -14,11 +14,7 @@
    function changeFunc() {
     var selectBox = document.getElementById("selectBox");
     var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-
-    
     var link = "list-" + selectedValue.toString() + "-application";
-    $("#asd").empty();
-    
     window.location.href=link;
   
    }
