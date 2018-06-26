@@ -129,7 +129,7 @@ public class AppController {
     	
     	// e_time, s_time
 		Date curday=new Date();  
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");  
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");  
         String time = simpleDateFormat.format(curday).trim();
         res[2] = time;
         
@@ -227,10 +227,6 @@ public class AppController {
 			ModelMap model) throws UnsupportedEncodingException, ParseException {
 		
 		String[] tmp = getDetailInfo(runinfo);
-		Date sdate = null;
-		SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss"); 
-		sdate = format.parse(tmp[2]);
-//		System.out.println(sdate);
         runinfo.setStime(tmp[2]);
         runinfo.setEtime(tmp[2]);
         runinfo.setStatus("Running");
