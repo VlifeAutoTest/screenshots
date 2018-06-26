@@ -46,8 +46,7 @@ import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.TestServerService;
 @Controller
 @RequestMapping("/")
-//searchValue
-@SessionAttributes("tvendorid")
+@SessionAttributes(value= {"tvendorid","searchValue"})
 public class AppController {
 	
 	
@@ -100,13 +99,7 @@ public class AppController {
     }
 	
     public String getErrorString(BindingResult bindingResult){
-    	
-
-       
-/*        List<ObjectError> ls=bindingResult.getAllErrors();  
-        for (int i = 0; i < ls.size(); i++) {  
-            System.out.println("error:"+ls.get(i));  
-        } */
+   
     	List<FieldError>  err= bindingResult.getFieldErrors();
         FieldError fe;
         String field;
