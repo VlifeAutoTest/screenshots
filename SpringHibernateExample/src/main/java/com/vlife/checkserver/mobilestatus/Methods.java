@@ -225,7 +225,7 @@ public class Methods {
 				result = res.getInt("id");
 			}
 			conn.close();
-		} catch (ClassNotFoundException e) {
+		} catch (ClassNotFoundException  e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
