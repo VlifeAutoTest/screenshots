@@ -128,7 +128,8 @@ public class AppController {
     	  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");  
           String time = simpleDateFormat.format(curday).trim();
         res[2] = time;
-        
+        SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyyMMddHHmmss");  
+        String time2 = simpleDateFormat2.format(curday).trim();
         //get mobile uid and vendor name
         int id = rinfo.getMid();
         String uid = mobile_service.findById(id).getUid().trim();
@@ -137,11 +138,11 @@ public class AppController {
         String vname = vendor_service.findById(id).getName().trim();
         
         // image_path
-        res[0] = "/picture/" + vname + "/" + name + "_" + uid + "/" + time;
+        res[0] = "/picture/" + vname + "/" + name + "_" + uid + "/" + time2;
         //zip_file
-        res[1] = vname + "_" + name + "_" + uid + "_" + time + ".zip";
+        res[1] = vname + "_" + name + "_" + uid + "_" + time2 + ".zip";
         //log_file
-        res[3] = vname + "_" + name + "_" + uid + "_" + time + ".html";
+        res[3] = vname + "_" + name + "_" + uid + "_" + time2 + ".html";
     	
     	return res;
     	
@@ -256,7 +257,7 @@ public class AppController {
 		
 		Session session =runinfo_services.getSession(server.getAddress(), 22,server.getUname(), server.getPasswd());
 		//执行脚本会返回执行时的信息
-		String str =runinfo_services.execCommand(session, "/home/gaoyaxuan/test.py", String.valueOf(runid));
+		String str =runinfo_services.execCommand(session, "/home/lang/AutoScreenshot/run.py   -n  " , String.valueOf(runid));
 		//结束本次的ssh连接
 		runinfo_services.endSSH();
 		

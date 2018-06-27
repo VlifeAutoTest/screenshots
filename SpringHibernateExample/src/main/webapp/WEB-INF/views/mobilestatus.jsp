@@ -21,7 +21,7 @@ color:#6699ff;
 <script type="text/javascript">
 $(document).ready(function(){
 $("#fresh").click(function(){
-	setTimeout(function () { <%CheckMobileSattus cms =new CheckMobileSattus();cms.run();%> window.location.reload() ;}, 3000);  
+	setTimeout(function () { <%CheckMobileSattus cms =new CheckMobileSattus();cms.run();%> window.location.reload() ;}, 5000);  
   });
 });
 </script>

@@ -14,13 +14,13 @@ public class TimerManager {
 	 
 	  //定制每日12:30:30执行
 //	  calendar.set(Calendar.HOUR_OF_DAY, 12);
-	  calendar.set(Calendar.MINUTE, 04);
-//	  calendar.set(Calendar.SECOND, 10);
+//	  calendar.set(Calendar.MINUTE, 10);
+	  calendar.set(Calendar.SECOND, 10);
 	 
 	  Date date = calendar.getTime();  //第一次执行定时任务的时间
 	  //如果当前时间已经过去所定时的时间点，则在第二天时间点开始执行
 	  if (date.before(new Date())) {
-	   date = this.addDay(date, 1);
+	   date = this.addDay(date, 5);
 	  }
 	  
 	  Timer timer = new Timer();
@@ -32,7 +32,7 @@ public class TimerManager {
 	 private Date addDay(Date date, int num) {
 	  Calendar startDT = Calendar.getInstance();
 	  startDT.setTime(date);
-	  startDT.add(Calendar.HOUR, num);
+	  startDT.add(Calendar.MINUTE, num);
 	  return startDT.getTime();
 	 }
 }
