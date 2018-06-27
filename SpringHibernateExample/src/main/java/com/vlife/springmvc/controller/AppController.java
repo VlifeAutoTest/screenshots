@@ -1,5 +1,6 @@
 package com.vlife.springmvc.controller;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,6 +36,7 @@ import com.vlife.springmvc.service.UploadFilesServices;
 import com.vlife.springmvc.service.VendorService;
 import com.jcraft.jsch.Session;
 import com.vlife.checkserver.mobilestatus.CheckMobileSattus;
+import com.vlife.checkserver.mobilestatus.SSHCopyFile;
 import com.vlife.springmvc.model.Application;
 import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.model.Runinfo;
@@ -254,7 +256,7 @@ public class AppController {
 		
 		Session session =runinfo_services.getSession(server.getAddress(), 22,server.getUname(), server.getPasswd());
 		//执行脚本会返回执行时的信息
-		String str =runinfo_services.execCommand(session, "/home/gaoyaxuan/test.py", "1");
+		String str =runinfo_services.execCommand(session, "/home/gaoyaxuan/test.py", String.valueOf(runid));
 		//结束本次的ssh连接
 		runinfo_services.endSSH();
 		
@@ -553,7 +555,16 @@ public class AppController {
 		// return "theme";
 		// }
 		upload_files.doGet(request);
-
+		SSHCopyFile sshcf =new SSHCopyFile("192.168.1.230", "root","vlifeqa" , 22);
+		try {
+			sshcf.putFile("/diskb/uploadfiles", upload_files.getFilename(), "/diskb/uploadfiles");
+		} catch (Exception e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		String filePath="/diskb/uploadfiles"+"/"+upload_files.getFilename();
+		File file = new File (filePath);
+		file.deleteOnExit();
 		theme.setName(upload_files.getName());
 		theme.setPath(upload_files.getDirectory());
 		upload_files.saveTheme(theme);

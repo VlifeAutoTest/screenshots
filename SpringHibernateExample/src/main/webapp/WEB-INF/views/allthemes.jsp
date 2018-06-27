@@ -53,7 +53,7 @@
                             
                              <ul class="pagination">  
                               <li><a href="<c:url value="/themelist-1"/>">首页</a></li>
-                                   <li><a href="/themelist-${page-1<=0 ? 1 : page-1}">&laquo</a></li>  
+                                   <li><a href='<c:url value="/themelist-${page-1<=0 ? 1 : page-1}"></c:url>'>&laquo</a></li>  
                                 <c:forEach  begin="1" end="${totalPages}" varStatus="loop">  
                                  <c:set var="active" value="${loop.index==page?'active':''}"/>
                     				<li class="${active}"><a href="<c:url value="/themelist-${loop.index}"/>">${loop.index}</a></li>

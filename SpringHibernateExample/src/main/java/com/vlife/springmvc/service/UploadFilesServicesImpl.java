@@ -30,10 +30,11 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 	
 	@Autowired
 	private ThemeDao dao;
-//	String savePath="/diskb/uploadfiles";
-	String savePath="F:\\abc";
+	String savePath="/diskb/uploadfiles";
+//	String savePath="F:\\abc\\";
 	private String name;
-	
+//	private String tempPath="F:\\abc\\ap\\";
+	private String tempPath="/diskb/tempData";
 	private String  filename2;
 	private String filename ;
 	private String path;
@@ -54,7 +55,7 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 		// 创建一个DiskFileItemfactory工厂类
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 //		factory.setRepository(new File("/diskb/tempData"));// 指定临时文件的存储目录
-		factory.setRepository(new File("F:\\abc\\ap"));// 指定临时文件的存储目录
+		factory.setRepository(new File(tempPath));// 指定临时文件的存储目录
 		// 创建一个ServletFileUpload核心对象
 		ServletFileUpload sfu = new ServletFileUpload(factory);
 		// 解决上传表单项乱码问题
@@ -104,7 +105,7 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 
 		// 创建一个DiskFileItemfactory工厂类
 		DiskFileItemFactory factory = new DiskFileItemFactory();
-		factory.setRepository(new File("f:/temp"));// 指定临时文件的存储目录
+		factory.setRepository(new File(tempPath));// 指定临时文件的存储目录
 		// 创建一个ServletFileUpload核心对象
 		ServletFileUpload sfu = new ServletFileUpload(factory);
 		// 解决上传表单项乱码问题
@@ -174,7 +175,7 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 			String childDirectory = makeChildDirectory(storeDirectory, filename); // a/b
 
 			// 上传文件，自动删除临时文件
-			fileitem.write(new File(storeDirectory, childDirectory +"/" + filename));
+			fileitem.write(new File(storeDirectory,filename));
 			fileitem.delete();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -186,11 +187,8 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 	@Override
 	public String makeChildDirectory(File storeDirectory, String filename) {
 		// TODO 自动生成的方法存根
-		int hashcode = filename.hashCode();// 返回字符转换的32位hashcode码
-		String code = Integer.toHexString(hashcode); // 把hashcode转换为16进制的字符
-														// abdsaf2131safsd
-		 childDirectory = code.charAt(0) + "/"
-				+ code.charAt(1); // a/b
+		 childDirectory = savePath;
+
 		// 创建指定目录
 		File file = new File(storeDirectory, childDirectory);
 		if (!file.exists()) {
@@ -247,7 +245,7 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 		}
 		else {
 			
-			return  savePath+"/"+childDirectory+"/"+filename;
+			return  savePath+"/"+filename;
 		}
 		
 	}
@@ -301,6 +299,12 @@ try {
 	public String getUpdatePath() {
 		return updatePath;
 	}
+
+@Override
+public String getSavePath() {
+	// TODO 自动生成的方法存根
+	return savePath;
+}
 
 	
 }

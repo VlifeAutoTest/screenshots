@@ -34,7 +34,7 @@
 								<td>${mobile.os}</td>
 								<td>${mobile.getVendor().getName()}</td>
 								<td><a href="<c:url value='/edit-${mobile.uid}-mobile' />">edit</a></td>
-								<td><a href="<c:url value='/delete-${mobile.uid}-mobile-${page}' />">delete</a></td>
+								<%-- <td><a href="<c:url value='/delete-${mobile.uid}-mobile-${page}' />">delete</a></td> --%>
 								</tr>
 							</c:forEach>
                     </tbody>  
@@ -42,16 +42,16 @@
                         <tr>  
                             <td colspan="8">  
                                 <ul class="pagination">  
-                                    <li><a href="/mobilelist-${page-1}">&laquo</a></li>  
+                                <li><a href="<c:url value="/mobilelist-1"/>">首页</a></li>
+                                    <li><a href='<c:url value="/mobilelist-${page-1<=0 ? 1 : page-1}"></c:url>'>&laquo</a></li>  
                                 <c:forEach  begin="1" end="${totalPages}" varStatus="loop">  
                                  <c:set var="active" value="${loop.index==page?'active':''}"/>
-                              
                     				<li class="${active}"><a href="<c:url value="/mobilelist-${loop.index}"/>">${loop.index}</a></li>
                                 
                                  </c:forEach>
-                                
-                                     
+                              
 									<li><a href="<c:url value="/mobilelist-${page+1}"/>">&raquo;</a></li>
+									<li><a href="<c:url value="/mobilelist-${totalPages}"/>">末页</a></li>
                                 </ul>  
                             </td>  
                         </tr>  

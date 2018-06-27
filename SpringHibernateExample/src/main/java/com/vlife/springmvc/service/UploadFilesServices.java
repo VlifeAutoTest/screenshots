@@ -28,6 +28,7 @@ public interface UploadFilesServices  {
 		String getPath();
 		String getUpdateName();
 		String getUpdatePath();
+		String getSavePath() ;
 		
 
 	}

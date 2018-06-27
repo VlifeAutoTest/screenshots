@@ -142,7 +142,7 @@ $(document).ready(function(){
 		                    <div class="panel-body">  
 		                        <ul class="nav nav-pills nav-stacked">  
 		                            <li class="on"><a id="theme"   href="#" onclick="menuClick('themelist-0')">资源列表</a></li>  
-		                            <li class="on" ><a id="upload" href="#" onclick="menuClick('uploadfiles')">上传资源</a></li>  
+		                           <!--  <li class="on" ><a id="upload" href="#" onclick="menuClick('uploadfiles')">上传资源</a></li>   -->
 		                        </ul>  
 		                    </div>  
 		                </div>      
