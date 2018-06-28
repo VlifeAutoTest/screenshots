@@ -184,11 +184,10 @@ public class RuninfoServiceImpl implements RuninfoService{
 			        channel.setPty(true);
 			        channel.connect();
 			        OutputStream os = channel.getOutputStream();
-			        os.write((python).getBytes());
+			        os.write((python +"\r\n").getBytes());
 			        os.flush();
 			        os.close();
-			        Thread.sleep(3000);
-			        channel.disconnect();
+			        channelExec.disconnect();
 			        session.disconnect();
 					 }catch(Exception e){
 			        e.printStackTrace();
