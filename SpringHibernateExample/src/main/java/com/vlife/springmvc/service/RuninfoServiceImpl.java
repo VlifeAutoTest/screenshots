@@ -2,6 +2,7 @@ package com.vlife.springmvc.service;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.vlife.springmvc.model.Runinfo;
 import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.VendorService;
 import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 @Service("runinfoService")
@@ -135,9 +137,12 @@ public class RuninfoServiceImpl implements RuninfoService{
 
 			//结束本次连接
 			public void endSSH() {
-				channelExec.disconnect();
-				session.disconnect();
-
+				if(channelExec!=null) {
+					channelExec.disconnect();
+				}
+				if(session!=null) {
+					session.disconnect();
+				}
 			}
 			//执行命令
 			public String execCommand(Session session, String pythonPath,String parameters) {
@@ -166,6 +171,29 @@ public class RuninfoServiceImpl implements RuninfoService{
 				// TODO 自动生成的方法存根
 				
 			return	tdao.findById(sid);
+				
+			}
+
+
+			@Override
+			public void execShellCommand(Session session, String python) {
+				// TODO 自动生成的方法存根
+				//shell方式执行
+					 try{
+					ChannelShell channel=(ChannelShell) session.openChannel("shell");
+			        channel.setPty(true);
+			        channel.connect();
+			        OutputStream os = channel.getOutputStream();
+			        os.write((python).getBytes());
+			        os.flush();
+			        os.close();
+			        Thread.sleep(3000);
+			        channel.disconnect();
+			        session.disconnect();
+					 }catch(Exception e){
+			        e.printStackTrace();
+			    }
+
 				
 			}
 

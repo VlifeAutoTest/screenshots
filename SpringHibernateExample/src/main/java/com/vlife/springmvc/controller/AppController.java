@@ -257,9 +257,10 @@ public class AppController {
 		
 		Session session =runinfo_services.getSession(server.getAddress(), 22,server.getUname(), server.getPasswd());
 		//执行脚本会返回执行时的信息
-		String str =runinfo_services.execCommand(session, "/home/lang/AutoScreenshot/run.py   -n  " , String.valueOf(runid));
+		String command="python  /home/lang/AutoScreenshot/run.py  -n  "+String.valueOf(runid);
+		runinfo_services.execShellCommand(session, command);
 		//结束本次的ssh连接
-		runinfo_services.endSSH();
+		//runinfo_services.endSSH();
 		
 //		try {
 //			Thread.sleep(5000);
@@ -269,10 +270,8 @@ public class AppController {
 //		}
 		//String browserAddress="file://192.168.1.230/FileShare/vivo/37bce839/201805231613/DroidSansChinese/";
 	//	System.out.println("2222222222"+runinfo.getImagepath());
-		
 		model.addAttribute("istrue",true);
 		model.addAttribute("runinfo",runinfo);
-		
 		return "check";
 		
 		

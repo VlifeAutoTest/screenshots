@@ -55,6 +55,11 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 		// 创建一个DiskFileItemfactory工厂类
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 //		factory.setRepository(new File("/diskb/tempData"));// 指定临时文件的存储目录
+		
+		File file =new File (tempPath);
+		if(!file.exists()) {
+			file.mkdirs();
+		}
 		factory.setRepository(new File(tempPath));// 指定临时文件的存储目录
 		// 创建一个ServletFileUpload核心对象
 		ServletFileUpload sfu = new ServletFileUpload(factory);

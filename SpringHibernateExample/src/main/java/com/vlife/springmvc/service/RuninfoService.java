@@ -25,4 +25,5 @@ public interface RuninfoService {
 	TestServer getTestServer(int sid);
 	
 	List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime);
+	void execShellCommand(Session session, String python);
 }

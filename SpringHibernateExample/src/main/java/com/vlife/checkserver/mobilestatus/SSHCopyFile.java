@@ -1,11 +1,7 @@
 package com.vlife.checkserver.mobilestatus;  
   
-import java.io.BufferedReader;  
-import java.io.InputStream;  
-import java.io.InputStreamReader;  
   
 import com.jcraft.jsch.Channel;  
-import com.jcraft.jsch.ChannelExec;  
 import com.jcraft.jsch.ChannelSftp;  
 import com.jcraft.jsch.JSch;  
 import com.jcraft.jsch.Session;  
@@ -138,21 +134,5 @@ public class SSHCopyFile {
   
         channelSftp.disconnect();  
     }  
-  
-    // public static void main(String[] args) {  
-    // Ssh2Util ssh = new Ssh2Util("192.168.1.189", "root", "test" , 22);  
-    // try {  
-    // String rs = ssh.runCommand("ddddd");  
-    // } catch (Exception e) {  
-    // e.printStackTrace();  
-    // }  
-    // }  
-    // command 命令  
-   
-  
-    public static void main(String[] args) throws Exception {  
-        SSHCopyFile ssh2Util = new SSHCopyFile("192.168.1.230", "root","vlifeqa", 22);  
-        ssh2Util.putFile("D:\\", "testdown.rar","/diskb/uploadfiles");  
-        ssh2Util.close();
-    }  
+ 
 } 

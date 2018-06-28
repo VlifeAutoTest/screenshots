@@ -35,6 +35,7 @@
                             <td><a href="<c:url value='/newapplication' />">+ Add Application</a></td> 
                             
                             <td>厂商筛选：<select id="selectBox" onchange="changeFunc();">
+                            <option value="  " selected="selected">-请选择-</option>
  							    <c:forEach items="${vendors}" var="vendor">
 									<option value=" ${vendor.getId()} ">${vendor.getName()}</option>
 								</c:forEach>
