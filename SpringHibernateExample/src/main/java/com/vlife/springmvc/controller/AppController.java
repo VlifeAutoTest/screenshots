@@ -50,13 +50,8 @@ import com.vlife.springmvc.service.TestServerService;
 @RequestMapping("/")
 @SessionAttributes(value= {"tvendorid","searchValue"})
 public class AppController {
-	
-	
-
 /*	@Autowired
 	EmployeeService service;*/
-	
-	
 	@Autowired
 	MessageSource messageSource;
 	
@@ -257,10 +252,10 @@ public class AppController {
 		
 		Session session =runinfo_services.getSession(server.getAddress(), 22,server.getUname(), server.getPasswd());
 		//执行脚本会返回执行时的信息
-		String command="python  /home/lang/AutoScreenshot/run.py  -n  "+String.valueOf(runid);
+		String command="nohup  python  /home/lang/AutoScreenshot/run.py  -n   "+String.valueOf(runid)+"  &";
 		runinfo_services.execShellCommand(session, command);
 		//结束本次的ssh连接
-		//runinfo_services.endSSH();
+		runinfo_services.endSSH();
 		
 //		try {
 //			Thread.sleep(5000);
