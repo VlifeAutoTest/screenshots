@@ -852,7 +852,12 @@ public class AppController {
         return  res;
     }
 
-	
-	
+	@RequestMapping(value = { "/list-all-mobiles-{vendorid}" }, method = RequestMethod.GET)
+    @ResponseBody
+    public List<Mobile> listAllMobiles(@PathVariable int vendorid,ModelMap model){
+		Vendor vendor = vendor_service.findById(vendorid);
+		List<Mobile> res = mobile_service.findMobileByVendor(vendor);
+        return  res;
+    }
 	
 } 
