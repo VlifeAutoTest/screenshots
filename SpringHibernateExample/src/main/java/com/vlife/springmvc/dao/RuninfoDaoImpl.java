@@ -46,19 +46,22 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 			Criterion[] cri_list = new Criterion[res_list.length];
 			for(int i=0; i< res_list.length; i++) {
 				
-				cri_list[i] = Restrictions.like("resource", "%"+res_list[i]+"%");
+//				cri_list[i] = Restrictions.like("resource", "%"+res_list[i]+"%");
+				cri_list[i] = Restrictions.sqlRestriction("resource REGEXP'(^|,)" + res_list[i] + "($|,)'");
 			}
 			criteria.add(Restrictions.or(cri_list));
 		}
 		
 		if (conditions.get("app") != null && conditions.get("app").length() >0) {
+			//(^|,)1($|,)
 //			criteria.add(Restrictions.like("app", "%"+conditions.get("app")+"%"));
 			
 			String[] app_list = conditions.get("resource").split(",");
 			Criterion[] cri_list = new Criterion[app_list.length];
 			for(int i=0; i< app_list.length; i++) {
-				
-				cri_list[i] = Restrictions.like("app", "%"+app_list[i]+"%");
+//				
+//				cri_list[i] = Restrictions.like("app", "%"+app_list[i]+"%");
+				cri_list[i] = Restrictions.sqlRestriction("app REGEXP'(^|,)" + app_list[i] + "($|,)'");
 			}
 			criteria.add(Restrictions.or(cri_list));
 		}
