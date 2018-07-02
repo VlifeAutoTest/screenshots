@@ -137,9 +137,9 @@ public class RuninfoServiceImpl implements RuninfoService{
 
 			//结束本次连接
 			public void endSSH() {
-				if(channelExec!=null) {
-					channelExec.disconnect();
-				}
+//				if(channelExec!=null) {
+//					channelExec.disconnect();
+//				}
 				if(session!=null) {
 					session.disconnect();
 				}
@@ -187,8 +187,9 @@ public class RuninfoServiceImpl implements RuninfoService{
 			        os.write((python +"\r\n").getBytes());
 			        os.flush();
 			        os.close();
-			        channelExec.disconnect();
-			        session.disconnect();
+			        Thread.sleep(1000);
+			        channel.disconnect();
+//			        session.disconnect();
 					 }catch(Exception e){
 			        e.printStackTrace();
 			    }
