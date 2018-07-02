@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import com.vlife.springmvc.model.Runinfo;
@@ -40,11 +41,26 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 		}
 		
 		if (conditions.get("resource") != null && conditions.get("resource").length() >0) {
-			criteria.add(Restrictions.like("resource", "%"+conditions.get("resource")+"%"));
+//			criteria.add(Restrictions.like("resource", "%"+conditions.get("resource")+"%"));
+			String[] res_list = conditions.get("resource").split(",");
+			Criterion[] cri_list = new Criterion[res_list.length];
+			for(int i=0; i< res_list.length; i++) {
+				
+				cri_list[i] = Restrictions.like("resource", "%"+res_list[i]+"%");
+			}
+			criteria.add(Restrictions.or(cri_list));
 		}
 		
 		if (conditions.get("app") != null && conditions.get("app").length() >0) {
-			criteria.add(Restrictions.like("app", "%"+conditions.get("app")+"%"));
+//			criteria.add(Restrictions.like("app", "%"+conditions.get("app")+"%"));
+			
+			String[] app_list = conditions.get("resource").split(",");
+			Criterion[] cri_list = new Criterion[app_list.length];
+			for(int i=0; i< app_list.length; i++) {
+				
+				cri_list[i] = Restrictions.like("app", "%"+app_list[i]+"%");
+			}
+			criteria.add(Restrictions.or(cri_list));
 		}
 		
 		if ( mytime[0] != null && mytime[1] != null) {
