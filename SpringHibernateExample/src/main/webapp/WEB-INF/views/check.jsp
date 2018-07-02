@@ -83,7 +83,8 @@
 		                    $("#mobile").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
 		                });  
 		                $("#mobile").selectpicker("refresh");
-		                $("#mobile").selectpicker("render");  
+		                $("#mobile").selectpicker("render");   
+		               
 		            }  
 		        });  
 		    }); 
@@ -126,7 +127,7 @@
 		<table class="table table-striped table-hover table-responsive">
 		    <tr>
 		    	<td><label for="vendor">厂商: </label> </td>
-				<td><form:select path="vid" items="${vendors}" multiple="false" itemValue="id" itemLabel="name"  id="vendor" class="selectpicker bla bla bli" data-live-search="true"  >
+				<td><form:select path="vid" items="${vendors}" multiple="false" itemValue="id" itemLabel="name"  id="vendor" class="selectpicker bla bla bli" data-live-search="true" >
 					<form:options  items="${vendors}" itemValue="id" itemLabel="name"/>
 				</form:select></td>
 				<td><form:errors path="vid" cssClass="error"/></td>
@@ -134,7 +135,7 @@
 		    
 		    <tr>
 		    	<td><label for="style">截图方式: </label> </td>
-				<td><form:select path="style" multiple="false" id="style" class="selectpicker bla bla bli" data-live-search="true"  >
+				<td><form:select path="style" multiple="false" id="style" class="selectpicker bla bla bli" data-live-search="true" >
 					<form:option value="Custom">Custom</form:option>
 					<form:option value="Random">Random</form:option>
 				</form:select></td>
@@ -143,7 +144,7 @@
 		    
 		    <tr>
 		    	<td><label for="mid">手机: </label> </td>
-				<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" class="selectpicker bla bla bli" data-live-search="true"  /></td>
+				<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile"  class="selectpicker bla bla bli" data-live-search="true" /></td>
 				<td><form:errors path="mid" cssClass="error"/></td>
 		    </tr>
 		    
