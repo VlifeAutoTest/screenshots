@@ -857,7 +857,23 @@ public class AppController {
     public List<Mobile> listAllMobiles(@PathVariable int vendorid,ModelMap model){
 		Vendor vendor = vendor_service.findById(vendorid);
 		List<Mobile> res = mobile_service.findMobileByVendor(vendor);
-        return  res;
+		System.out.println("3333333333333333333333      "+res.size());
+		System.out.println(res==null );
+		try {
+			for (int i = 0; i < res.size(); i++) {
+				System.out.println("4444444444444444444444444444");
+				System.out.println("444  "+ res.get(i).getName());
+				
+				
+			}
+		} catch (Exception e) {
+			// TODO 自动生成的 catch 块
+			System.out.println("555555555555555555555555");
+			e.printStackTrace();
+		}
+       
+
+		return  res;
     }
 	
 } 

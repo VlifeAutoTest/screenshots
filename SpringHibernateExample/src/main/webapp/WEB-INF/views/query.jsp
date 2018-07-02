@@ -40,10 +40,21 @@
 	}
 	</style>
 	
+	<script type="text/javascript">
+	
+	$(function(){
+		
+		   $("#vendor").prepend("<option value='' selected='selected'>Nothing selected</option>");  
+		 
+		});
+	
+	
+	</script>
 	<script>
 
 		$(function(){
-		
+	
+			
 		    $("#vendor").change(function(){  
 		        var vid = $("#vendor").val();
 		        $.ajax({  
@@ -52,7 +63,7 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#app").empty();
-		              //  $("#app").append("<option value=''>----请选择----</option>");  
+		               // $("#app").append("<option value='' selected='selected'>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#app").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
@@ -68,11 +79,12 @@
 		        var vid = $("#vendor").val();
 		        $.ajax({  
 		            type:"GET",  
-		            url :"list-mobiles-by-"+vid,  
+		            url :"list-all-mobiles-"+vid,  
 		            dataType:"json",  
 		            success:function(data){
+		            	alert(data);
 		                $("#mobile").empty();
-		             //   $("#mobile").append("<option value=''>----请选择----</option>");  
+		                $("#mobile").append("<option value='' selected='selected'>Nothing selected</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#mobile").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
@@ -91,7 +103,7 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#resource").empty();  
-		               // $("#resource").append("<option value=''>----请选择----</option>");  
+		              // $("#resource").append("<option value='' selected='selected'>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#resource").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
@@ -157,7 +169,7 @@
 			    
 			    <tr>
 			    	<td><label for="vendor">厂商: </label> </td>
-					<td><form:select path="vid" items="${vendors}" multiple="false" itemValue="id" itemLabel="name"  id="vendor"  class="selectpicker bla bla bli" data-live-search="true">
+					<td><form:select path="vid" items="${vendors}" multiple="false" itemValue="id" itemLabel="name"  id="vendor"  class="selectpicker bla bla bli" >
 						<form:options  items="${vendors}" itemValue="id" itemLabel="name" />
 					</form:select></td>
 					<td><form:errors path="vid" cssClass="error"/></td>
@@ -165,20 +177,20 @@
 			    
 			    <tr>
 			    	<td><label for="resource">资源: </label> </td>
-					<td><form:select path="resource" multiple="false" itemValue="id" itemLabel="name"  id="resource" class="selectpicker bla bla bli" data-live-search="true" /></td>
+					<td><form:select path="resource" multiple="multiple" itemValue="id" itemLabel="name"  id="resource" class="selectpicker bla bla bli" data-live-search="true" >
+				</form:select>
+					</td>
 					<td><form:errors path="resource" cssClass="error"/></td>
 			    </tr>
-			    
-			    
 			    <tr>
 			    	<td><label for="mid">手机: </label> </td>
-					<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" class="selectpicker bla bla bli" data-live-search="true" />
+					<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" class="selectpicker bla bla bli"  />
 			    </tr>
 			    
-	
 			    <tr>
 			    	<td><label for="app">应用: </label> </td>
-					<td><form:select path="app" multiple="false" itemValue="id" itemLabel="name" id="app"  class="selectpicker bla bla bli" data-live-search="true" /></td>
+					<td><form:select path="app" multiple="multiple" itemValue="id" itemLabel="name" id="app"  class="selectpicker bla bla bli" data-live-search="true" >
+					</form:select></td>
 					<td><form:errors path="app" cssClass="error"/></td>
 			    </tr>
 				
