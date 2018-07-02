@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
+
 import org.apache.commons.io.IOUtils;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
@@ -21,7 +23,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 public class Methods {
-	public static final String URL = "jdbc:mysql://192.168.1.230:3306/mobile_screenshot?characterEncoding=utf8&useSSL=true&serverTimezone=GMT";
+	public static final String URL = "jdbc:mysql://192.168.1.230:3306/newmobile_screenshot?characterEncoding=utf8&useSSL=true&serverTimezone=GMT";
 	public static final String USER = "auto_test";
 	public static final String PASSWORD = "vlife";
 	private static Connection conn = null;
@@ -35,7 +37,7 @@ public class Methods {
 			session = jsch.getSession(user, host, port);
 			session.setConfig("StrictHostKeyChecking", "no");
 			session.setPassword(password);
-			session.connect();
+			session.connect(6000);
 		} catch (JSchException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
@@ -44,8 +46,12 @@ public class Methods {
 	}
 
 	public void endSSH() {
-		channelExec.disconnect();
-		session.disconnect();
+		if(channelExec!=null) {
+			channelExec.disconnect();
+		}
+		if(session!=null) {
+			session.disconnect();
+		}
 
 	}
 
@@ -62,11 +68,17 @@ public class Methods {
 			// 获取返回的结果
 			String devicesResult = IOUtils.toString(in, "UTF-8");
 			devicesResult = devicesResult.substring("List of devices attached".length());
+			if(devicesResult.contains("device")) {
+				
 			result = devicesResult.trim().split("device");
 
 			for (int i = 0; i < result.length; i++) {
 				result[i] = result[i].trim();
 
+			}
+			}
+			else {
+				
 			}
 			in.close();
 		} catch (JSchException e) {
@@ -464,6 +476,68 @@ public class Methods {
 	}
 	
 	
+	//把本次没有检测到的手机全部改为disconnect
+	public void  assertNoDeviceMobile(List <Integer> list ) {
+		String sql="";
+		String id="";
+		if(list!=null && list.size()>0) {
+		for(int a:list) {
+			id=id+a+',';
+		}
+		id=id.substring(0, id.length()-1);
+		sql = "update mobile_status set status = 'disconnect' where id not in ("+id+")";
+		}
+		else {
+			sql = "update mobile_status set status = 'disconnect'";
+		}
+	
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			PreparedStatement ps = conn.prepareStatement(sql);
+			// 从1开始 不是0
+			ps.execute();
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		 
+		
+	}
+	
+	
+	//
+	public Integer getMobileStatusID(int  mobile_id,int server_id) {
+
+		Integer result = null;
+		try {
+			String sql = "select id from mobile_status where mobile_id =? and server_id =?";
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, mobile_id);
+			ps.setInt(2, server_id);
+			ps.execute();
+			ResultSet res = ps.executeQuery();
+			while (res.next()) {
+
+				result = res.getInt("id");
+			}
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		return result;
+
+	}
 	
 	
 

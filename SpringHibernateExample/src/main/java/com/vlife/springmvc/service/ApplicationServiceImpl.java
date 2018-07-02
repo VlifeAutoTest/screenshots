@@ -33,6 +33,11 @@ public class ApplicationServiceImpl implements ApplicationService {
 	public List<Application> findApplicationByVendorID(Vendor id){
 		return dao.findApplicationByVendorID(id);
 	}
+	
+	public List<Application> findApplicationByVendorIDAndStyle(Vendor id, String style){
+		return dao.findApplicationByVendorIDAndStyle(id, style);
+		
+	}
 
 	public List<Application> findAllApplication() {
 		return dao.findAllApplication();

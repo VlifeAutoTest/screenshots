@@ -4,23 +4,22 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.TimerTask;
-
 import com.jcraft.jsch.Session;
 
 public  class CheckMobileSattus  extends TimerTask{
 	Methods methods = new Methods();
-	
-	
+	List <Integer >list =new LinkedList<Integer >(); 
 	@Override
 	public void run() {
 		// TODO 自动生成的方法存根
 		
-			System.out.println();
 		List<String[]> serverList=methods.getTestServerValues();    
 		for (String [] temp:serverList){
 		try {
+			//把连接在机器上的手机状态判断了
 			status(temp[0], 22, temp[1], temp[2]);
 		} catch (Exception e) {
 			// TODO 自动生成的 catch 块
@@ -29,6 +28,10 @@ public  class CheckMobileSattus  extends TimerTask{
 		}
 
 		}
+		
+		//把本次没有检测到的手机状态全部改为disconnect
+		methods.assertNoDeviceMobile(list);
+		
 	}
 
 	
@@ -42,9 +45,17 @@ public  class CheckMobileSattus  extends TimerTask{
 				// TODO 自动生成的 catch 块
 				e1.printStackTrace();
 			}
+			
+			if(session!=null) {
+				
+		
 			String devices[] = methods.getDevices(session);
+			if(devices!=null) {
 			for (int i = 0; i < devices.length; i++) {
+				int mobileStatusID=0;
 				String device = devices[i].trim();
+				//本次的server_id
+				int serverID = methods.getTestServerID(host);
 				// 判断是数据里是否有这个手机
 				//如果数据库中没有这个手机device
 				if (methods.getMobileID(device) == null) {
@@ -60,14 +71,14 @@ public  class CheckMobileSattus  extends TimerTask{
 					methods.insertMobile(name, device, size, os, methods.getVendorID(vendor));
 					// 给mobilestatus表插入此手机的信息
 					int mobileID = methods.getMobileID(device);
-					int serverID = methods.getTestServerID(host);
 					methods.insertMobileStatus(mobileID, serverID, "free");
+					mobileStatusID=methods.getMobileStatusID(mobileID,serverID);
 				}
 
 				// 如果已含有的手机
 				else {
 					int mobileID = methods.getMobileID(device);
-					int serverID = methods.getTestServerID(host);
+					mobileStatusID=methods.getMobileStatusID(mobileID,serverID);
 					// 如果没有使用过
 					if (methods.getMobileStatus(mobileID, serverID) == null) {
 						methods.insertMobileStatus(mobileID, serverID, "free");
@@ -106,10 +117,13 @@ public  class CheckMobileSattus  extends TimerTask{
 						}
 					}
 				}
+				list.add(mobileStatusID);
 			}
 			
-			
-			methods.assertFreeMobile();
+			//methods.assertFreeMobile();
+			//list.add(devices);
+			}
+			}
 		} catch (Exception e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();

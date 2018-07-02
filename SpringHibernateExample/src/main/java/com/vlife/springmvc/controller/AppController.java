@@ -148,11 +148,8 @@ public class AppController {
 		
 		List<Vendor> vendors = vendor_service.findAllVendor();
 		Runinfo runinfo = new Runinfo();
-		
 		model.addAttribute("runinfo", runinfo);
-		
 		model.addAttribute("vendors", vendors);
-		
 		model.addAttribute("queryflag", false);
 		
 		return "query";
@@ -256,15 +253,6 @@ public class AppController {
 		runinfo_services.execShellCommand(session, command);
 		//结束本次的ssh连接
 		runinfo_services.endSSH();
-		
-//		try {
-//			Thread.sleep(5000);
-//		} catch (InterruptedException e) {
-//			// TODO 自动生成的 catch 块
-//			e.printStackTrace();
-//		}
-		//String browserAddress="file://192.168.1.230/FileShare/vivo/37bce839/201805231613/DroidSansChinese/";
-	//	System.out.println("2222222222"+runinfo.getImagepath());
 		model.addAttribute("istrue",true);
 		model.addAttribute("runinfo",runinfo);
 		return "check";
@@ -827,6 +815,16 @@ public class AppController {
     public List<Application> listApps(@PathVariable int vendorid,ModelMap model){
 		Vendor vendor = vendor_service.findById(vendorid);
 		List<Application>  apps= app_service.findApplicationByVendorID(vendor);   
+        return  apps;
+    }
+	
+	@RequestMapping(value = { "/list-apps-with-{para}" }, method = RequestMethod.GET)
+    @ResponseBody
+    public List<Application> listAppsByStyle(@PathVariable String para, ModelMap model){
+		String[] temp= para.split("-");
+				
+		Vendor vendor = vendor_service.findById(Integer.parseInt(temp[0]));
+		List<Application>  apps= app_service.findApplicationByVendorIDAndStyle(vendor, temp[1]);   
         return  apps;
     }
 	

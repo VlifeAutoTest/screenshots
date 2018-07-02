@@ -7,9 +7,20 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<title>厂商应用列表</title>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-	<script src="assets/js/jquery.min.js"></script>
-	<script src="assets/js/bootstrap.js"></script>
+	<!-- <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" /> -->
+	<!-- <script src="assets/js/jquery.min.js"></script> -->
+<!-- 	<script src="assets/js/bootstrap.js"></script> -->
+	
+	
+	
+	
+	<script type="text/javascript" src="assets/js/jquery-1.10.2.min.js"></script>    
+    <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>      
+    <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>    
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.css">      
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"> 
+	
+	
 	<style type="text/css"></style> 
 	<style>
 		select{
@@ -41,11 +52,13 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#app").empty();
-		                $("#app").append("<option value=''>----请选择----</option>");  
+		              //  $("#app").append("<option value=''>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#app").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
 		                });  
+		                $("#app").selectpicker("refresh");
+		                $("#app").selectpicker("render");  
 		            }  
 		        });  
 		    });  
@@ -59,11 +72,13 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#mobile").empty();
-		                $("#mobile").append("<option value=''>----请选择----</option>");  
+		             //   $("#mobile").append("<option value=''>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#mobile").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
 		                });  
+		                $("#mobile").selectpicker("refresh");
+		                $("#mobile").selectpicker("render"); 
 		            }  
 		        });  
 		    }); 
@@ -76,11 +91,13 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#resource").empty();  
-		                $("#resource").append("<option value=''>----请选择----</option>");  
+		               // $("#resource").append("<option value=''>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#resource").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
 		                });  
+		                $("#resource").selectpicker("refresh");
+		                $("#resource").selectpicker("render");    
 		            }  
 		        });  
 		    }); 
@@ -140,28 +157,28 @@
 			    
 			    <tr>
 			    	<td><label for="vendor">厂商: </label> </td>
-					<td><form:select path="vid" items="${vendors}" multiple="false" itemValue="id" itemLabel="name"  id="vendor">
-						<form:options  items="${vendors}" itemValue="id" itemLabel="name"/>
+					<td><form:select path="vid" items="${vendors}" multiple="false" itemValue="id" itemLabel="name"  id="vendor"  class="selectpicker bla bla bli" data-live-search="true">
+						<form:options  items="${vendors}" itemValue="id" itemLabel="name" />
 					</form:select></td>
 					<td><form:errors path="vid" cssClass="error"/></td>
 			    </tr>
 			    
 			    <tr>
 			    	<td><label for="resource">资源: </label> </td>
-					<td><form:select path="resource" multiple="false" itemValue="id" itemLabel="name"  id="resource"/></td>
+					<td><form:select path="resource" multiple="false" itemValue="id" itemLabel="name"  id="resource" class="selectpicker bla bla bli" data-live-search="true" /></td>
 					<td><form:errors path="resource" cssClass="error"/></td>
 			    </tr>
 			    
 			    
 			    <tr>
 			    	<td><label for="mid">手机: </label> </td>
-					<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" />
+					<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" class="selectpicker bla bla bli" data-live-search="true" />
 			    </tr>
 			    
 	
 			    <tr>
 			    	<td><label for="app">应用: </label> </td>
-					<td><form:select path="app" multiple="false" itemValue="id" itemLabel="name" id="app"/></td>
+					<td><form:select path="app" multiple="false" itemValue="id" itemLabel="name" id="app"  class="selectpicker bla bla bli" data-live-search="true" /></td>
 					<td><form:errors path="app" cssClass="error"/></td>
 			    </tr>
 				

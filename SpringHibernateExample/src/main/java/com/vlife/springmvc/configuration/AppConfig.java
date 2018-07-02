@@ -10,11 +10,13 @@ import org.springframework.format.FormatterRegistry;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
+import com.vlife.springmvc.Interceptor.SessionInterceptor;
 import com.vlife.springmvc.converter.NameToVendorEntityConverter;;
 
 @Configuration
@@ -57,6 +59,12 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 	    messageSource.setBasename("messages");
 	    return messageSource;
 	}
+	
+	 @Override
+	    public void addInterceptors(InterceptorRegistry registry) {
+	        registry.addInterceptor(new SessionInterceptor()).addPathPatterns("/applicationlist-{page}-{vendorid}","/themelist-{page}");
+	    }
+	
 	
 
 }

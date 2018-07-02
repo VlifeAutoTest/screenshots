@@ -7,5 +7,9 @@
 <listener>
     <listener-class>com.vlife.springmvc.service.CheckMobileStatusService</listener-class>
 </listener>
+<session-config> 
+ <session-timeout>1</session-timeout> 
+</session-config> 
+
 </web-app>
 

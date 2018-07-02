@@ -47,6 +47,24 @@
 				<td><form:errors path="name" cssClass="error"/></td>
 		    </tr>
 		    <tr>
+				<td><label for="packagename">包名: </label> </td>
+				<td><form:input path="packagename" id="package"/></td>
+				<td><form:errors path="packagename" cssClass="error"/></td>
+		    </tr>
+		    <tr>
+				<td><label for="activity">启动activity: </label> </td>
+				<td><form:input path="activity" id="activity"/></td>
+				<td><form:errors path="activity" cssClass="error"/></td>
+		    </tr>
+		    <tr>
+		    	<td><label for="style">截图方式: </label> </td>
+				<td><form:select path="style" multiple="false" id="style">
+					<form:option value="Custom">Custom</form:option>
+					<form:option value="Random">Random</form:option>
+				</form:select></td>
+				<td><form:errors path="style" cssClass="error"/></td>
+		    </tr>
+		    <tr>
 		    	<td><label for="vendor">Vendor: </label> </td>
 		    	<c:choose>
 					<c:when test="${edit}">

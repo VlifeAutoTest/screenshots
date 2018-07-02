@@ -48,11 +48,13 @@
 
 		$(function(){  
 		
-		    $("#vendor").change(function(){  
+		    $("#style").change(function(){  
 		        var vid = $("#vendor").val();
+		        var style = $("#style").val();
+		        var para = vid + "-" + style;
 		        $.ajax({  
 		            type:"GET",  
-		            url :"list-apps-by-"+vid,  
+		            url :"list-apps-with-"+para,
 		            dataType:"json",  
 		            success:function(data){
 		                $("#app").empty();  
@@ -75,12 +77,13 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#mobile").empty();  
-		                $("#mobile").append("<option value=''>----请选择----</option>");  
+		              //  $("#mobile").append("<option value=''>----请选择----</option>");  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#mobile").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
 		                });  
-		               
+		                $("#mobile").selectpicker("refresh");
+		                $("#mobile").selectpicker("render");  
 		            }  
 		        });  
 		    }); 
@@ -123,23 +126,32 @@
 		<table class="table table-striped table-hover table-responsive">
 		    <tr>
 		    	<td><label for="vendor">厂商: </label> </td>
-				<td><form:select path="vid" items="${vendors}" multiple="false" itemValue="id" itemLabel="name"  id="vendor">
+				<td><form:select path="vid" items="${vendors}" multiple="false" itemValue="id" itemLabel="name"  id="vendor" class="selectpicker bla bla bli" data-live-search="true"  >
 					<form:options  items="${vendors}" itemValue="id" itemLabel="name"/>
 				</form:select></td>
 				<td><form:errors path="vid" cssClass="error"/></td>
 		    </tr>
 		    
 		    <tr>
-		    	<td><label for="resource">资源: </label> </td>
-				<td><form:select path="resource" multiple="multiple" itemValue="id" itemLabel="name"  id="resource"  class="selectpicker bla bla bli" data-live-search="true"  /></td>
-				<td><form:errors path="resource" cssClass="error"/></td>
+		    	<td><label for="style">截图方式: </label> </td>
+				<td><form:select path="style" multiple="false" id="style" class="selectpicker bla bla bli" data-live-search="true"  >
+					<form:option value="Custom">Custom</form:option>
+					<form:option value="Random">Random</form:option>
+				</form:select></td>
+				<td><form:errors path="style" cssClass="error"/></td>
+		    </tr>
+		    
+		    <tr>
+		    	<td><label for="mid">手机: </label> </td>
+				<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" class="selectpicker bla bla bli" data-live-search="true"  /></td>
+				<td><form:errors path="mid" cssClass="error"/></td>
 		    </tr>
 		    
 		    
 		    <tr>
-		    	<td><label for="mid">手机: </label> </td>
-			<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" /></td>
-				<td><form:errors path="mid" cssClass="error"/></td>
+		    	<td><label for="resource">资源: </label> </td>
+				<td><form:select path="resource" multiple="multiple" itemValue="id" itemLabel="name"  id="resource"  class="selectpicker bla bla bli" data-live-search="true"  /></td>
+				<td><form:errors path="resource" cssClass="error"/></td>
 		    </tr>
 		    
 
@@ -168,6 +180,6 @@
 		var bpath="ftp://192.168.1.230"+$("#bpath").text();
 		setTimeout(function () {window.open(bpath); }, 5000);
 	 }
- } );
+ });
 </script>
 </html>
