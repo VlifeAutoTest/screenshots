@@ -45,6 +45,16 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 		return (List<Application>) criteria.list();
 
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Application> findApplicationByVendorIDAndStyle(Vendor id, String style){
+		
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("vendor", id));
+		criteria.add(Restrictions.eq("style", style));
+		return (List<Application>) criteria.list();
+		
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override

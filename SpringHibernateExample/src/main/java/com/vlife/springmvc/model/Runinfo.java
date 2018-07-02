@@ -35,6 +35,7 @@ public class Runinfo {
 	private String log_file;
 	private String zip_file;
 	private String status;
+	private String style;
 	
 	
 	
@@ -140,5 +141,13 @@ public class Runinfo {
 
 	public void setLogFile(String lfile) {
 		this.log_file = lfile;
+	}
+	
+	public String getStyle() {
+		return style;
+	}
+
+	public void setStyle(String style) {
+		this.style = style;
 	}
 }

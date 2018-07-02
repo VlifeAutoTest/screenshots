@@ -835,6 +835,16 @@ public class AppController {
         return  apps;
     }
 	
+	@RequestMapping(value = { "/list-apps-with-{para}" }, method = RequestMethod.GET)
+    @ResponseBody
+    public List<Application> listAppsByStyle(@PathVariable String para, ModelMap model){
+		String[] temp= para.split("-");
+				
+		Vendor vendor = vendor_service.findById(Integer.parseInt(temp[0]));
+		List<Application>  apps= app_service.findApplicationByVendorIDAndStyle(vendor, temp[1]);   
+        return  apps;
+    }
+	
 	@RequestMapping(value = { "/list-all-resources" }, method = RequestMethod.GET)
     @ResponseBody
     public List<Theme> listResources(ModelMap model){

@@ -32,6 +32,7 @@
                         <tr>  
                             <th>Name</th>  
                             <th>Vendor</th>
+                            <th>截图策略</th>
                             <td><a href="<c:url value='/newapplication' />">+ Add Application</a></td> 
                             
                             <td>厂商筛选：<select id="selectBox" onchange="changeFunc();">
@@ -48,6 +49,7 @@
 								<tr>
 								<td>${app.name}</td>
 								<td>${app.getVendor().getName()}</td>
+								<td>${app.style}</td>
 								<td><a href="<c:url value='/edit-${app.id}-application' />">edit</a></td>
 								<td><a href="<c:url value='/delete-${app.id}-application-${page}' />">delete</a></td>
 								</tr>

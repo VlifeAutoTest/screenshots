@@ -15,6 +15,8 @@ public interface ApplicationService {
 	
 	List<Application> findApplicationByVendorID(Vendor id);	
 	
+	List<Application> findApplicationByVendorIDAndStyle(Vendor id, String style);	
+	
 	void deleteApplicationByID(int id);
 	
 	List<Application> findAllApplication();
