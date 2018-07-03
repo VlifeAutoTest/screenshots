@@ -38,6 +38,7 @@
 	    outline: none; 
 	    width: 18%;
 	}
+	
 	</style>
 	
 	<script type="text/javascript">
@@ -82,7 +83,6 @@
 		            url :"list-all-mobiles-"+vid,  
 		            dataType:"json",  
 		            success:function(data){
-		            	alert(data);
 		                $("#mobile").empty();
 		                $("#mobile").append("<option value='' selected='selected'>Nothing selected</option>");  
 		                $.each(data,function(index,item){  
@@ -147,6 +147,57 @@
  			$("#e_time").val(edate);
 			
 		});
+		
+		$('#result_table').bootstrapTable({
+            method: 'get',
+            url: "xxx",
+            btn: true,
+            pagination: true,
+            pageSize: 10,
+            pageNumber: 1,
+            pageList: [10, 15, 30],//分页步进值
+            striped: true,
+            dataField: "list",
+            iconSize: 'outline',
+            icons: {
+                refresh: 'glyphicon-repeat',
+                toggle: 'glyphicon-list-alt',
+                columns: 'glyphicon-list'
+            },
+            columns: [
+                [
+                    {
+                        field: 'student_name',
+                        title: '姓名',
+                        align: 'center',
+                        colspan: 1
+                        ,width:100
+                    },
+                    {
+                        field: 'hospital_name',
+                        title: '带教单位',
+                        align: 'center',
+                        colspan: 1
+                        ,width:200
+                    },
+                    {
+                        field: 'teacher_name',
+                        title: '指导老师',
+                        align: 'center',
+                        colspan: 1
+                        ,width:100
+                    },
+                    {
+                        field: 'start_time',
+                        title: '开始时间',
+                        align: 'center',
+                        colspan: 1,
+                        width:100
+                    }
+                ]
+            ]
+        });
+
 		
 		
 </script>
@@ -219,6 +270,7 @@
                      <th>手机</th>
                      <th>资源</th>
                      <th>应用</th>
+                     <th>截图类型</th>
                      <th>开始时间</th>
                      <th>结束时间</th>
                      <th>ZIP文件</th>
@@ -244,6 +296,7 @@
 								<td>${dt[1]}</td>
 								<td>${dt[3]}</td>
 								<td>${dt[4]}</td>
+								<td>${dt[11]}</td>
 								<td>${dt[5]}</td>
 								<td>${dt[6]}</td>
 							    <td><a href="http://192.168.1.230:8080${dt[7]}/${dt[8]} " target="_blank">${dt[8]}</a></td>

@@ -70,7 +70,7 @@ public class RuninfoServiceImpl implements RuninfoService{
 		
 		for(int i=0; i< runinfos.size(); i++) {
 			
-			Object[] tmp = new Object[11];
+			Object[] tmp = new Object[12];
 			
 			Runinfo rf = runinfos.get(i);
 			
@@ -111,6 +111,7 @@ public class RuninfoServiceImpl implements RuninfoService{
 			tmp[8] = rf.getZip();
 			tmp[9] = rf.getLogFile();
 			tmp[10] = rf.getStatus();
+			tmp[11] = rf.getStyle();
 			
 			res.add(tmp);
 			
