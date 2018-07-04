@@ -43,7 +43,7 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 
 	@SuppressWarnings("unchecked")
 	public List<Mobile> findMobileByVendor(Vendor vendor) {
-		
+
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("vendor", vendor));
 		return (List<Mobile>) criteria.list();
