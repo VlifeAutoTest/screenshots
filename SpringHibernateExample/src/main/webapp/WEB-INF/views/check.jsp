@@ -15,7 +15,11 @@
     <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>      
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>    
     <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.css">      
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">    
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">   
+    
+    <link rel="stylesheet" type="text/css" href="assets/css/xcConfirm.css"/>
+		<!-- <script src="http://www.jsdaima.com/Upload/1457936161/jquery-1.9.1.js" type="text/javascript" charset="utf-8"></script> -->
+		<script src="assets/js/xcConfirm.js" type="text/javascript" charset="utf-8"></script> 
     <script type="text/javascript">    
         $(window).on('load', function () {    
             $('.selectpicker').selectpicker({    
@@ -42,7 +46,10 @@
 	    outline: none; 
 	    width: 18%;
 	}
+	  #mytxt {position: absolute;top: 0;left: 0;opacity: 0;z-index: -10;}
 	</style>
+	
+	
 		<script type="text/javascript">
 	
 	$(function(){
@@ -117,7 +124,9 @@
 		            dataType:"json",  
 		            success:function(data){
 		            	if(jQuery.isEmptyObject( data )){
-		            		alert("当前厂商下无手机连接!")
+		            		//alert("当前厂商下无手机连接!")
+		            		var txt=  "抱歉,当前选择的厂商下无手机连接!";
+							window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.error);
 		            	}
 		                $("#mobile").empty();  
 		              //  $("#mobile").append("<option value=''>----请选择----</option>");  
@@ -211,43 +220,93 @@
 					<input id ="open" type="submit" value="开始截图"/>
 					
 				</td>
-				<td><font id="qwe" size="3" color="red">${message}</font> 
-				<span id="time"></span><br></td>
+				<td><span id="me"></span><span style="color: red" id="time"></span><span id="sess"></span>
+				<font id="qwe" size="3" color="red">${message}</font> </td>
 			</tr>
 		</table>
 	</form:form>
 </div>
 </div>
+
 </body>
+
 
 <!-- 此处js无措,但编译器时长会给出错误提示 -->
 <script type="text/javascript">
- $(document).ready(function () { 
-		function myClose(){//任务
-			//取出time中的数,保存在n中
-			var n=parseInt(time.innerHTML);
-		 			 n-=1;
-			if(n>0){//如果n>0
-				//将n+秒钟后自动关闭 再放回time中
-				time.innerHTML=n+"秒钟后自动关闭";
-				//再启动下一次定时器，将序号再保存在timer中
-				timer=setTimeout(arguments.callee,1000);
-		  }else{//否则
-				$("#qwe").prepend("脚本调用成功,截图路径为:"+$("#bpath").text());//关闭
-			}
-		}
-	 
-	 
-	 
+
+function replaceAll(str, oldStr, newStr){
+	var temp = '';
+	temp = str.replace(oldStr, newStr);
+	if(isContains(temp, oldStr)){
+		temp = replaceAll(temp, oldStr, newStr);
+	}
+	return temp;
+}
+
+
+		var n=10;
+		  function showTime(){  
+		        n=n-1;  
+		        $("#time").empty();
+		        $("#time").append(n);
+		        if(n==0){  
+		          
+		        	//$("#qwe").append("脚本调用成功,") ;
+		        	var path="\\\\192.168.1.230"+$("#bpath").text();
+		     		 // alert(path);
+		        	//var txt="脚本调用成功,本次截图路径为:"+"<br>"+ path;
+		        	var txt="截图路径为: <a onclick='copyText()' >点击复制! </a> &nbsp;&nbsp;<font id='kkk' color='red' ></font> <p id='text'>"+path+"</p> <textarea id='mytxt'> </textarea>";
+		        	//var txt="截图路径为: "+"<br>"+path;
+		        	//var txt="截图路径为222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222: ";
+		        	
+		        	
+		        	
+		        	
+		        	
+					window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.success);
+					 $("#me").empty();
+					 $("#time").empty();
+					 $("#sess").empty() ;
+						
+		        	//alert("ftp://192.168.1.230"+$("#bpath").text(););
+		        }  
+		        //每秒执行一次,showTime()  
+		        if(n>0){
+		        	
+		        setTimeout("showTime()",1000);  
+		        }
+		    }  
+		  $(function(){
+			  
 	 if(${ istrue }==true){
-		 
-		 var timer=null;//保存定时器序号
-			window.onload=function(){
-				timer=setTimeout(myClose,1000);//启动一次性定时器
+		 $("#me").prepend("正在调用脚本,请稍等, 倒计时") ;
+		 $("#time").prepend("10") ;
+		 $("#sess").prepend("秒!") ;
+		 showTime();  
+		
 			}
-		//var bpath="ftp://192.168.1.230"+$("#bpath").text();
-		//setTimeout(function () {window.open(bpath); }, 5000);
-	 }
- });
+
+});
+	 
+	 
+	 
+	 
+	 
 </script>
+
+
+<script type="text/javascript">
+
+function copyText() {
+	 var text = document.getElementById("text").innerText;
+     var input = document.getElementById("mytxt");
+     input.value = text; 
+     input.select(); 
+     document.execCommand("copy"); 
+  $("#kkk").empty();
+  $("#kkk").append("复制成功!");
+}
+</script>
+
+
 </html>

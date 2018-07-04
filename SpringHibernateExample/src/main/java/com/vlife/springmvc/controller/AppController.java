@@ -265,6 +265,9 @@ public class AppController {
 		//结束本次的ssh连接
 		runinfo_services.endSSH();
 		model.addAttribute("istrue",true);
+		String aa=runinfo.getImagepath();
+		String bb = aa.replaceAll("/", "\\\\");
+		runinfo.setImagepath(bb);
 		model.addAttribute("runinfo",runinfo);
 		
 		

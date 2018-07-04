@@ -338,7 +338,7 @@ public class Methods {
 
 	public void insertMobileStatus(int mobile_id, int server_id, String status) {
 		try {
-			String sql = "insert into mobile_status values (null,?,?,?,?)";
+			String sql = "insert into mobile_status values (null,?,?,?,?,0,0)";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			PreparedStatement ps = conn.prepareStatement(sql);
