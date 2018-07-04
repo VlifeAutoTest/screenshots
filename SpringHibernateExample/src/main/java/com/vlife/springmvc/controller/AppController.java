@@ -213,6 +213,17 @@ public class AppController {
 	public String  saveRuninfo(@Valid Runinfo runinfo, BindingResult result,
 			ModelMap model) throws UnsupportedEncodingException, ParseException {
 		
+		
+		if(runinfo.getVid()==0||  runinfo.getMid()==0||runinfo.getApp()==null|| runinfo.getResource()==null  ) {
+			
+			List<Vendor> vendors = vendor_service.findAllVendor();
+			Runinfo runinfo2 = new Runinfo();
+			model.addAttribute("runinfo", runinfo2);
+			model.addAttribute("vendors", vendors);
+			model.addAttribute("message", "本页全部为必选项,请重新选择!");
+			return "check";
+		}
+		else {
 		String[] tmp = getDetailInfo(runinfo);
         runinfo.setStime(tmp[2]);
         runinfo.setEtime(tmp[2]);
@@ -255,8 +266,11 @@ public class AppController {
 		runinfo_services.endSSH();
 		model.addAttribute("istrue",true);
 		model.addAttribute("runinfo",runinfo);
-		return "check";
 		
+		
+		
+		return "check";
+		}
 		
 	}
 	@RequestMapping(value = { "refresh" }, method = RequestMethod.GET)
@@ -828,6 +842,9 @@ public class AppController {
         return  apps;
     }
 	
+	
+	
+	
 	@RequestMapping(value = { "/list-all-resources" }, method = RequestMethod.GET)
     @ResponseBody
     public List<Theme> listResources(ModelMap model){
@@ -857,22 +874,6 @@ public class AppController {
     public List<Mobile> listAllMobiles(@PathVariable int vendorid,ModelMap model){
 		Vendor vendor = vendor_service.findById(vendorid);
 		List<Mobile> res = mobile_service.findMobileByVendor(vendor);
-		System.out.println("3333333333333333333333      "+res.size());
-		System.out.println(res==null );
-		try {
-			for (int i = 0; i < res.size(); i++) {
-				System.out.println("4444444444444444444444444444");
-				System.out.println("444  "+ res.get(i).getName());
-				
-				
-			}
-		} catch (Exception e) {
-			// TODO 自动生成的 catch 块
-			System.out.println("555555555555555555555555");
-			e.printStackTrace();
-		}
-       
-
 		return  res;
     }
 	

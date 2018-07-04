@@ -43,10 +43,50 @@
 	    width: 18%;
 	}
 	</style>
+		<script type="text/javascript">
+	
+	$(function(){
+		   $("#vendor").prepend("<option value=''  id ='bbba' selected='selected' >Nothing selected</option>");  
+		}); 
+	</script>
+	
+	<script type="text/javascript">
+	$(function(){
+		   $("#vendor").change(function(){
+			  
+			  $("#bbba").remove() ;
+			  $("#vendor").selectpicker("refresh");
+              $("#vendor").selectpicker("render"); 
+			 // alert("222");
+		   });
+		});
+	</script>
 	
 	<script>
-
 		$(function(){  
+			
+			$("#vendor").change(function(){  
+		        var vid = $("#vendor").val();
+		        var style = $("#style").val();
+		        var para = vid + "-" + style;
+		        $.ajax({  
+		            type:"GET",  
+		            url :"list-apps-with-"+para,
+		            dataType:"json",  
+		            success:function(data){
+		                $("#app").empty();  
+		                $.each(data,function(index,item){  
+		                    console.info("item:"+item.id);  
+		                    $("#app").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
+		                }); 
+		                $("#app").selectpicker("refresh");
+		                $("#app").selectpicker("render");    
+		            }  
+		        });  
+		    });  
+			
+			
+			
 		
 		    $("#style").change(function(){  
 		        var vid = $("#vendor").val();
@@ -76,6 +116,9 @@
 		            url :"list-mobiles-by-"+vid,  
 		            dataType:"json",  
 		            success:function(data){
+		            	if(jQuery.isEmptyObject( data )){
+		            		alert("当前厂商下无手机连接!")
+		            	}
 		                $("#mobile").empty();  
 		              //  $("#mobile").append("<option value=''>----请选择----</option>");  
 		                $.each(data,function(index,item){  
@@ -136,8 +179,9 @@
 		    <tr>
 		    	<td><label for="style">截图方式: </label> </td>
 				<td><form:select path="style" multiple="false" id="style" class="selectpicker bla bla bli" data-live-search="true" >
-					<form:option value="Custom">Custom</form:option>
-					<form:option value="Random">Random</form:option>
+				<%-- <form:option value="" >Nothing selected</form:option> --%>
+					<form:option value="Custom" selected='selected' >Custom</form:option>
+					<form:option value="Random" >Random</form:option>
 				</form:select></td>
 				<td><form:errors path="style" cssClass="error"/></td>
 		    </tr>
@@ -163,10 +207,12 @@
 		    </tr>
 	
 			<tr>
-				<td colspan="3">
+				<td colspan="1">
 					<input id ="open" type="submit" value="开始截图"/>
 					
 				</td>
+				<td><font id="qwe" size="3" color="red">${message}</font> 
+				<span id="time"></span><br></td>
 			</tr>
 		</table>
 	</form:form>
@@ -174,12 +220,33 @@
 </div>
 </body>
 
-
+<!-- 此处js无措,但编译器时长会给出错误提示 -->
 <script type="text/javascript">
  $(document).ready(function () { 
-	 if( ${istrue }==true ){
-		var bpath="ftp://192.168.1.230"+$("#bpath").text();
-		setTimeout(function () {window.open(bpath); }, 5000);
+		function myClose(){//任务
+			//取出time中的数,保存在n中
+			var n=parseInt(time.innerHTML);
+		 			 n-=1;
+			if(n>0){//如果n>0
+				//将n+秒钟后自动关闭 再放回time中
+				time.innerHTML=n+"秒钟后自动关闭";
+				//再启动下一次定时器，将序号再保存在timer中
+				timer=setTimeout(arguments.callee,1000);
+		  }else{//否则
+				$("#qwe").prepend("脚本调用成功,截图路径为:"+$("#bpath").text());//关闭
+			}
+		}
+	 
+	 
+	 
+	 if(${ istrue }==true){
+		 
+		 var timer=null;//保存定时器序号
+			window.onload=function(){
+				timer=setTimeout(myClose,1000);//启动一次性定时器
+			}
+		//var bpath="ftp://192.168.1.230"+$("#bpath").text();
+		//setTimeout(function () {window.open(bpath); }, 5000);
 	 }
  });
 </script>

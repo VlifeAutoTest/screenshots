@@ -1,8 +1,11 @@
 package com.vlife.springmvc.service;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +21,7 @@ import com.vlife.springmvc.dao.TestServerDao;
 import com.vlife.springmvc.model.Runinfo;
 import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.VendorService;
+import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSch;
@@ -70,7 +74,7 @@ public class RuninfoServiceImpl implements RuninfoService{
 		
 		for(int i=0; i< runinfos.size(); i++) {
 			
-			Object[] tmp = new Object[11];
+			Object[] tmp = new Object[12];
 			
 			Runinfo rf = runinfos.get(i);
 			
@@ -111,6 +115,7 @@ public class RuninfoServiceImpl implements RuninfoService{
 			tmp[8] = rf.getZip();
 			tmp[9] = rf.getLogFile();
 			tmp[10] = rf.getStatus();
+			tmp[11] = rf.getStyle();
 			
 			res.add(tmp);
 			
@@ -144,7 +149,7 @@ public class RuninfoServiceImpl implements RuninfoService{
 					session.disconnect();
 				}
 			}
-			//执行命令
+			//执行python脚本命令
 			public String execCommand(Session session, String pythonPath,String parameters) {
 				String result = null;
 				try {
@@ -165,6 +170,47 @@ public class RuninfoServiceImpl implements RuninfoService{
 				return result;
 			}
 
+			
+			public String  doCommand(Session session, String command) {
+		        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		        BufferedReader reader = null;
+		        Channel channel = null;
+		        String value="";
+		        try {
+		            channel = session.openChannel("exec");
+		            ((ChannelExec) channel).setCommand(command);
+		            channel.setInputStream(null);
+		            ((ChannelExec) channel).setErrStream(System.err);
+
+		            channel.connect();
+		            InputStream in = channel.getInputStream();
+		            reader = new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8")));
+		            String buf = null;
+		            
+		            while ((buf = reader.readLine()) != null) {
+//		                System.out.println(buf);
+		            	value=value+buf;
+		            }
+		            System.out.println("2222222"+value);
+		        } catch (IOException e) {
+		            e.printStackTrace();
+		        } catch (JSchException e) {
+		            e.printStackTrace();
+		        } finally {
+		            try {
+		                reader.close();
+		            } catch (IOException e) {
+		                e.printStackTrace();
+		            }
+		            channel.disconnect();
+		            //session.disconnect();
+		        }
+		        return value;
+		    }
+
+			
+			
+			
 
 			@Override
 			public TestServer getTestServer(int sid) {
@@ -195,6 +241,40 @@ public class RuninfoServiceImpl implements RuninfoService{
 			    }
 
 				
+			}
+
+
+			@Override
+			public  Boolean checkPath(int newRunid) {
+				// TODO 自动生成的方法存根
+				Boolean status =false;
+		//	Runinfo runinfo=dao.findById(newRunid);
+			//String path =runinfo.getImagepath();
+			//int s_id=runinfo.getSid();
+			 //TestServer server =tdao.findById(s_id);
+			Session session=getSession("192.168.1.230",22, "root", "vlifeqa");
+			for (int i = 0; i < 10; i++) {
+				String command="ls";
+				String value=doCommand(session, command);
+				System.out.println("wwwwwwwwwwwwwwww"+value+"sss");
+				if(value.trim().length()==0) {
+					status=true;
+					break;
+				}
+				
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+				}
+			}
+			
+				
+				
+			
+				
+				return status;
 			}
 
 }

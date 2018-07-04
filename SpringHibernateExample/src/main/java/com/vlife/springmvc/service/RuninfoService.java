@@ -26,4 +26,6 @@ public interface RuninfoService {
 	
 	List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime);
 	void execShellCommand(Session session, String python);
+	Boolean checkPath(int  newRunid);
+	String   doCommand(Session session, String command) ;
 }

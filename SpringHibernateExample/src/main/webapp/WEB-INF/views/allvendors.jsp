@@ -20,14 +20,14 @@
                         <tr>  
                             <th>Name</th>  
                             <th></th>  
-                            <td><a href="<c:url value='/newvendor' />">+ Add Vendor</a></td>  
+<%--                             <td><a href="<c:url value='/newvendor' />">+ Add Vendor</a></td>   --%>
                         </tr>  
                     </thead>  
                     <tbody>  
                        		<c:forEach items="${vendors}" var="vendor">
 								<tr>
 								<td>${vendor.name}</td>
-								<td><a href="<c:url value='/edit-${vendor.id}-vendor' />">edit</a></td>
+								<td><%-- <a href="<c:url value='/edit-${vendor.id}-vendor' />">edit</a> --%></td>
 								<td><a href="<c:url value='/delete-${vendor.id}-vendor' />">delete</a></td>
 								</tr>
 							</c:forEach>

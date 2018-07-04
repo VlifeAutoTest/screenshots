@@ -38,18 +38,17 @@
 	    outline: none; 
 	    width: 18%;
 	}
+	
 	</style>
 	
 	<script type="text/javascript">
-	
 	$(function(){
-		
-		   $("#vendor").prepend("<option value='' selected='selected'>Nothing selected</option>");  
-		 
+		   $("#vendor").prepend("<option value=''  selected='selected'>Nothing selected</option>");  
 		});
-	
-	
 	</script>
+	
+	
+	
 	<script>
 
 		$(function(){
@@ -82,7 +81,6 @@
 		            url :"list-all-mobiles-"+vid,  
 		            dataType:"json",  
 		            success:function(data){
-		            	alert(data);
 		                $("#mobile").empty();
 		                $("#mobile").append("<option value='' selected='selected'>Nothing selected</option>");  
 		                $.each(data,function(index,item){  
@@ -116,7 +114,7 @@
 		      
 		}); 
 		
-		
+		/*  获取的是当前的时间*/
 		function getNowFormatDate(interval) {
 		    var date = new Date();
 		    var seperator1 = "-";
@@ -138,15 +136,42 @@
 		    return currentdate;
 		};
 		
+		
+		
+ 			/* 获取的是三天前的时间 */
+		function getThreeDaysBeforeDate(){
+			 var seperator1 = "-";
+		    var date =  new Date(), timestamp, newDate;
+		    timestamp = date.getTime();
+		    // 获取三天前的日期
+		    newDate = new Date(timestamp - 3 * 24 * 3600 * 1000);
+		    var year = newDate.getFullYear();
+		    // 月+1是因为js中月份是按0开始的
+		    var month = newDate.getMonth() + 1;
+		    var day = newDate.getDate();
+		    if (day < 10) { // 如果日小于10，前面拼接0
+		        day = '0' + day;
+		    }
+		    if (month < 10) { // 如果月小于10，前面拼接0
+		        month = '0' + month;
+		    }
+		    return  year + seperator1 + month + seperator1 + day;
+		 
+		}
+		
+		
+		
+		
 		$(document).ready(function(){
 			
-			sdate = getNowFormatDate(-3);
+			sdate = getThreeDaysBeforeDate();
 			edate = getNowFormatDate(0);
 
-			$("#s_time").val(sdate);
+			$("#s_time").val(edate);
  			$("#e_time").val(edate);
 			
 		});
+		
 		
 		
 </script>
@@ -219,6 +244,7 @@
                      <th>手机</th>
                      <th>资源</th>
                      <th>应用</th>
+                     <th>截图类型</th>
                      <th>开始时间</th>
                      <th>结束时间</th>
                      <th>ZIP文件</th>
@@ -244,6 +270,7 @@
 								<td>${dt[1]}</td>
 								<td>${dt[3]}</td>
 								<td>${dt[4]}</td>
+								<td>${dt[11]}</td>
 								<td>${dt[5]}</td>
 								<td>${dt[6]}</td>
 							    <td><a href="http://192.168.1.230:8080${dt[7]}/${dt[8]} " target="_blank">${dt[8]}</a></td>

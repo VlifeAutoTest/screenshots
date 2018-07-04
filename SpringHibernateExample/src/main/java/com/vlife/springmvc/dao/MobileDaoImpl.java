@@ -7,6 +7,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import com.vlife.springmvc.model.Application;
 import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.model.Vendor;
 
@@ -43,14 +44,10 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 	@SuppressWarnings("unchecked")
 	public List<Mobile> findMobileByVendor(Vendor vendor) {
 		
-		Query query = getSession().createSQLQuery("select * from mobile where vendor_id =:id");
-		query.setInteger("id", vendor.getId());
-		List<Mobile> result = query.list();
-/*		String hql = "select new com.vlife.springmc.model.Mobile(name, vendor) from mobile";
-		Query query = getSession().createQuery(hql);
-		List<Mobile> result = query.list();*/
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("vendor", vendor));
+		return (List<Mobile>) criteria.list();
 
-		return  result;
 	}
 
 	@SuppressWarnings("unchecked")
