@@ -171,60 +171,7 @@
  			$("#e_time").val(edate);
 			
 		});
-		
-		$('#result_table').bootstrapTable({
-            method: 'get',
-            url: "xxx",
-            btn: true,
-            pagination: true,
-            pageSize: 10,
-            pageNumber: 1,
-            pageList: [10, 15, 30],//分页步进值
-            striped: true,
-            dataField: "list",
-            iconSize: 'outline',
-            icons: {
-                refresh: 'glyphicon-repeat',
-                toggle: 'glyphicon-list-alt',
-                columns: 'glyphicon-list'
-            },
-            columns: [
-                [
-                    {
-                        field: 'student_name',
-                        title: '姓名',
-                        align: 'center',
-                        colspan: 1
-                        ,width:100
-                    },
-                    {
-                        field: 'hospital_name',
-                        title: '带教单位',
-                        align: 'center',
-                        colspan: 1
-                        ,width:200
-                    },
-                    {
-                        field: 'teacher_name',
-                        title: '指导老师',
-                        align: 'center',
-                        colspan: 1
-                        ,width:100
-                    },
-                    {
-                        field: 'start_time',
-                        title: '开始时间',
-                        align: 'center',
-                        colspan: 1,
-                        width:100
-                    }
-                ]
-            ]
-        });
-
-		
-		
-		
+	
 </script>
 
 </head>
