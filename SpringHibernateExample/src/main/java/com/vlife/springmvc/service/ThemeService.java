@@ -14,6 +14,8 @@ public interface ThemeService {
 	
 	List<Theme> findAllTheme();
 	
+	int getMaxCheckNumberByName(String name);
+	
 	void updateTheme(Theme theme);
 	 List<Theme> searchByName (String name);
 	 List<Theme> findThemeByPage(int offset, int length);

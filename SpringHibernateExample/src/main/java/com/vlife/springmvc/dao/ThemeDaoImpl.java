@@ -5,6 +5,7 @@ import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.springframework.stereotype.Repository;
 import com.vlife.springmvc.model.Theme;
 
@@ -69,6 +70,16 @@ public class ThemeDaoImpl extends AbstractDao<Integer, Theme> implements ThemeDa
 		@SuppressWarnings("unchecked")
 		List <Theme> result=query.list();		
 	   return result;
+	}
+	
+	public int getMaxCheckNumberByName(String name) {
+		
+		String strSql = "select max(t.checknumber) from Theme t where t.name=:thname";
+		Query query = getSession().createQuery(strSql);
+		query.setString("thname", name);
+		int count = (int)query.list().get(0);
+		return count;
+		
 	}
 
 }
