@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -36,12 +37,9 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 	@SuppressWarnings("unchecked")
 	public List<Application> findApplicationByVendorID(Vendor id) {
 		
-//		Query query = getSession().createSQLQuery("select * from application where vendor_id=1");
-////		query.setParameter("id", id);
-//		List<Application> result = query.list();
-		
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("vendor", id));
+		criteria.addOrder(Order.desc("style"));
 		return (List<Application>) criteria.list();
 
 	}
@@ -52,6 +50,7 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("vendor", id));
 		criteria.add(Restrictions.eq("style", style));
+		criteria.addOrder(Order.desc("style"));
 		return (List<Application>) criteria.list();
 		
 	}
@@ -74,6 +73,7 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 		
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("vendor", id));
+		criteria.addOrder(Order.desc("style"));
 		criteria .setFirstResult(offset);
 		criteria .setMaxResults(length);
 		return (List<Application>) criteria.list();
