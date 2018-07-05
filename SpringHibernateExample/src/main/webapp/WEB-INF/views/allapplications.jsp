@@ -33,7 +33,11 @@
                         <tr>  
                             <th>应用名称</th>  
                             <th>厂商</th>
+<<<<<<< HEAD
                             <th data-sortable=true>截图策略</th>
+=======
+                            <th  data-sortable=true>截图策略</th>
+>>>>>>> branch 'master' of https://github.com/VlifeAutoTest/screenshots.git
                             <td><a href="<c:url value='/newapplication' />">+ 增加应用</a></td> 
                             
                             <td>厂商筛选：<select id="selectBox" onchange="changeFunc();">

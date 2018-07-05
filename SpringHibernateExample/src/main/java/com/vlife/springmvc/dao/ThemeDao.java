@@ -17,6 +17,6 @@ public interface ThemeDao {
 	List<Theme>findThemeByPage (int offset, int length);
 	List<Theme> findThemeByNameAndPage(String  partName,int offset, int length);
 	Integer getMaxCheckNumberByName(String name);
-	
+
 	
 }

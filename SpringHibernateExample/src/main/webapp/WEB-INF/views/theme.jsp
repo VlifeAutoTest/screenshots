@@ -49,12 +49,20 @@ else{
 		<table class="table table-striped table-hover">
 			<tr>
 				<td><label for="name">名称: </label> </td>
+<<<<<<< HEAD
 				<td><form:input path="name" id="name"/>
 				<font id="qwe" size="3" color="red">${message}</font> </td>
+=======
+				<td><form:input path="name" id="name"/></td>
+>>>>>>> branch 'master' of https://github.com/VlifeAutoTest/screenshots.git
 				<td><form:errors path="name" cssClass="error"/></td>
 		    </tr>
 		    <form:input type="hidden" path="path" id="path]"/>
+<<<<<<< HEAD
 		    <%-- <tr id ="we" >
+=======
+		    <tr id ="we" >
+>>>>>>> branch 'master' of https://github.com/VlifeAutoTest/screenshots.git
 				<td><label for="path">保存路径： </label> </td>
 				<td><form:input path="path" id="path" /></td>
 				<td><form:errors path="path" cssClass="error"/></td>
@@ -62,8 +70,12 @@ else{
 	
 			 <tr id ="wq">
 				<td><label for="">文件名: </label> </td>
+<<<<<<< HEAD
 				<td><input type="file" name="file" >
 				<font id="qwe" size="3" color="red">${messagetwo}</font></td>
+=======
+				<td><input type="file" name="file" ></td>
+>>>>>>> branch 'master' of https://github.com/VlifeAutoTest/screenshots.git
 				<%--  <td><form:errors path="path" cssClass="error"/></td>  --%>
 		    </tr>
 	
@@ -75,7 +87,11 @@ else{
 							<input type="submit" value="更新"/>
 						</c:when>
 						<c:otherwise>
+<<<<<<< HEAD
 							<input type="submit"  id ="addnew" value="增加" />
+=======
+							<input type="submit" value="增加" />
+>>>>>>> branch 'master' of https://github.com/VlifeAutoTest/screenshots.git
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -84,7 +100,11 @@ else{
 	</form:form>
 </div>
 </div>
+<<<<<<< HEAD
 	Go back to <a href="<c:url value='/themelist-1' />">字体与主题列表</a>
+=======
+	Go back to <a href="<c:url value='/themelist' />">字体与主题列表</a>
+>>>>>>> branch 'master' of https://github.com/VlifeAutoTest/screenshots.git
 </body>
 
 
