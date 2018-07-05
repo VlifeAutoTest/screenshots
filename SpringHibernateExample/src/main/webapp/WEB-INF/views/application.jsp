@@ -9,6 +9,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 	<title>手机应用</title>
 	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/bootstrap.js"></script>
 	<style type="text/css"></style> 
 	<style>
 	select{
@@ -42,7 +44,7 @@
 		<form:input type="hidden" path="id" id="id"/>
 		<table class="table table-striped table-hover table-responsive">
 			<tr>
-				<td><label for="name">Name: </label> </td>
+				<td><label for="name">应用名: </label> </td>
 				<td><form:input path="name" id="name"/></td>
 				<td><form:errors path="name" cssClass="error"/></td>
 		    </tr>
@@ -65,7 +67,7 @@
 				<td><form:errors path="style" cssClass="error"/></td>
 		    </tr>
 		    <tr>
-		    	<td><label for="vendor">Vendor: </label> </td>
+		    	<td><label for="vendor">厂商: </label> </td>
 		    	<c:choose>
 					<c:when test="${edit}">
 						<td>
@@ -97,10 +99,10 @@
 				<td colspan="3">
 					<c:choose>
 						<c:when test="${edit}">
-							<input type="submit" value="Update"/>
+							<input type="submit" value="更新"/>
 						</c:when>
 						<c:otherwise>
-							<input type="submit" value="Save"/>
+							<input type="submit" value="增加"/>
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -109,6 +111,6 @@
 	</form:form>
 </div>
 </div>
-	Go back to <a href="<c:url value='/applicationlist' />">List of All Applications</a>
+	Go back to <a href="<c:url value='/applicationlist' />">应用列表</a>
 </body>
 </html>

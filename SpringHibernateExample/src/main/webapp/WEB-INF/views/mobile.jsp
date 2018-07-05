@@ -42,31 +42,31 @@
 		<form:input type="hidden" path="id" id="id"/>
 		<table class="table table-striped table-hover table-responsive">
 			<tr>
-				<td><label for="name">Name: </label> </td>
+				<td><label for="name">名称: </label> </td>
 				<td><form:input path="name" id="name"/></td>
 				<td><form:errors path="name" cssClass="error"/></td>
 		    </tr>
 		    
 		    <tr>
-				<td ><label for="uid">UID: </label> </td>
+				<td ><label for="uid">Udid: </label> </td>
 				<td><form:input path="uid" id="uid"/></td>
 				<td><form:errors path="uid" cssClass="error"/></td>
 		    </tr>
 		    
 		    <tr>
-				<td><label for="size">Size: </label> </td>
+				<td><label for="size">分辨率: </label> </td>
 				<td><form:input path="size" id="size"/></td>
 				<td><form:errors path="size" cssClass="error"/></td>
 		    </tr>
 		    
 		    <tr>
-				<td><label for="os">Os: </label> </td>
+				<td><label for="os">操作系统版本: </label> </td>
 				<td><form:input path="os" id="os"/></td>
 				<td><form:errors path="os" cssClass="error"/></td>
 		    </tr>
 		    
 		    <tr>
-		    	<td><label for="vendor">Vendor: </label> </td>
+		    	<td><label for="vendor">厂商: </label> </td>
 		    	<c:choose>
 					<c:when test="${edit}">
 						<td>
@@ -98,10 +98,10 @@
 				<td colspan="3">
 					<c:choose>
 						<c:when test="${edit}">
-							<input type="submit" value="Update"/>
+							<input type="submit" value="更新"/>
 						</c:when>
 						<c:otherwise>
-							<input type="submit" value="Save"/>
+							<input type="submit" value="增加"/>
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -110,6 +110,6 @@
 	</form:form>
 </div>
 </div>
-	Go back to <a href="<c:url value='/themelist' />">List of All Mobile</a>
+	Go back to <a href="<c:url value='/mobilelist-1' />">手机应用列表</a>
 </body>
 </html>

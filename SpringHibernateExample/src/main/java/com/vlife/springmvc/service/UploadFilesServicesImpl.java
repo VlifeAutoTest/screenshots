@@ -31,9 +31,9 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 	@Autowired
 	private ThemeDao dao;
 	String savePath="/diskb/uploadfiles";
-//	String savePath="F:\\abc\\";
+	//String savePath="F:\\abc\\";
 	private String name;
-//	private String tempPath="F:\\abc\\ap\\";
+	//private String tempPath="F:\\abc\\ap\\";
 	private String tempPath="/diskb/tempData";
 	private String  filename2;
 	private String filename ;
@@ -71,7 +71,6 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 			// 限制上传文件的大小
 			// sfu.setFileSizeMax(1024*1024*3);//表示3M大小
 			// sfu.setSizeMax(1024*1024*6);
-			@SuppressWarnings("unchecked")
 			List<FileItem> fileItems = sfu.parseRequest(request);
 
 			// 遍历表单项数据
@@ -121,7 +120,6 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 			// 限制上传文件的大小
 			// sfu.setFileSizeMax(1024*1024*3);//表示3M大小
 			// sfu.setSizeMax(1024*1024*6);
-			@SuppressWarnings("unchecked")
 			List<FileItem> fileItems = sfu.parseRequest(request);
 
 			// 遍历表单项数据
@@ -162,11 +160,11 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 			// 得到上传的名子
 			 filename = fileitem.getName();// 文件项中的值 F:\图片素材\小清新\43.jpg 或者
 					filename2=filename;								// 43.jpg
-			if (filename != null) {
-				// filename =
-				// filename.substring(filename.lastIndexOf(File.separator)+1);
-				filename = FilenameUtils.getName(filename);// 效果同上
-			}
+//			if (filename != null) {
+//				// filename =
+//				// filename.substring(filename.lastIndexOf(File.separator)+1);
+//				filename = FilenameUtils.getName(filename);// 效果同上
+//			}
 			// 解决文件同名的问题
 //			filename = UUID.randomUUID() + "_" + filename;
 			Date  date =new Date();
@@ -177,7 +175,7 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 			// 目录打散
 			// String childDirectory = makeChildDirectory(storeDirectory); //
 			// 2015-10-19
-			String childDirectory = makeChildDirectory(storeDirectory, filename); // a/b
+			//String childDirectory = makeChildDirectory(storeDirectory, filename); // a/b
 
 			// 上传文件，自动删除临时文件
 			fileitem.write(new File(storeDirectory,filename));

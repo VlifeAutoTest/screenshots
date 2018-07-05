@@ -18,7 +18,7 @@
                 <table class="table table-striped table-hover">  
                     <thead>  
                         <tr>  
-                            <th>Name</th>  
+                            <th>厂商名称</th>  
                             <th></th>  
 <%--                             <td><a href="<c:url value='/newvendor' />">+ Add Vendor</a></td>   --%>
                         </tr>  
@@ -28,7 +28,7 @@
 								<tr>
 								<td>${vendor.name}</td>
 								<td><%-- <a href="<c:url value='/edit-${vendor.id}-vendor' />">edit</a> --%></td>
-								<td><a href="<c:url value='/delete-${vendor.id}-vendor' />">delete</a></td>
+								<td><a href="<c:url value='/delete-${vendor.id}-vendor' />">删除</a></td>
 								</tr>
 							</c:forEach>
                     </tbody>  

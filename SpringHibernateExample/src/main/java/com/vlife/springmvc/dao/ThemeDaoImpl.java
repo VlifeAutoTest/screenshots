@@ -4,8 +4,14 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
+
+import com.sun.corba.se.spi.servicecontext.UEInfoServiceContext;
 import com.vlife.springmvc.model.Theme;
 
 @Repository("themeDao")
@@ -43,9 +49,7 @@ public class ThemeDaoImpl extends AbstractDao<Integer, Theme> implements ThemeDa
 		Query query = getSession().createQuery(strSQL);
 		query.setString("name", "%"+partName+"%");
 		List <Theme> result=query.list();		
-	   return result;
-		
-		
+	   return result;	
 		
 	}
 
@@ -54,7 +58,7 @@ public class ThemeDaoImpl extends AbstractDao<Integer, Theme> implements ThemeDa
 	public List<Theme> findThemeByPage(int offset, int length) {
 		// TODO 自动生成的方法存根
 		
-		Query query = getSession().createQuery("from Theme");
+		Query query = getSession().createQuery("from Theme order by id desc");
         query.setFirstResult(offset);
         query.setMaxResults(length);
         return (List<Theme>) query.list();
@@ -72,5 +76,17 @@ public class ThemeDaoImpl extends AbstractDao<Integer, Theme> implements ThemeDa
 		List <Theme> result=query.list();		
 	   return result;
 	}
+	
+	public Integer getMaxCheckNumberByName(String name) {
+		
+		String strSql = "select max(t.checknumber) from Theme t where t.name=:thname";
+		Query query = getSession().createQuery(strSql);
+		query.setString("thname", name);
+		Integer count = (Integer)query.list().get(0);
+		return count;
+		
+	}
+
+
 
 }

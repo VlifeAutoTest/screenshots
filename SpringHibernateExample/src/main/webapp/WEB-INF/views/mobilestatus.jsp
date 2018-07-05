@@ -72,9 +72,9 @@ $("#fresh").click(function(){
 						<th>状态</th>
 						<th>厂商</th>
 						<th>名字</th>
-						<th>Uid</th>
-						<th>Os</th>
-						<th>Size</th>
+						<th>Udid</th>
+						<th>操作系统版本</th>
+						<th>分辨率</th>
 						
 					</tr>
 				</thead>

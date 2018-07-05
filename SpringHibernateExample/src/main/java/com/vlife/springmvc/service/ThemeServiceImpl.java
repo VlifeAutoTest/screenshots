@@ -62,5 +62,10 @@ public class ThemeServiceImpl implements ThemeService {
 	public List<Theme> findThemeByNameAndPage(String partName, int offset, int length) {
 		return dao.findThemeByNameAndPage(partName, offset, length);
 	}
+	
+	public Integer getMaxCheckNumberByName(String name) {
+		return dao.getMaxCheckNumberByName(name);
+	}
+	
 
 } 

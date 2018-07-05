@@ -18,12 +18,12 @@
                 <table class="table table-striped table-hover">  
                     <thead>  
                         <tr>  
-                            <th>Ssn</th>  
-                            <th>Address</th>
-                            <th>User Name</th>
-                            <th>Password</th>   
+                            <th>服务品名称</th>  
+                            <th>IP地址</th>
+                            <th>用户名</th>
+                            <th>密码</th>   
                             <th></th>  
-                            <td><a href="<c:url value='/servernew' />">+ Add Server</a></td>  
+                            <td><a href="<c:url value='/servernew' />">+ 增加服务器</a></td>  
                         </tr>  
                     </thead>  
                     <tbody>  
@@ -33,8 +33,8 @@
 								<td>${server.address}</td>
 								<td>${server.uname}</td>
 								<td>******</td>
-								<td><a href="<c:url value='/edit-${server.ssn}-testserver' />">edit</a></td>
-								<td><a href="<c:url value='/delete-${server.ssn}-testserver' />">delete</a></td>
+								<td><a href="<c:url value='/edit-${server.ssn}-testserver' />">编辑</a></td>
+								<td><a href="<c:url value='/delete-${server.ssn}-testserver' />">删除</a></td>
 								</tr>
 							</c:forEach>
                     </tbody>  

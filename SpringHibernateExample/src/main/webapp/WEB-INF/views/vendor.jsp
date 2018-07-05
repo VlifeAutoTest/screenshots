@@ -34,7 +34,7 @@
 		<table class="table table-striped table-hover">  
 	    
 			<tr>
-				<td><label for="name">Name: </label> </td>
+				<td><label for="name">名称: </label> </td>
 				<td><form:input path="name" id="name"/></td>
 				<td><form:errors path="name" cssClass="error"/></td>
 		    </tr>
@@ -42,10 +42,10 @@
 				<td colspan="3">
 					<c:choose>
 						<c:when test="${edit}">
-							<input type="submit" value="Update"/>
+							<input type="submit" value="保存"/>
 						</c:when>
 						<c:otherwise>
-							<input type="submit" value="Add"/>
+							<input type="submit" value="增加"/>
 						</c:otherwise>
 					</c:choose>
 				</td>

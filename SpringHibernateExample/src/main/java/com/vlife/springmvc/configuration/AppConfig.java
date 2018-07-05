@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -23,11 +26,11 @@ import com.vlife.springmvc.converter.NameToVendorEntityConverter;;
 @EnableWebMvc
 @EnableTransactionManagement
 @ComponentScan(basePackages = "com.vlife.springmvc")
-public class AppConfig extends WebMvcConfigurerAdapter{
-	
+public class AppConfig extends WebMvcConfigurerAdapter {
+
 	@Autowired
 	NameToVendorEntityConverter vendorConverter;
-	
+
 	@Bean
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -36,35 +39,43 @@ public class AppConfig extends WebMvcConfigurerAdapter{
 		viewResolver.setSuffix(".jsp");
 		return viewResolver;
 	}
-	
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/assets/**").addResourceLocations("/assets/");
-        registry.addResourceHandler("*.png").addResourceLocations("/assets/img/");
-        registry.addResourceHandler("*.css").addResourceLocations("/assets/css/");
-        registry.addResourceHandler("*.js").addResourceLocations("/assets/js/");
-        registry.addResourceHandler("*.jsp").addResourceLocations("/WEB-INF/views/");
+		registry.addResourceHandler("/assets/**").addResourceLocations("/assets/");
+		registry.addResourceHandler("*.png").addResourceLocations("/assets/img/");
+		registry.addResourceHandler("*.css").addResourceLocations("/assets/css/");
+		registry.addResourceHandler("*.js").addResourceLocations("/assets/js/");
+		registry.addResourceHandler("*.jsp").addResourceLocations("/WEB-INF/views/");
 
-    }
-	
+	}
+
 	@Override
 	public void addFormatters(FormatterRegistry registry) {
-	    registry.addConverter(vendorConverter);
+		registry.addConverter(vendorConverter);
 	}
-	
-	
+
 	@Bean
 	public MessageSource messageSource() {
-	    ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
-	    messageSource.setBasename("messages");
-	    return messageSource;
+		ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+		messageSource.setBasename("messages");
+		return messageSource;
 	}
-	
-	 @Override
-	    public void addInterceptors(InterceptorRegistry registry) {
-	        registry.addInterceptor(new SessionInterceptor()).addPathPatterns("/applicationlist-{page}-{vendorid}","/themelist-{page}");
-	    }
-	
-	
+
+	// 拦截器
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new SessionInterceptor()).addPathPatterns("/applicationlist-{page}-{vendorid}",
+				"/themelist-{page}");
+	}
+	//上传文件解析器
+	@Bean
+	public MultipartResolver multipartResolver() {
+		CommonsMultipartResolver multipartResolver =new CommonsMultipartResolver();
+		multipartResolver.setDefaultEncoding("utf-8");
+		multipartResolver.setMaxUploadSize(-1);
+		return multipartResolver;
+		
+	}
 
 }

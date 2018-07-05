@@ -33,27 +33,27 @@
 
 		<table class="table table-striped table-hover">  
 			<tr>
-				<td><label for="ssn">SSN: </label> </td>
+				<td><label for="ssn">服务器名称: </label> </td>
 				<td><form:input path="ssn" id="ssn"/></td>
 				<td><form:errors path="ssn" cssClass="error"/></td>
 				<td>${errorInfo}</td>
 		    </tr>
 	    
 			<tr>
-				<td><label for="address">Address: </label> </td>
+				<td><label for="address">IP地址: </label> </td>
 				<td><form:input path="address" id="address"/></td>
 				<td><form:errors path="address" cssClass="error"/></td>
 				<td></td>
 		    </tr>
 		    
 		    <tr>
-				<td><label for="uname">User Name: </label> </td>
+				<td><label for="uname">用户名: </label> </td>
 				<td><form:input path="uname" id="uname"/></td>
 				<td><form:errors path="uname" cssClass="error"/></td>
 				<td></td>
 		    </tr>
 		    <tr>
-				<td><label for="passwd">Password: </label> </td>
+				<td><label for="passwd">密码: </label> </td>
 				<td><form:input path="passwd" id="passwd" type="password"/></td>
 				<td><form:errors path="passwd" cssClass="error"/></td>
 				<td></td>
@@ -62,10 +62,10 @@
 				<td colspan="4">
 					<c:choose>
 						<c:when test="${edit}">
-							<input type="submit" value="Update"/>
+							<input type="submit" value="更新"/>
 						</c:when>
 						<c:otherwise>
-							<input type="submit" value="Add"/>
+							<input type="submit" value="增加"/>
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -74,6 +74,6 @@
 	</form:form>
 </div>
 </div>
-	Go back to <a href="<c:url value='/serverlist' />">Server List</a>
+	Go back to <a href="<c:url value='/serverlist' />">服务器列表</a>
 </body>
 </html>

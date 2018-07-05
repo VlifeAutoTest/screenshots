@@ -25,6 +25,9 @@ public class Theme {
 	@Column(name = "path", nullable = true)
 	private String path;
 	
+	@Column(name = "checknumber", nullable = true)
+	private int checknumber;
+	
 	public int getId() {
 		return id;
 	}
@@ -48,5 +51,12 @@ public class Theme {
 	public void setPath(String path) {
 		this.path = path;
 	}
+	
+	public int getChecknumber() {
+		return checknumber;
+	}
 
+	public void setChecknumber(int number) {
+		this.checknumber = number;
+	}
 }

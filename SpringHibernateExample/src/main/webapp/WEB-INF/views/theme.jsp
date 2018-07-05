@@ -44,24 +44,26 @@ else{
             </div>  
     <div class="panel-body">  
  
-	<form:form method="POST" modelAttribute="theme"  enctype="multipart/form-data"  >
+	<form:form method="POST" modelAttribute="theme"  enctype="multipart/form-data" id ="fromuserud" >
 		<form:input type="hidden" path="id" id="id"/>
 		<table class="table table-striped table-hover">
 			<tr>
-				<td><label for="name">Name: </label> </td>
-				<td><form:input path="name" id="name"/></td>
+				<td><label for="name">名称: </label> </td>
+				<td><form:input path="name" id="name"/>
+				<font id="qwe" size="3" color="red">${message}</font> </td>
 				<td><form:errors path="name" cssClass="error"/></td>
 		    </tr>
 		    <form:input type="hidden" path="path" id="path]"/>
-		    <tr id ="we" >
-				<td><label for="path">Path: </label> </td>
+		    <%-- <tr id ="we" >
+				<td><label for="path">保存路径： </label> </td>
 				<td><form:input path="path" id="path" /></td>
 				<td><form:errors path="path" cssClass="error"/></td>
-		    </tr>
+		    </tr> --%>
 	
 			 <tr id ="wq">
-				<td><label for="">File: </label> </td>
-				<td><input type="file" name="file" ></td>
+				<td><label for="">文件名: </label> </td>
+				<td><input type="file" name="file" >
+				<font id="qwe" size="3" color="red">${messagetwo}</font></td>
 				<%--  <td><form:errors path="path" cssClass="error"/></td>  --%>
 		    </tr>
 	
@@ -70,10 +72,10 @@ else{
 				<td colspan="3">
 					<c:choose>
 						<c:when test="${edit}">
-							<input type="submit" value="Update"/>
+							<input type="submit" value="更新"/>
 						</c:when>
 						<c:otherwise>
-							<input type="submit" value="Save" />
+							<input type="submit"  id ="addnew" value="增加" />
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -82,6 +84,36 @@ else{
 	</form:form>
 </div>
 </div>
-	Go back to <a href="<c:url value='/themelist' />">List of All Themes</a>
+	Go back to <a href="<c:url value='/themelist-1' />">字体与主题列表</a>
 </body>
+
+
+<script type="text/javascript">
+
+/* $(function(){
+	
+	$("#addnew").click(function(){
+		var date=$("#fromuserud")[0];  //获取表单中的值
+		var formData = new FormData(date);  //使用FormData()处理表单中的值
+		    $.ajax({
+		        url:"newtheme",  //发送的URL
+		        type:"POST",        //类型
+		        data:formData,      //将数据发送
+		        async: false,       //是否同步，否
+		            cache: false,       //是否缓存，否
+		            contentType: false,     //需要使用
+		            processData: false,     //需要使用
+		        success:function(result){
+		        //发送成功后需要执行的动作
+		        }
+		    });
+		});
+	
+	
+	});
+ */
+
+
+</script>
+
 </html>

@@ -19,10 +19,10 @@
                 <table class="table table-striped table-hover">  
                     <thead>  
                         <tr>  
-                            <th>Name</th>  
-                            <th>Path</th>  
-                            <th></th>  
-                            <th><a href="<c:url value='/newtheme' />">+ Add Resource</a></th>  
+                            <th>资源名</th>  
+                            <th>审核序号</th>  
+                            <th>保存路径</th>  
+                            <th><a href="<c:url value='/newtheme' />">+ 增加资源</a></th>  
                              <th>
                              <!--  页面搜索的代码 -->
                              <form   method="post">
@@ -40,8 +40,9 @@
 							<c:forEach items="${themes}" var="theme">
 								<tr>
 								<td>${theme.name}</td>
+								<td> ${theme.checknumber} </td>
 								<td>  <a id ="aa" href="http://192.168.1.230:8080/${fn:substring(theme.path, 7, -1)}" target="_blank">${theme.path}</a></td>
-								<td><a href="<c:url value='/edit-${theme.id}-theme' />">edit</a></td>
+								<%-- <td><a href="<c:url value='/edit-${theme.id}-theme' />">edit</a></td> --%>
 								<td><a href="<c:url value='/delete-${theme.id}-theme-${page }' />">delete</a></td>
 								<td></td>
 								</tr>

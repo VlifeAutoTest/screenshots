@@ -2,6 +2,8 @@ package com.vlife.springmvc.service;
 
 import java.util.List;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
+
 import com.vlife.springmvc.model.Theme;
 
 public interface ThemeService {
@@ -14,9 +16,10 @@ public interface ThemeService {
 	
 	List<Theme> findAllTheme();
 	
+	Integer getMaxCheckNumberByName(String name);
+	
 	void updateTheme(Theme theme);
 	 List<Theme> searchByName (String name);
 	 List<Theme> findThemeByPage(int offset, int length);
 	 List<Theme> findThemeByNameAndPage(String  partName,int offset, int length);
-
 }

@@ -19,7 +19,8 @@
     <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>    
     <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.css">      
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet"> 
-	
+	<link rel="stylesheet" type="text/css" href="assets/css/xcConfirm.css"/>
+	<script src="assets/js/xcConfirm.js" type="text/javascript" charset="utf-8"></script> 
 	
 	<style type="text/css"></style> 
 	<style>
@@ -82,7 +83,7 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#mobile").empty();
-		                $("#mobile").append("<option value='' selected='selected'>Nothing selected</option>");  
+/* 		                $("#mobile").append("<option value='' selected='selected'>Nothing selected</option>");   */
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#mobile").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
@@ -199,7 +200,7 @@
 			    </tr>
 			    
 			    <tr>
-			    	<td><label for="resource">资源: </label> </td>
+			    	<td><label for="resource">资源(审核序号): </label> </td>
 					<td><form:select path="resource" multiple="multiple" itemValue="id" itemLabel="name"  id="resource" class="selectpicker bla bla bli" data-live-search="true" >
 				</form:select>
 					</td>
@@ -207,7 +208,7 @@
 			    </tr>
 			    <tr>
 			    	<td><label for="mid">手机: </label> </td>
-					<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" class="selectpicker bla bla bli"  />
+					<td><form:select path="mid" multiple="multiple" itemValue="id" itemLabel="name" id="mobile" class="selectpicker bla bla bli"  />
 			    </tr>
 			    
 			    <tr>
@@ -235,7 +236,7 @@
 				</tr>
 			</table>
 			
-			<table class="table table-striped table-hover table-nonfluid table-responsive" id="result_table">  
+			<table class="table table-striped table-hover table-nonfluid table-responsive " id="result_table">  
   				<thead>
                  <tr>  
                      <th>厂商</th>  
@@ -243,10 +244,11 @@
                      <th>资源</th>
                      <th>应用</th>
                      <th>截图类型</th>
+                     <th>图片路径</th>
+                      <th></th>
                      <th>开始时间</th>
                      <th>结束时间</th>
-                     <th>ZIP文件</th>
-                     <th>日志</th>
+                     <!-- <th>日志</th> -->
 
                  </tr>  
            		<thead>
@@ -269,11 +271,17 @@
 								<td>${dt[3]}</td>
 								<td>${dt[4]}</td>
 								<td>${dt[11]}</td>
+								<td><a href="#"  value="${dt[7]}"  id="ww">预览 </a><br>
+							     <a href="http://192.168.1.230:8080${dt[7]}/${dt[8]} " target="_blank">下载</a></td>
+							     <td> <b id="qdf" style="display:none; ">\\192.168.1.230${dt[7]}</b> </td>
 								<td>${dt[5]}</td>
 								<td>${dt[6]}</td>
-							    <td><a href="http://192.168.1.230:8080${dt[7]}/${dt[8]} " target="_blank">${dt[8]}</a></td>
-							   <%--  <td><a href="${dt[7]}">${dt[8]}</a></td>  --%>
-								<td><a href="http://192.168.1.230:8080${dt[7]}/${dt[9]}" target="_blank" >${dt[9]}</a></td>
+							     
+							     
+							     
+							     </td>
+<%-- 							     <td><a href="http://192.168.1.230:8080${dt[7]}/${dt[8]} " target="_blank">${dt[8]}</a></td> --%>
+								<%-- <td><a href="http://192.168.1.230:8080${dt[7]}/${dt[9]}" target="_blank" >${dt[9]}</a></td>  --%>
 								</tr>
 							</c:forEach>
 	
@@ -307,5 +315,16 @@
 
 </div>
 </div>
+<script type="text/javascript">
+$(function(){
+    $("#result_table").on("click", "#ww", function(event){
+    	//alert("44444");
+    	var ee=$(this).closest("tr").find("td").eq(6).find("b").text();
+    	alert(ee);
+       // $("#ll").append(ee) ;
+    });
+});
+</script>
 </body>
+
 </html>

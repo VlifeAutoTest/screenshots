@@ -36,8 +36,16 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 			criteria.add(Restrictions.eq("vid", Integer.parseInt(conditions.get("vid"))));
 		}
 		
-		if (conditions.get("mid") != null && (!conditions.get("mid").equals("0"))) {
-			criteria.add(Restrictions.eq("mid", Integer.parseInt(conditions.get("mid"))));
+		if (conditions.get("mid") != null && (conditions.get("mid").length()> 0)) {
+//			criteria.add(Restrictions.eq("mid", Integer.parseInt(conditions.get("mid"))));
+			
+			String[] mid_list = conditions.get("mid").split(",");
+			Criterion[] cri_list = new Criterion[mid_list.length];
+			for(int i=0; i< mid_list.length; i++) {
+				
+				cri_list[i] = Restrictions.eq("mid", mid_list[i]);
+			}
+			criteria.add(Restrictions.or(cri_list));
 		}
 		
 		if (conditions.get("resource") != null && conditions.get("resource").length() >0) {
@@ -59,8 +67,7 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 			String[] app_list = conditions.get("resource").split(",");
 			Criterion[] cri_list = new Criterion[app_list.length];
 			for(int i=0; i< app_list.length; i++) {
-//				
-//				cri_list[i] = Restrictions.like("app", "%"+app_list[i]+"%");
+
 				cri_list[i] = Restrictions.sqlRestriction("app REGEXP'(^|,)" + app_list[i] + "($|,)'");
 			}
 			criteria.add(Restrictions.or(cri_list));

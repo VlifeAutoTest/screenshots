@@ -1,7 +1,9 @@
 package com.vlife.springmvc.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,8 +14,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.math.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -28,6 +34,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import com.vlife.springmvc.model.Theme;
 import com.vlife.springmvc.model.Vendor;
@@ -126,7 +134,7 @@ public class AppController {
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyyMMddHHmmss");  
         String time2 = simpleDateFormat2.format(curday).trim();
         //get mobile uid and vendor name
-        int id = rinfo.getMid();
+        int id = Integer.parseInt(rinfo.getMid());
         String uid = mobile_service.findById(id).getUid().trim();
         String name = mobile_service.findById(id).getName().trim();
         id = rinfo.getVid();
@@ -162,7 +170,7 @@ public class AppController {
 		List<Vendor> vendors = vendor_service.findAllVendor();
 		Map<String, String> cmap = new HashMap<String, String>();
 		cmap.put("vid", Integer.toString(runinfo.getVid()));
-		cmap.put("mid", Integer.toString(runinfo.getMid()));
+		cmap.put("mid", runinfo.getMid());
 		cmap.put("resource", runinfo.getResource());
 		cmap.put("app", runinfo.getApp());
 		
@@ -181,6 +189,13 @@ public class AppController {
 		
 		if (qresult.size() > 0) {
 			List<Object[]> detail = runinfo_services.translaterinfo(qresult);
+			for(Object str[]:detail) {
+			String path=(String)str[7];
+			System.out.println(path);
+			String bb = path.replaceAll("/", "\\\\");
+			System.out.println(bb);
+			str[7]=bb;
+			}
 			model.addAttribute("detail", detail);
 			model.addAttribute("queryflag", true);
 			model.addAttribute("message", "");
@@ -214,7 +229,7 @@ public class AppController {
 			ModelMap model) throws UnsupportedEncodingException, ParseException {
 		
 		
-		if(runinfo.getVid()==0||  runinfo.getMid()==0||runinfo.getApp()==null|| runinfo.getResource()==null  ) {
+		if(runinfo.getVid()==0||  runinfo.getMid()== null ||runinfo.getApp()==null|| runinfo.getResource()==null  ) {
 			
 			List<Vendor> vendors = vendor_service.findAllVendor();
 			Runinfo runinfo2 = new Runinfo();
@@ -234,7 +249,7 @@ public class AppController {
         
         // set sid
         List infos = status_services.getOriginStatusInfo();
-        int mid = runinfo.getMid();
+        int mid = Integer.parseInt(runinfo.getMid());
         String uid = mobile_service.findById(mid).getUid();
     	Iterator it = infos.iterator();
     		
@@ -542,35 +557,141 @@ public class AppController {
 	@RequestMapping(value = { "/newtheme" }, method = RequestMethod.GET, produces="text/html;charset=UTF-8")
 	public String newTheme(ModelMap model) {
 		Theme app = new Theme();
+		//Long aa=theme_service.findMaxCheckNum("七彩小仙女");
+		//model.addAttribute("message",123);
 		model.addAttribute("theme", app);
 		model.addAttribute("edit", false);
 		return "theme";
 	}
 	
 	@RequestMapping(value = { "/newtheme" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public String saveTheme(@Valid Theme theme, BindingResult result, ModelMap model, HttpServletRequest request)
-			throws UnsupportedEncodingException {
-
-		// if (result.hasErrors()) {
-		// return "theme";
-		// }
-		upload_files.doGet(request);
-		SSHCopyFile sshcf =new SSHCopyFile("192.168.1.230", "root","vlifeqa" , 22);
-		try {
-			sshcf.putFile("/diskb/uploadfiles", upload_files.getFilename(), "/diskb/uploadfiles");
-		} catch (Exception e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
+	public String saveTheme(@Valid Theme theme, BindingResult result, ModelMap model, 
+			HttpServletRequest request,@RequestParam(value = "file",required=true) MultipartFile attach) {
+		//如果没有写名字给出提示!
+//		if(theme.getName()==null|| theme.getName().length()==0) {
+//			Theme app = new Theme();
+//			model.addAttribute("theme", app);
+//			model.addAttribute("edit", false);
+//			model.addAttribute("message","请输入名称!");
+//			return "theme";
+//		
+//		upload_files.doGet(request);
+//		
+//		SSHCopyFile sshcf =new SSHCopyFile("192.168.1.230", "root","vlifeqa" , 22);
+//		try {
+//			sshcf.putFile("/diskb/uploadfiles", upload_files.getFilename(), "/diskb/uploadfiles");
+//		} catch (Exception e) {
+//			// TODO 自动生成的 catch 块
+//			e.printStackTrace();
+//		}
+//		String filePath="/diskb/uploadfiles"+"/"+upload_files.getFilename();
+//		File file = new File (filePath);
+//		file.deleteOnExit();
+//		theme.setChecknumber(2);
+//		theme.setName(upload_files.getName());
+//		theme.setPath(upload_files.getDirectory());
+//		upload_files.saveTheme(theme);
+//		return "redirect:/themelist-1";
+//	}
+	  Boolean status =true;
+		String name =theme.getName();
+		name=name.trim();
+		if(name.length()==0 || name==null) {
+			Theme app = new Theme();
+			model.addAttribute("theme", app);
+			model.addAttribute("edit", false);
+			model.addAttribute("message","请输入名称!");
+			return "theme";
 		}
-		String filePath="/diskb/uploadfiles"+"/"+upload_files.getFilename();
-		File file = new File (filePath);
-		file.deleteOnExit();
-		theme.setName(upload_files.getName());
-		theme.setPath(upload_files.getDirectory());
-		upload_files.saveTheme(theme);
-		return "redirect:/themelist-1";
-	}
-	
+		else {
+				//存储图片过程
+	        if (!attach.isEmpty()) {
+	            String path = "F:\\abc\\";
+//	            String path = "/diskb/tempData/";
+	            File file =new File (path);
+	    		if(!file.exists()) {
+	    			file.mkdirs();
+	    		}
+	            String oldFileName = attach.getOriginalFilename();
+	            //上传文件后缀
+	            String prefix = FilenameUtils.getExtension(oldFileName);
+	            System.out.println("999999999999"+oldFileName);
+	            System.out.println(prefix);
+	            //可以限制上传那文件的大小
+//	            int filesize = 4000000;
+//	            if (attach.getSize() > filesize) {
+//	                return false;
+//	            }
+	            Date  date =new Date();
+				 DateFormat dateformat= new SimpleDateFormat("yyyyMMdd-HHmmss");
+				 String date1 = dateformat.format(date); 
+				 oldFileName=date1+oldFileName;
+	            
+	                File targetFile = new File(path, oldFileName);
+	                if (!targetFile.exists()) {
+	                    targetFile.mkdirs();
+	                }
+	                try {
+	                    attach.transferTo(targetFile);
+	                } catch (Exception e) {
+	                	status=false;
+	                   model.addAttribute("messagetwo", "文件上传失败!");
+	                   Theme app = new Theme();
+	   					model.addAttribute("theme", app);
+	   					model.addAttribute("edit", false);
+	   					return "theme";	
+	                }
+	                //拷贝文件到230服务器
+	                SSHCopyFile sshcf =new SSHCopyFile("192.168.1.230", "root","vlifeqa" , 22);
+	        		try {
+	        			sshcf.putFile(path,oldFileName , "/diskb/uploadfiles");
+	        		} catch (Exception e) {
+	        			// TODO 自动生成的 catch 块
+	        			model.addAttribute("messagetwo", "文件上传失败!");
+		                   Theme app = new Theme();
+		   					model.addAttribute("theme", app);
+		   					model.addAttribute("edit", false);
+		   					return "theme";	
+	        		}
+	                
+	        		String filePath="/diskb/uploadfiles"+"/"+oldFileName;
+	        		String tempFile =path+"/"+oldFileName;
+	        		File file2 = new File (tempFile);
+	        		file2.deleteOnExit();
+	        		Integer maxNum=theme_service.getMaxCheckNumberByName(name);
+	        		if(maxNum==null) {
+	        			maxNum=1;
+	        		}
+	        		System.out.println(name);
+	        		//System.out.println("888888888888888888888888"+ maxNum);
+	        		theme.setChecknumber(maxNum+1);
+	        		theme.setName(name);
+	        		theme.setPath(filePath);
+	        		upload_files.saveTheme(theme);
+	        		return "redirect:/themelist-1";
+	                
+	                
+	                
+	        }
+	        else {
+	        	status=false;
+	        	Theme app = new Theme();
+				model.addAttribute("theme", app);
+				model.addAttribute("edit", false);
+				model.addAttribute("messagetwo", "文件上传失败!");
+				return "theme";	
+	        }
+	     
+	        
+			
+			
+			
+			
+		}
+		
+		
+		
+		}
 	
 	@RequestMapping(value = { "/edit-{id}-theme" }, method = RequestMethod.GET,produces="text/html;charset=UTF-8" )
 	public String editTheme(@PathVariable int id, ModelMap model) {
@@ -879,5 +1000,40 @@ public class AppController {
 		List<Mobile> res = mobile_service.findMobileByVendor(vendor);
 		return  res;
     }
+	
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/upload", method = RequestMethod.POST)
+	public String  update( HttpServletRequest request,@RequestParam(value = "file",required=true) MultipartFile attach) {
+	        String photo = null;    //定义图片存储路径
+	        //存储图片过程
+	        if (!attach.isEmpty()) {
+	            String path = "F:\\abc\\";
+	            String oldFileName = attach.getOriginalFilename();
+	            String prefix = FilenameUtils.getExtension(oldFileName);
+	            //可以限制上传那文件的大小
+//	            int filesize = 4000000;
+//	            if (attach.getSize() > filesize) {
+//	                return false;
+//	            }
+	           
+	                String fileName =  prefix;
+	                File targetFile = new File(path, oldFileName);
+	                if (!targetFile.exists()) {
+	                    targetFile.mkdirs();
+	                }
+	                try {
+	                    attach.transferTo(targetFile);
+	                } catch (Exception e) {
+	                    return "failed";
+	                }
+	                photo = fileName;
+	           
+	        }
+	        return "success";
+	    }
+	
+	
 	
 } 
