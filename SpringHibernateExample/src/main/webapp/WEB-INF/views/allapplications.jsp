@@ -53,7 +53,12 @@
 							<td>${app.name}</td>
 							<td>${app.getVendor().getName()}</td>
 							<td>${app.style}</td>
-							<td><a href="<c:url value='/edit-${app.id}-application' />">编辑</a></td>
+							
+							<td>
+							<c:if test="${app.style  == 'Custom'}">
+							<a href="<c:url value='/edit-${app.id}-application' />">编辑</a>
+							</c:if>
+							</td>
 							<td><a
 								href="<c:url value='/delete-${app.id}-application-${page}' />">删除</a></td>
 						</tr>

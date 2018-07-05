@@ -14,7 +14,9 @@ public class SessionInterceptor implements HandlerInterceptor {
 		// TODO 自动生成的方法存根
 		String tvendorid = (String) request.getSession().getAttribute("tvendorid");
 		String searchValue = (String) request.getSession().getAttribute("searchValue");
-		if (tvendorid == null && searchValue == null) {
+		String pageType = (String) request.getSession().getAttribute("pageType");
+		
+		if (tvendorid == null || searchValue == null || pageType==null ) {
 			request.getRequestDispatcher("/list").forward(request, response);
 			return false;
 		}

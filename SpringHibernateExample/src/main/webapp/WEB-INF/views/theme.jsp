@@ -41,7 +41,7 @@
 			<a class="panel-title">主题与字体资源更新</a>
 		</div>
 		<div class="panel-body">
-			<form:form method="POST" modelAttribute="theme" action="/newtheme"
+			<form:form method="POST" modelAttribute="theme" action="newtheme"
 				enctype="multipart/form-data" id="fromuserud">
 				<form:input type="hidden" path="id" id="id" />
 				<table class="table table-striped table-hover">
@@ -83,7 +83,7 @@
 		</div>
 		
 	</div>
-	<a href="<c:url value='/themelist-1' />">字体与主题列表</a> ======= Go back to
+	<!--   <a href="<c:url value='/themelist-1' />">字体与主题列表</a> ======= Go back to -->
 </body>
 
 

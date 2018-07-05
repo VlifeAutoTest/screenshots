@@ -50,7 +50,7 @@ import com.vlife.springmvc.service.TestServerService;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes(value = { "tvendorid", "searchValue" })
+@SessionAttributes(value = { "tvendorid", "searchValue" ,"pageType"})
 public class AppController {
 	/*
 	 * @Autowired EmployeeService service;
@@ -295,6 +295,7 @@ public class AppController {
 		// 主页初始化下session的值
 		model.addAttribute("searchValue", "");
 		model.addAttribute("tvendorid", "0");
+		model.addAttribute("pageType", "");
 
 		List<Object[]> status = status_services.findDeviceStatus();
 		List<Object[]> devinfo = status_services.deviceStatusInfo();
@@ -553,13 +554,16 @@ public class AppController {
 		// model.addAttribute("message",123);
 		model.addAttribute("theme", app);
 		model.addAttribute("edit", false);
-		model.addAttribute("type",type);
+		if(type.length()!=0) {
+			model.addAttribute("pageType", type);
+		}
+			
 		return "theme";
 	}
 
 	@RequestMapping(value = { "/newtheme" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	public String saveTheme(@Valid Theme theme, BindingResult result, ModelMap model, HttpServletRequest request,
-			@RequestParam(value = "file", required = true) MultipartFile attach) {
+			@RequestParam(value = "file", required = true) MultipartFile attach,@ModelAttribute("pageType") String pageType) {
 		
 //			if(type.equals("0")) {
 		String name = theme.getName();
@@ -573,8 +577,7 @@ public class AppController {
 		} else {
 			// 存储图片过程
 			if (!attach.isEmpty()) {
-				 String path = "F:\\abc\\";
-//				String path = "/diskb/tempData/";
+				String path = "/diskb/tempData/";
 				File file = new File(path);
 				if (!file.exists()) {
 					file.mkdirs();
@@ -623,7 +626,7 @@ public class AppController {
 				String filePath = "/diskb/uploadfiles" + "/" + oldFileName;
 				String tempFile = path + "/" + oldFileName;
 				File file2 = new File(tempFile);
-				file2.deleteOnExit();
+				//file2.deleteOnExit();
 				Integer maxNum = theme_service.getMaxCheckNumberByName(name);
 				if (maxNum == null) {
 					maxNum = 1;
@@ -633,8 +636,14 @@ public class AppController {
 				theme.setChecknumber(maxNum + 1);
 				theme.setName(name);
 				theme.setPath(filePath);
+				System.out.println("33333333333333+  "+pageType);
 				upload_files.saveTheme(theme);
-				return "redirect:/themelist-1";
+				if(pageType.trim().equals("0")) {
+					return "redirect:/themelist-0";
+					
+				}else {
+					return "redirect:/check";
+				}
 
 			} else {
 				Theme app = new Theme();
@@ -645,10 +654,7 @@ public class AppController {
 			}
 
 		}
-		//}
-//			else {
-//				return "redirect:/check";
-//			}
+
 	}
 
 	@RequestMapping(value = { "/edit-{id}-theme" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
