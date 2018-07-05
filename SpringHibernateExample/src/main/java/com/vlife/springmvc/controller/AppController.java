@@ -126,7 +126,7 @@ public class AppController {
         SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyyMMddHHmmss");  
         String time2 = simpleDateFormat2.format(curday).trim();
         //get mobile uid and vendor name
-        int id = rinfo.getMid();
+        int id = Integer.parseInt(rinfo.getMid());
         String uid = mobile_service.findById(id).getUid().trim();
         String name = mobile_service.findById(id).getName().trim();
         id = rinfo.getVid();
@@ -162,7 +162,7 @@ public class AppController {
 		List<Vendor> vendors = vendor_service.findAllVendor();
 		Map<String, String> cmap = new HashMap<String, String>();
 		cmap.put("vid", Integer.toString(runinfo.getVid()));
-		cmap.put("mid", Integer.toString(runinfo.getMid()));
+		cmap.put("mid", runinfo.getMid());
 		cmap.put("resource", runinfo.getResource());
 		cmap.put("app", runinfo.getApp());
 		
@@ -214,7 +214,7 @@ public class AppController {
 			ModelMap model) throws UnsupportedEncodingException, ParseException {
 		
 		
-		if(runinfo.getVid()==0||  runinfo.getMid()==0||runinfo.getApp()==null|| runinfo.getResource()==null  ) {
+		if(runinfo.getVid()==0||  runinfo.getMid()== null ||runinfo.getApp()==null|| runinfo.getResource()==null  ) {
 			
 			List<Vendor> vendors = vendor_service.findAllVendor();
 			Runinfo runinfo2 = new Runinfo();
@@ -234,7 +234,7 @@ public class AppController {
         
         // set sid
         List infos = status_services.getOriginStatusInfo();
-        int mid = runinfo.getMid();
+        int mid = Integer.parseInt(runinfo.getMid());
         String uid = mobile_service.findById(mid).getUid();
     	Iterator it = infos.iterator();
     		

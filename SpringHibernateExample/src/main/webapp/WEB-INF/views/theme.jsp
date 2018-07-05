@@ -48,19 +48,19 @@ else{
 		<form:input type="hidden" path="id" id="id"/>
 		<table class="table table-striped table-hover">
 			<tr>
-				<td><label for="name">Name: </label> </td>
+				<td><label for="name">名称: </label> </td>
 				<td><form:input path="name" id="name"/></td>
 				<td><form:errors path="name" cssClass="error"/></td>
 		    </tr>
 		    <form:input type="hidden" path="path" id="path]"/>
 		    <tr id ="we" >
-				<td><label for="path">Path: </label> </td>
+				<td><label for="path">保存路径： </label> </td>
 				<td><form:input path="path" id="path" /></td>
 				<td><form:errors path="path" cssClass="error"/></td>
 		    </tr>
 	
 			 <tr id ="wq">
-				<td><label for="">File: </label> </td>
+				<td><label for="">文件名: </label> </td>
 				<td><input type="file" name="file" ></td>
 				<%--  <td><form:errors path="path" cssClass="error"/></td>  --%>
 		    </tr>
@@ -70,10 +70,10 @@ else{
 				<td colspan="3">
 					<c:choose>
 						<c:when test="${edit}">
-							<input type="submit" value="Update"/>
+							<input type="submit" value="更新"/>
 						</c:when>
 						<c:otherwise>
-							<input type="submit" value="Save" />
+							<input type="submit" value="增加" />
 						</c:otherwise>
 					</c:choose>
 				</td>
@@ -82,6 +82,6 @@ else{
 	</form:form>
 </div>
 </div>
-	Go back to <a href="<c:url value='/themelist' />">List of All Themes</a>
+	Go back to <a href="<c:url value='/themelist' />">字体与主题列表</a>
 </body>
 </html>

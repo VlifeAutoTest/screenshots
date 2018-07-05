@@ -83,7 +83,7 @@ public class RuninfoServiceImpl implements RuninfoService{
 			tmp[0] = vendor_service.findById(vid).getName();
 			
 			// mobile name
-			int mid = rf.getMid();
+			int mid = Integer.parseInt(rf.getMid());
 			tmp[1] = mobile_service.findById(mid).getName();
 			
 			// server name
@@ -95,7 +95,8 @@ public class RuninfoServiceImpl implements RuninfoService{
 			String resources="";
 			for(int j=0; j< source.length; j++) {
 				int id = Integer.parseInt(source[j]);
-				resources = resources + theme_service.findById(id).getName() + ",";
+				String check_number = String.valueOf(theme_service.findById(id).getChecknumber());
+				resources = resources + theme_service.findById(id).getName() + "(" + check_number + ")" +",";
 			}
 			tmp[3] = resources;
 			
@@ -126,155 +127,144 @@ public class RuninfoServiceImpl implements RuninfoService{
 		
 	}
 
-	//获取本次连接
-			public Session getSession(String host, int port, String user, String password) {
-				try {
-					session = jsch.getSession(user, host, port);
-					session.setConfig("StrictHostKeyChecking", "no");
-					session.setPassword(password);
-					session.connect();
-				} catch (JSchException e) {
-					// TODO 自动生成的 catch 块
-					e.printStackTrace();
-				}
-				return session;
+	// 获取本次连接
+	public Session getSession(String host, int port, String user, String password) {
+		try {
+			session = jsch.getSession(user, host, port);
+			session.setConfig("StrictHostKeyChecking", "no");
+			session.setPassword(password);
+			session.connect();
+		} catch (JSchException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		return session;
+	}
+
+	// 结束本次连接
+	public void endSSH() {
+		// if(channelExec!=null) {
+		// channelExec.disconnect();
+		// }
+		if (session != null) {
+			session.disconnect();
+		}
+	}
+
+	// 执行python脚本命令
+	public String execCommand(Session session, String pythonPath, String parameters) {
+		String result = null;
+		try {
+			channelExec = (ChannelExec) session.openChannel("exec");
+			in = channelExec.getInputStream();
+			channelExec.setCommand("python  " + pythonPath + "  " + parameters);
+			channelExec.setErrStream(System.err);
+			channelExec.connect();
+			result = IOUtils.toString(in, "UTF-8");
+			in.close();
+		} catch (JSchException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public String doCommand(Session session, String command) {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader reader = null;
+		Channel channel = null;
+		String value = "";
+		try {
+			channel = session.openChannel("exec");
+			((ChannelExec) channel).setCommand(command);
+			channel.setInputStream(null);
+			((ChannelExec) channel).setErrStream(System.err);
+
+			channel.connect();
+			InputStream in = channel.getInputStream();
+			reader = new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8")));
+			String buf = null;
+
+			while ((buf = reader.readLine()) != null) {
+				// System.out.println(buf);
+				value = value + buf;
+			}
+			System.out.println("2222222" + value);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (JSchException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			channel.disconnect();
+			// session.disconnect();
+		}
+		return value;
+	}
+
+	@Override
+	public TestServer getTestServer(int sid) {
+		// TODO 自动生成的方法存根
+
+		return tdao.findById(sid);
+
+	}
+
+	@Override
+	public void execShellCommand(Session session, String python) {
+		// TODO 自动生成的方法存根
+		// shell方式执行
+		try {
+			ChannelShell channel = (ChannelShell) session.openChannel("shell");
+			channel.setPty(true);
+			channel.connect();
+			OutputStream os = channel.getOutputStream();
+			os.write((python + "\r\n").getBytes());
+			os.flush();
+			os.close();
+			Thread.sleep(1000);
+			channel.disconnect();
+			// session.disconnect();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Override
+	public Boolean checkPath(int newRunid) {
+		// TODO 自动生成的方法存根
+		Boolean status = false;
+		// Runinfo runinfo=dao.findById(newRunid);
+		// String path =runinfo.getImagepath();
+		// int s_id=runinfo.getSid();
+		// TestServer server =tdao.findById(s_id);
+		Session session = getSession("192.168.1.230", 22, "root", "vlifeqa");
+		for (int i = 0; i < 10; i++) {
+			String command = "ls";
+			String value = doCommand(session, command);
+			System.out.println("wwwwwwwwwwwwwwww" + value + "sss");
+			if (value.trim().length() == 0) {
+				status = true;
+				break;
 			}
 
-			//结束本次连接
-			public void endSSH() {
-//				if(channelExec!=null) {
-//					channelExec.disconnect();
-//				}
-				if(session!=null) {
-					session.disconnect();
-				}
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO 自动生成的 catch 块
+				e.printStackTrace();
 			}
-			//执行python脚本命令
-			public String execCommand(Session session, String pythonPath,String parameters) {
-				String result = null;
-				try {
-					channelExec = (ChannelExec) session.openChannel("exec");
-					in = channelExec.getInputStream();
-					channelExec.setCommand( "python  "+ pythonPath+"  "+parameters  );
-					channelExec.setErrStream(System.err);
-					channelExec.connect();
-					result = IOUtils.toString(in, "UTF-8");
-					in.close();
-				} catch (JSchException e) {
-					// TODO 自动生成的 catch 块
-					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO 自动生成的 catch 块
-					e.printStackTrace();
-				}
-				return result;
-			}
+		}
 
-			
-			public String  doCommand(Session session, String command) {
-		        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		        BufferedReader reader = null;
-		        Channel channel = null;
-		        String value="";
-		        try {
-		            channel = session.openChannel("exec");
-		            ((ChannelExec) channel).setCommand(command);
-		            channel.setInputStream(null);
-		            ((ChannelExec) channel).setErrStream(System.err);
-
-		            channel.connect();
-		            InputStream in = channel.getInputStream();
-		            reader = new BufferedReader(new InputStreamReader(in, Charset.forName("UTF-8")));
-		            String buf = null;
-		            
-		            while ((buf = reader.readLine()) != null) {
-//		                System.out.println(buf);
-		            	value=value+buf;
-		            }
-		            System.out.println("2222222"+value);
-		        } catch (IOException e) {
-		            e.printStackTrace();
-		        } catch (JSchException e) {
-		            e.printStackTrace();
-		        } finally {
-		            try {
-		                reader.close();
-		            } catch (IOException e) {
-		                e.printStackTrace();
-		            }
-		            channel.disconnect();
-		            //session.disconnect();
-		        }
-		        return value;
-		    }
-
-			
-			
-			
-
-			@Override
-			public TestServer getTestServer(int sid) {
-				// TODO 自动生成的方法存根
-				
-			return	tdao.findById(sid);
-				
-			}
-
-
-			@Override
-			public void execShellCommand(Session session, String python) {
-				// TODO 自动生成的方法存根
-				//shell方式执行
-					 try{
-					ChannelShell channel=(ChannelShell) session.openChannel("shell");
-			        channel.setPty(true);
-			        channel.connect();
-			        OutputStream os = channel.getOutputStream();
-			        os.write((python +"\r\n").getBytes());
-			        os.flush();
-			        os.close();
-			        Thread.sleep(1000);
-			        channel.disconnect();
-//			        session.disconnect();
-					 }catch(Exception e){
-			        e.printStackTrace();
-			    }
-
-				
-			}
-
-
-			@Override
-			public  Boolean checkPath(int newRunid) {
-				// TODO 自动生成的方法存根
-				Boolean status =false;
-		//	Runinfo runinfo=dao.findById(newRunid);
-			//String path =runinfo.getImagepath();
-			//int s_id=runinfo.getSid();
-			 //TestServer server =tdao.findById(s_id);
-			Session session=getSession("192.168.1.230",22, "root", "vlifeqa");
-			for (int i = 0; i < 10; i++) {
-				String command="ls";
-				String value=doCommand(session, command);
-				System.out.println("wwwwwwwwwwwwwwww"+value+"sss");
-				if(value.trim().length()==0) {
-					status=true;
-					break;
-				}
-				
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-					// TODO 自动生成的 catch 块
-					e.printStackTrace();
-				}
-			}
-			
-				
-				
-			
-				
-				return status;
-			}
+		return status;
+	}
 
 }

@@ -22,7 +22,7 @@ public class Runinfo {
 
 	
 	private int vid;
-	private int mid;
+	private String mid;
 	private int sid;
 	private String resource;
 	private String app;
@@ -65,11 +65,11 @@ public class Runinfo {
 	}
 	
 	
-	public int getMid() {
+	public String getMid() {
 		return mid;
 	}
 
-	public void setMid(int mid) {
+	public void setMid(String mid) {
 		this.mid = mid;
 	}
 

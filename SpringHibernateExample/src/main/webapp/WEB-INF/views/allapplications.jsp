@@ -30,10 +30,10 @@
                 <table class="table table-striped table-hover table-nonfluid table-responsive">  
                     <thead>  
                         <tr>  
-                            <th>Name</th>  
-                            <th>Vendor</th>
+                            <th>应用名称</th>  
+                            <th>厂商</th>
                             <th>截图策略</th>
-                            <td><a href="<c:url value='/newapplication' />">+ Add Application</a></td> 
+                            <td><a href="<c:url value='/newapplication' />">+ 增加应用</a></td> 
                             
                             <td>厂商筛选：<select id="selectBox" onchange="changeFunc();">
                             <option value="  " selected="selected">请选择</option>
@@ -50,8 +50,8 @@
 								<td>${app.name}</td>
 								<td>${app.getVendor().getName()}</td>
 								<td>${app.style}</td>
-								<td><a href="<c:url value='/edit-${app.id}-application' />">edit</a></td>
-								<td><a href="<c:url value='/delete-${app.id}-application-${page}' />">delete</a></td>
+								<td><a href="<c:url value='/edit-${app.id}-application' />">编辑</a></td>
+								<td><a href="<c:url value='/delete-${app.id}-application-${page}' />">删除</a></td>
 								</tr>
 							</c:forEach>
                     </tbody>  

@@ -82,7 +82,7 @@
 		            dataType:"json",  
 		            success:function(data){
 		                $("#mobile").empty();
-		                $("#mobile").append("<option value='' selected='selected'>Nothing selected</option>");  
+/* 		                $("#mobile").append("<option value='' selected='selected'>Nothing selected</option>");   */
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
 		                    $("#mobile").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
@@ -199,7 +199,7 @@
 			    </tr>
 			    
 			    <tr>
-			    	<td><label for="resource">资源: </label> </td>
+			    	<td><label for="resource">资源(审核序号): </label> </td>
 					<td><form:select path="resource" multiple="multiple" itemValue="id" itemLabel="name"  id="resource" class="selectpicker bla bla bli" data-live-search="true" >
 				</form:select>
 					</td>
@@ -207,7 +207,7 @@
 			    </tr>
 			    <tr>
 			    	<td><label for="mid">手机: </label> </td>
-					<td><form:select path="mid" multiple="false" itemValue="id" itemLabel="name" id="mobile" class="selectpicker bla bla bli"  />
+					<td><form:select path="mid" multiple="multiple" itemValue="id" itemLabel="name" id="mobile" class="selectpicker bla bla bli"  />
 			    </tr>
 			    
 			    <tr>

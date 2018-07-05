@@ -17,12 +17,12 @@
                 <table class="table table-striped table-hover table-nonfluid table-responsive">  
                     <thead>  
                         <tr>  
-                            <th>Name</th>  
-                            <th>Uid</th>  
-                            <th>Size</th>
-                            <th>Os</th>
-                            <th>Vendor</th>
-                            <td><a href="<c:url value='/newmobile' />">+ Add Mobile</a></td>  
+                            <th>名称</th>  
+                            <th>udid</th>  
+                            <th>分辨率</th>
+                            <th>操作系统版本</th>
+                            <th>厂商</th>
+                            <td><a href="<c:url value='/newmobile' />">+ 增加手机</a></td>  
                         </tr>  
                     </thead>  
                     <tbody>  
@@ -33,7 +33,7 @@
 								<td>${mobile.size}</td>
 								<td>${mobile.os}</td>
 								<td>${mobile.getVendor().getName()}</td>
-								<td><a href="<c:url value='/edit-${mobile.uid}-mobile' />">edit</a></td>
+								<td><a href="<c:url value='/edit-${mobile.uid}-mobile' />">编辑</a></td>
 								<%-- <td><a href="<c:url value='/delete-${mobile.uid}-mobile-${page}' />">delete</a></td> --%>
 								</tr>
 							</c:forEach>
