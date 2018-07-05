@@ -11,11 +11,11 @@ import com.vlife.springmvc.model.Vendor;
 
 @Service("vendorService")
 @Transactional
-public class VendorServiceImpl implements VendorService{
-	
+public class VendorServiceImpl implements VendorService {
+
 	@Autowired
 	private VendorDao dao;
-	
+
 	public Vendor findById(int id) {
 		return dao.findById(id);
 	}
@@ -24,20 +24,17 @@ public class VendorServiceImpl implements VendorService{
 		dao.saveVendor(Vendor);
 	}
 
-
 	public void deleteVendorByID(int id) {
 		dao.deleteVendorByID(id);
 	}
-	
 
 	public List<Vendor> findAllVendor() {
 		return dao.findAllVendor();
 	}
-	
-	
+
 	public void updateVendor(Vendor vendor) {
 		Vendor entity = dao.findById(vendor.getId());
-		if(entity!=null){
+		if (entity != null) {
 			entity.setName(vendor.getName());
 
 		}

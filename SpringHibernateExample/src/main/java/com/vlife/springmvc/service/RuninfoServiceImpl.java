@@ -26,9 +26,10 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelShell;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
+
 @Service("runinfoService")
 @Transactional
-public class RuninfoServiceImpl implements RuninfoService{
+public class RuninfoServiceImpl implements RuninfoService {
 	JSch jsch = new JSch();
 	Session session = null;
 	ChannelExec channelExec = null;
@@ -39,77 +40,75 @@ public class RuninfoServiceImpl implements RuninfoService{
 	private TestServerDao tdao;
 	@Autowired
 	private VendorService vendor_service;
-	
+
 	@Autowired
 	private MobileService mobile_service;
-	
+
 	@Autowired
 	private ApplicationService app_service;
-	
+
 	@Autowired
 	private ThemeService theme_service;
-	
+
 	@Autowired
 	private TestServerService server_service;
-	
+
 	public void saveRuninfo(Runinfo runinfo) {
-		
+
 		dao.saveRuninfo(runinfo);
-		
+
 	}
-	
-	
-	public List<Runinfo> findAllRuninfo(){
+
+	public List<Runinfo> findAllRuninfo() {
 		return dao.findAllRuninfo();
 	}
-	
-	public List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime){
+
+	public List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime) {
 		return dao.queryData(conditions, mytime);
 	}
-	
-	
-	public List<Object[]> translaterinfo(List<Runinfo> runinfos){
-		
+
+	public List<Object[]> translaterinfo(List<Runinfo> runinfos) {
+
 		List<Object[]> res = new ArrayList<Object[]>();
-		
-		for(int i=0; i< runinfos.size(); i++) {
-			
+
+		for (int i = 0; i < runinfos.size(); i++) {
+
 			Object[] tmp = new Object[12];
-			
+
 			Runinfo rf = runinfos.get(i);
-			
+
 			// vendor name
 			int vid = rf.getVid();
 			tmp[0] = vendor_service.findById(vid).getName();
-			
+
 			// mobile name
 			int mid = Integer.parseInt(rf.getMid());
 			tmp[1] = mobile_service.findById(mid).getName();
-			
+
 			// server name
 			int sid = rf.getSid();
 			tmp[2] = server_service.findById(sid).getSsn();
-			
+
 			// resource
 			String[] source = rf.getResource().split(",");
-			String resources="";
-			for(int j=0; j< source.length; j++) {
+			String resources = "";
+			for (int j = 0; j < source.length; j++) {
 				int id = Integer.parseInt(source[j]);
 				String check_number = String.valueOf(theme_service.findById(id).getChecknumber());
-				resources = resources + theme_service.findById(id).getName() + "(" + check_number + ")" +",";
+				resources = resources + theme_service.findById(id).getName() + "(" + check_number + ")" + ",";
 			}
 			tmp[3] = resources;
-			
+
 			// apps
 			String[] application = rf.getApp().split(",");
-			String apps="";
-			for(int j=0; j< application.length; j++) {
+			String apps = "";
+			for (int j = 0; j < application.length; j++) {
 				int id = Integer.parseInt(application[j]);
 				apps = apps + app_service.findById(id).getName() + ",";
 			}
 			tmp[4] = apps;
-			
-			//other infos
+
+			// other infos
 			tmp[5] = rf.getStime();
 			tmp[6] = rf.getEtime();
 			tmp[7] = rf.getImagepath();
@@ -117,14 +116,13 @@ public class RuninfoServiceImpl implements RuninfoService{
 			tmp[9] = rf.getLogFile();
 			tmp[10] = rf.getStatus();
 			tmp[11] = rf.getStyle();
-			
-			res.add(tmp);
-			
-		}
-			
 
-		return res;	
-		
+			res.add(tmp);
+
+		}
+
+		return res;
+
 	}
 
 	// 获取本次连接
@@ -173,7 +171,7 @@ public class RuninfoServiceImpl implements RuninfoService{
 	}
 
 	public String doCommand(Session session, String command) {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		// BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		BufferedReader reader = null;
 		Channel channel = null;
 		String value = "";

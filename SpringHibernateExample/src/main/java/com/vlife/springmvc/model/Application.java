@@ -15,50 +15,47 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-
 @Entity
-@Table(name="application")
+@Table(name = "application")
 public class Application {
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@NotNull
-	@Size(min=1, max=32)
+	@Size(min = 1, max = 32)
 	@Column(name = "name", nullable = false)
 	private String name;
-	
+
 	@NotEmpty
 	@Column(name = "packagename", nullable = false)
 	private String packagename;
-	
+
 	@NotEmpty
 	@Column(name = "activity", nullable = false)
 	private String activity;
-	
+
 	@NotEmpty
 	@Column(name = "style", nullable = false)
 	private String style;
-	
 
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="vendor_id",nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "vendor_id", nullable = false)
 	private Vendor vendor;
+
 	public Vendor getVendor() {
 		return this.vendor;
 	}
-	
+
 	public void setVendor(Vendor vendor) {
 		this.vendor = vendor;
 	}
-	
-	
+
 	public Application() {
-		
+
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -74,7 +71,7 @@ public class Application {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getStyle() {
 		return style;
 	}
@@ -82,7 +79,7 @@ public class Application {
 	public void setStyle(String style) {
 		this.style = style;
 	}
-	
+
 	public String getActivity() {
 		return activity;
 	}
@@ -90,7 +87,7 @@ public class Application {
 	public void setActivity(String activity) {
 		this.activity = activity;
 	}
-	
+
 	public String getPackagename() {
 		return packagename;
 	}
@@ -99,4 +96,3 @@ public class Application {
 		this.packagename = packagename;
 	}
 }
-	

@@ -16,7 +16,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	@Autowired
 	private ApplicationDao dao;
-	
+
 	public Application findById(int id) {
 		return dao.findById(id);
 	}
@@ -25,18 +25,17 @@ public class ApplicationServiceImpl implements ApplicationService {
 		dao.saveApplication(application);
 	}
 
-
 	public void deleteApplicationByID(int id) {
 		dao.deleteApplicationByID(id);
 	}
-	
-	public List<Application> findApplicationByVendorID(Vendor id){
+
+	public List<Application> findApplicationByVendorID(Vendor id) {
 		return dao.findApplicationByVendorID(id);
 	}
-	
-	public List<Application> findApplicationByVendorIDAndStyle(Vendor id, String style){
+
+	public List<Application> findApplicationByVendorIDAndStyle(Vendor id, String style) {
 		return dao.findApplicationByVendorIDAndStyle(id, style);
-		
+
 	}
 
 	public List<Application> findAllApplication() {
@@ -45,7 +44,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
 	public void updateApplication(Application app) {
 		Application entity = dao.findById(app.getId());
-		if(entity!=null){
+		if (entity != null) {
 			entity.setName(app.getName());
 			entity.setVendor(app.getVendor());
 		}
@@ -63,4 +62,4 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return dao.findApplicationByVendorIDaAndPage(id, offset, length);
 	}
 
-} 
+}

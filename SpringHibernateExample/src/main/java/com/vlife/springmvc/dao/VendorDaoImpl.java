@@ -19,13 +19,12 @@ public class VendorDaoImpl extends AbstractDao<Integer, Vendor> implements Vendo
 		persist(vendor);
 	}
 
-
 	@SuppressWarnings("unchecked")
 	public List<Vendor> findAllVendor() {
 		Criteria criteria = createEntityCriteria();
 		return (List<Vendor>) criteria.list();
 	}
-	
+
 	public void deleteVendorByID(int id) {
 		Query query = getSession().createSQLQuery("delete from vendor where id = :id");
 		query.setInteger("id", id);
@@ -33,4 +32,3 @@ public class VendorDaoImpl extends AbstractDao<Integer, Vendor> implements Vendo
 	}
 
 }
-

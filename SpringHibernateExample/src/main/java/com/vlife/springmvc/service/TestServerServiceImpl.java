@@ -15,7 +15,7 @@ public class TestServerServiceImpl implements TestServerService {
 
 	@Autowired
 	private TestServerDao dao;
-	
+
 	public TestServer findById(int id) {
 		return dao.findById(id);
 	}
@@ -24,45 +24,41 @@ public class TestServerServiceImpl implements TestServerService {
 		dao.saveTestServer(tserver);
 	}
 
-
 	public void deleteTestServerByID(int id) {
 		dao.deleteTestServerByID(id);
 	}
-	
 
 	public List<TestServer> findAllTestServer() {
 		return dao.findAllTestServer();
 	}
-	
-	
+
 	public void updateTestServer(TestServer tserver) {
 		TestServer entity = dao.findById(tserver.getId());
-		if(entity!=null){
+		if (entity != null) {
 			entity.setAddress(tserver.getAddress());
 			entity.setUname(tserver.getUname());
 			entity.setPasswd(tserver.getPasswd());
 			entity.setSsn(tserver.getSsn());
-			
+
 		}
 	}
-	
+
 	public int[] findAllServerID() {
 		return dao.findAllServerId();
-		
+
 	}
-	
+
 	public void deleteTestServerBySsn(String ssn) {
 		dao.deleteTestServerBySsn(ssn);
 	}
-	
 
 	public TestServer findTestServerBySsn(String ssn) {
 		return dao.findTestServerBySsn(ssn);
 	}
 
 	public boolean isTestServerSsnUnique(Integer id, String ssn) {
-		TestServer server= findTestServerBySsn(ssn);
-		return ( server == null || ((id != null) && (server.getId() == id)));
+		TestServer server = findTestServerBySsn(ssn);
+		return (server == null || ((id != null) && (server.getId() == id)));
 	}
 
-} 
+}

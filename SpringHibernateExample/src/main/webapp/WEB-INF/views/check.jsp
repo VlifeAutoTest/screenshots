@@ -204,7 +204,8 @@
 		    
 		    <tr>
 		    	<td><label for="resource">资源: </label> </td>
-				<td><form:select path="resource" multiple="multiple" itemValue="id" itemLabel="name"  id="resource"  class="selectpicker bla bla bli" data-live-search="true"  /></td>
+				<td><form:select path="resource" multiple="multiple" itemValue="id" itemLabel="name"  id="resource"  class="selectpicker bla bla bli" data-live-search="true"  />
+				<a href="<c:url value='/newtheme-1' />"> 增加资源</a></td>
 				<td><form:errors path="resource" cssClass="error"/></td>
 		    </tr>
 		    
@@ -258,11 +259,6 @@ function replaceAll(str, oldStr, newStr){
 		        	var txt="截图路径为: <a onclick='copyText()' >点击复制! </a> &nbsp;&nbsp;<font id='kkk' color='red' ></font> <p id='text'>"+path+"</p> <textarea id='mytxt'> </textarea>";
 		        	//var txt="截图路径为: "+"<br>"+path;
 		        	//var txt="截图路径为222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222: ";
-		        	
-		        	
-		        	
-		        	
-		        	
 					window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.success);
 					 $("#me").empty();
 					 $("#time").empty();

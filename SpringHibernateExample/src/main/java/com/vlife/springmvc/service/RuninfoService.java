@@ -9,23 +9,26 @@ import com.vlife.springmvc.model.TestServer;
 import com.jcraft.jsch.Session;
 
 public interface RuninfoService {
-	
+
 	void saveRuninfo(Runinfo runinfo);
-	
+
 	List<Runinfo> findAllRuninfo();
-	
+
 	List<Object[]> translaterinfo(List<Runinfo> runinfos);
-	
+
 	Session getSession(String host, int port, String user, String password);
-	
+
 	void endSSH();
-	
-	String execCommand(Session session, String pythonPath,String parameters);
-	
+
+	String execCommand(Session session, String pythonPath, String parameters);
+
 	TestServer getTestServer(int sid);
-	
+
 	List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime);
+
 	void execShellCommand(Session session, String python);
-	Boolean checkPath(int  newRunid);
-	String   doCommand(Session session, String command) ;
+
+	Boolean checkPath(int newRunid);
+
+	String doCommand(Session session, String command);
 }

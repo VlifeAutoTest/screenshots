@@ -13,9 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import javax.persistence.criteria.CriteriaBuilder.In;
-
 import org.apache.commons.io.IOUtils;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
@@ -46,10 +43,10 @@ public class Methods {
 	}
 
 	public void endSSH() {
-		if(channelExec!=null) {
+		if (channelExec != null) {
 			channelExec.disconnect();
 		}
-		if(session!=null) {
+		if (session != null) {
 			session.disconnect();
 		}
 
@@ -68,17 +65,16 @@ public class Methods {
 			// 获取返回的结果
 			String devicesResult = IOUtils.toString(in, "UTF-8");
 			devicesResult = devicesResult.substring("List of devices attached".length());
-			if(devicesResult.contains("device")) {
-				
-			result = devicesResult.trim().split("device");
+			if (devicesResult.contains("device")) {
 
-			for (int i = 0; i < result.length; i++) {
-				result[i] = result[i].trim();
+				result = devicesResult.trim().split("device");
 
-			}
-			}
-			else {
-				
+				for (int i = 0; i < result.length; i++) {
+					result[i] = result[i].trim();
+
+				}
+			} else {
+
 			}
 			in.close();
 		} catch (JSchException e) {
@@ -237,7 +233,7 @@ public class Methods {
 				result = res.getInt("id");
 			}
 			conn.close();
-		} catch (ClassNotFoundException  e) {
+		} catch (ClassNotFoundException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
@@ -362,10 +358,9 @@ public class Methods {
 		}
 
 	}
-	
-	
-	//更改手机状态
-	
+
+	// 更改手机状态
+
 	public void updateMobileStatus(int mobile_id, int server_id, String status) {
 		try {
 			String sql = "update  mobile_status set status=? , last_update = ? where mobile_id=? and  server_id =?";
@@ -391,9 +386,9 @@ public class Methods {
 		}
 
 	}
-	
-	//判断free的是否失联
-	public void  assertFreeMobile() {
+
+	// 判断free的是否失联
+	public void assertFreeMobile() {
 
 		try {
 			String sql = "select * from mobile_status where status = 'free' ";
@@ -403,13 +398,13 @@ public class Methods {
 			ps.execute();
 			ResultSet res = ps.executeQuery();
 			while (res.next()) {
-				int mobile_id =res.getInt("mobile_id");
-				int server_id =res.getInt("server_id");
+				int mobile_id = res.getInt("mobile_id");
+				int server_id = res.getInt("server_id");
 				String str = res.getString("last_update");
-//				if(str==null){
-//					updateMobileStatus(mobile_id, server_id, "disconnect");
-//					continue;
-//				}
+				// if(str==null){
+				// updateMobileStatus(mobile_id, server_id, "disconnect");
+				// continue;
+				// }
 				Date date = new Date();
 				DateFormat fa = new SimpleDateFormat("yyyyMMddHHmm");
 				long thistime = date.getTime();
@@ -422,14 +417,14 @@ public class Methods {
 				}
 				long getTime = date2.getTime();
 				long oneDay = 1 * 24 * 60 * 60 * 1000;
-				
-				//如果忙碌状态的最后连接时间于今天比超过一天那么更改为free
-				 if (thistime - getTime > oneDay) {
-					
+
+				// 如果忙碌状态的最后连接时间于今天比超过一天那么更改为free
+				if (thistime - getTime > oneDay) {
+
 					updateMobileStatus(mobile_id, server_id, "disconnect");
-					
+
 				}
-				
+
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
@@ -441,13 +436,12 @@ public class Methods {
 		}
 
 	}
-	
-	
-	//查询test_server中的所有服务器的信息
-	
-	public List<String []>  getTestServerValues() {
 
-		List <String []>  list =new ArrayList<String []>();
+	// 查询test_server中的所有服务器的信息
+
+	public List<String[]> getTestServerValues() {
+
+		List<String[]> list = new ArrayList<String[]>();
 		try {
 			String sql = "select * from testserver ";
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -456,11 +450,11 @@ public class Methods {
 			ps.execute();
 			ResultSet res = ps.executeQuery();
 			while (res.next()) {
-				String [] temp= new String [3];
-				
+				String[] temp = new String[3];
+
 				temp[0] = res.getString("address");
-				temp[1] =res.getString("uname");
-				temp[2] =res.getString("passwd");
+				temp[1] = res.getString("uname");
+				temp[2] = res.getString("passwd");
 				list.add(temp);
 			}
 			conn.close();
@@ -474,23 +468,21 @@ public class Methods {
 
 		return list;
 	}
-	
-	
-	//把本次没有检测到的手机全部改为disconnect
-	public void  assertNoDeviceMobile(List <Integer> list ) {
-		String sql="";
-		String id="";
-		if(list!=null && list.size()>0) {
-		for(int a:list) {
-			id=id+a+',';
-		}
-		id=id.substring(0, id.length()-1);
-		sql = "update mobile_status set status = 'disconnect' where id not in ("+id+")";
-		}
-		else {
+
+	// 把本次没有检测到的手机全部改为disconnect
+	public void assertNoDeviceMobile(List<Integer> list) {
+		String sql = "";
+		String id = "";
+		if (list != null && list.size() > 0) {
+			for (int a : list) {
+				id = id + a + ',';
+			}
+			id = id.substring(0, id.length() - 1);
+			sql = "update mobile_status set status = 'disconnect' where id not in (" + id + ")";
+		} else {
 			sql = "update mobile_status set status = 'disconnect'";
 		}
-	
+
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -505,13 +497,11 @@ public class Methods {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
-		 
-		
+
 	}
-	
-	
+
 	//
-	public Integer getMobileStatusID(int  mobile_id,int server_id) {
+	public Integer getMobileStatusID(int mobile_id, int server_id) {
 
 		Integer result = null;
 		try {
@@ -538,7 +528,5 @@ public class Methods {
 		return result;
 
 	}
-	
-	
 
 }

@@ -20,46 +20,44 @@ public class TestServerDaoImpl extends AbstractDao<Integer, TestServer> implemen
 		persist(testserver);
 	}
 
-
 	@SuppressWarnings("unchecked")
 	public List<TestServer> findAllTestServer() {
 		Criteria criteria = createEntityCriteria();
 		return (List<TestServer>) criteria.list();
 	}
-	
+
 	public void deleteTestServerByID(int id) {
 		Query query = getSession().createSQLQuery("delete from testserver where id = :id");
 		query.setInteger("id", id);
 		query.executeUpdate();
 	}
-	
+
 	public int[] findAllServerId() {
-		
-//		Query query = getSession().createSQLQuery("select id from testserver");
-//		List<TestServer> tserver = query.getResultList();
-//		int[] temp = new int[tserver.size()];
-//		int i = 0;
-//		for(TestServer t : tserver) {
-//			temp[i] = t.getId();
-//			i ++;
-//		}
-		int[] temp = {1,2,3};
-		
+
+		// Query query = getSession().createSQLQuery("select id from testserver");
+		// List<TestServer> tserver = query.getResultList();
+		// int[] temp = new int[tserver.size()];
+		// int i = 0;
+		// for(TestServer t : tserver) {
+		// temp[i] = t.getId();
+		// i ++;
+		// }
+		int[] temp = { 1, 2, 3 };
+
 		return temp;
-		
+
 	}
-	
+
 	public void deleteTestServerBySsn(String ssn) {
 		Query query = getSession().createSQLQuery("delete from testserver where ssn = :ssn");
 		query.setString("ssn", ssn);
 		query.executeUpdate();
 	}
 
-
 	public TestServer findTestServerBySsn(String ssn) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("ssn", ssn));
 		return (TestServer) criteria.uniqueResult();
 	}
- 
+
 }

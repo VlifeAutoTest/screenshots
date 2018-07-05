@@ -1,6 +1,5 @@
 package com.vlife.springmvc.model;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,55 +12,49 @@ import javax.validation.constraints.Size;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-
 import org.hibernate.validator.constraints.NotEmpty;
 
-
 @Entity
-@Table(name="mobile")
+@Table(name = "mobile")
 public class Mobile {
-	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@NotNull
-	@Size(min=1, max=32)
+	@Size(min = 1, max = 32)
 	@Column(name = "name", nullable = false)
 	private String name;
-	
+
 	@NotEmpty
 	@Column(name = "uid", nullable = false)
 	private String uid;
-	
 
-	@Size(min=1, max=32)
+	@Size(min = 1, max = 32)
 	@Column(name = "size", nullable = false)
 	private String size;
-	
-	@Size(min=1, max=32)
-	@Column(name = "os", nullable = false) 
+
+	@Size(min = 1, max = 32)
+	@Column(name = "os", nullable = false)
 	private String os;
 
-
-	@ManyToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name="vendor_id",nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "vendor_id", nullable = false)
 	private Vendor vendor;
+
 	public Vendor getVendor() {
 		return this.vendor;
 	}
-	
+
 	public void setVendor(Vendor vendor) {
 		this.vendor = vendor;
 	}
 
-	
-	
 	public Mobile() {
-		
+
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -85,7 +78,7 @@ public class Mobile {
 	public void setUid(String uid) {
 		this.uid = uid;
 	}
-	
+
 	public String getSize() {
 		return size;
 	}
@@ -93,7 +86,7 @@ public class Mobile {
 	public void setSize(String size) {
 		this.size = size;
 	}
-	
+
 	public String getOs() {
 		return os;
 	}

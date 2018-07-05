@@ -1,13 +1,10 @@
 package com.vlife.springmvc.dao;
 
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
-
-import com.vlife.springmvc.model.Application;
 import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.model.Vendor;
 
@@ -27,13 +24,12 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 		query.setString("uid", uid);
 		query.executeUpdate();
 	}
-	
+
 	public Mobile findMobileByUid(String uid) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("uid", uid));
 		return (Mobile) criteria.uniqueResult();
 	}
- 
 
 	@SuppressWarnings("unchecked")
 	public List<Mobile> findAllMobile() {
@@ -54,9 +50,9 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 	@Override
 	public List<Mobile> findMobileByPage(int offset, int length) {
 		// TODO 自动生成的方法存根
-		 Query query = getSession().createQuery("from Mobile");
-         query.setFirstResult(offset);
-         query.setMaxResults(length);
-         return (List<Mobile>) query.list();
+		Query query = getSession().createQuery("from Mobile");
+		query.setFirstResult(offset);
+		query.setMaxResults(length);
+		return (List<Mobile>) query.list();
 	}
 }

@@ -11,9 +11,9 @@ public interface RuninfoDao {
 	Runinfo findById(int id);
 
 	void saveRuninfo(Runinfo Runinfo);
-	
+
 	List<Runinfo> findAllRuninfo();
-	
+
 	List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime);
 
 }

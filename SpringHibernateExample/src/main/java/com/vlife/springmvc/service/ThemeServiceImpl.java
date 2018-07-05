@@ -15,7 +15,7 @@ public class ThemeServiceImpl implements ThemeService {
 
 	@Autowired
 	private ThemeDao dao;
-	
+
 	public Theme findById(int id) {
 		return dao.findById(id);
 	}
@@ -24,20 +24,17 @@ public class ThemeServiceImpl implements ThemeService {
 		dao.saveTheme(theme);
 	}
 
-
 	public void deleteThemeByID(int id) {
 		dao.deleteThemeByID(id);
 	}
-	
 
 	public List<Theme> findAllTheme() {
 		return dao.findAllTheme();
 	}
-	
-	
+
 	public void updateTheme(Theme theme) {
 		Theme entity = dao.findById(theme.getId());
-		if(entity!=null){
+		if (entity != null) {
 			entity.setName(theme.getName());
 			entity.setPath(theme.getPath());
 
@@ -47,25 +44,24 @@ public class ThemeServiceImpl implements ThemeService {
 	@Override
 	public List<Theme> searchByName(String name) {
 		// TODO 自动生成的方法存根
-		
+
 		return dao.findByName(name);
 	}
 
 	@Override
 	public List<Theme> findThemeByPage(int offset, int length) {
 		// TODO 自动生成的方法存根
-		return 	dao.findThemeByPage(offset, length);
-		
+		return dao.findThemeByPage(offset, length);
+
 	}
 
 	@Override
 	public List<Theme> findThemeByNameAndPage(String partName, int offset, int length) {
 		return dao.findThemeByNameAndPage(partName, offset, length);
 	}
-	
+
 	public Integer getMaxCheckNumberByName(String name) {
 		return dao.getMaxCheckNumberByName(name);
 	}
-	
 
-} 
+}

@@ -9,7 +9,6 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -68,14 +67,15 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(new SessionInterceptor()).addPathPatterns("/applicationlist-{page}-{vendorid}",
 				"/themelist-{page}");
 	}
-	//上传文件解析器
+
+	// 上传文件解析器
 	@Bean
 	public MultipartResolver multipartResolver() {
-		CommonsMultipartResolver multipartResolver =new CommonsMultipartResolver();
+		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
 		multipartResolver.setDefaultEncoding("utf-8");
 		multipartResolver.setMaxUploadSize(-1);
 		return multipartResolver;
-		
+
 	}
 
 }

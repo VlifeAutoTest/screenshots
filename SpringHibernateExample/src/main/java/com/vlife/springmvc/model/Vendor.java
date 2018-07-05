@@ -7,19 +7,17 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
 @Entity
-@Table(name="vendor")
+@Table(name = "vendor")
 public class Vendor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
-
 	@Column(name = "name", nullable = false)
 	private String name;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -37,4 +35,3 @@ public class Vendor {
 	}
 
 }
-

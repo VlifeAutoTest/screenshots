@@ -10,14 +10,15 @@ public interface MobileDao {
 	Mobile findById(int id);
 
 	void saveMobile(Mobile mobile);
-	
+
 	List<Mobile> findAllMobile();
-	
+
 	List<Mobile> findMobileByVendor(Vendor vendor);
 
 	void deleteMobileByUid(String uid);
-	
+
 	Mobile findMobileByUid(String uid);
+
 	List<Mobile> findMobileByPage(int offset, int length);
 
 }

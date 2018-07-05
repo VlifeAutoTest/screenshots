@@ -8,12 +8,11 @@ public interface VendorService {
 	Vendor findById(int id);
 
 	void saveVendor(Vendor vendor);
-	
-	void deleteVendorByID(int id);
-	
-	List<Vendor> findAllVendor();
-	
-	void updateVendor(Vendor vendor);
 
+	void deleteVendorByID(int id);
+
+	List<Vendor> findAllVendor();
+
+	void updateVendor(Vendor vendor);
 
 }

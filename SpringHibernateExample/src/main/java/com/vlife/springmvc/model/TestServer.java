@@ -1,6 +1,5 @@
 package com.vlife.springmvc.model;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,36 +11,33 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@Table(name="testserver")
+@Table(name = "testserver")
 public class TestServer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
 
-	@NotEmpty(message="ssn 不能为空")
-	@Column(name = "ssn", unique=true, nullable = false)
+	@NotEmpty(message = "ssn 不能为空")
+	@Column(name = "ssn", unique = true, nullable = false)
 	private String ssn;
-	
-	@Pattern(message="IP address format is not right", regexp = "((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))")
+
+	@Pattern(message = "IP address format is not right", regexp = "((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))")
 	@Column(name = "address", nullable = false)
 	private String address;
-	
 
-	
-	@NotEmpty(message="pass word 不能为空")
+	@NotEmpty(message = "pass word 不能为空")
 	@Column(name = "passwd", nullable = false)
 	private String passwd;
-	
-	@NotEmpty(message="user name 不能为空")
+
+	@NotEmpty(message = "user name 不能为空")
 	@Column(name = "uname", nullable = false)
 	private String uname;
-	
+
 	public TestServer() {
-		
+
 	}
-	
+
 	public TestServer(int id) {
 		this.id = id;
 	}
@@ -53,7 +49,7 @@ public class TestServer {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getSsn() {
 		return ssn;
 	}
@@ -61,7 +57,7 @@ public class TestServer {
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
 	}
-	
+
 	public String getAddress() {
 		return address;
 	}
@@ -69,7 +65,7 @@ public class TestServer {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	
+
 	public String getUname() {
 		return uname;
 	}
@@ -77,7 +73,7 @@ public class TestServer {
 	public void setUname(String username) {
 		this.uname = username;
 	}
-	
+
 	public String getPasswd() {
 		return passwd;
 	}
@@ -85,7 +81,7 @@ public class TestServer {
 	public void setPasswd(String passwd) {
 		this.passwd = passwd;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

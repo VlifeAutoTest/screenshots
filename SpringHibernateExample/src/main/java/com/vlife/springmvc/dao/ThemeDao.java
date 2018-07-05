@@ -8,15 +8,17 @@ public interface ThemeDao {
 	Theme findById(int id);
 
 	void saveTheme(Theme theme);
-	
+
 	List<Theme> findAllTheme();
-	
+
 	void deleteThemeByID(int id);
-	
-	List<Theme> findByName(String  partName);
-	List<Theme>findThemeByPage (int offset, int length);
-	List<Theme> findThemeByNameAndPage(String  partName,int offset, int length);
+
+	List<Theme> findByName(String partName);
+
+	List<Theme> findThemeByPage(int offset, int length);
+
+	List<Theme> findThemeByNameAndPage(String partName, int offset, int length);
+
 	Integer getMaxCheckNumberByName(String name);
 
-	
 }

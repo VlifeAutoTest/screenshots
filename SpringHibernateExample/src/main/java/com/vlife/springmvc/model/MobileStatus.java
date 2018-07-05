@@ -9,28 +9,25 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name="mobile_status")
+@Table(name = "mobile_status")
 public class MobileStatus {
-	
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
 
 	@NotNull
 	@Column(name = "mobile_id", nullable = false)
 	private int mid;
-	
+
 	@NotNull
 	@Column(name = "server_id", nullable = false)
 	private int sid;
-	
 
 	@Column(name = "status", nullable = false)
 	private String status;
-	
-	@Column(name = "last_update", nullable = false) 
+
+	@Column(name = "last_update", nullable = false)
 	private String uptime;
 
 	public int getId() {
@@ -48,7 +45,7 @@ public class MobileStatus {
 	public void setMid(int id) {
 		this.mid = id;
 	}
-	
+
 	public int getSid() {
 		return sid;
 	}
@@ -56,7 +53,7 @@ public class MobileStatus {
 	public void setSid(int id) {
 		this.sid = id;
 	}
-	
+
 	public String getStatus() {
 		return status;
 	}
@@ -64,7 +61,7 @@ public class MobileStatus {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public String getUptime() {
 		return uptime;
 	}
@@ -72,7 +69,5 @@ public class MobileStatus {
 	public void setLatest(String latest_time) {
 		this.uptime = latest_time;
 	}
-
-
 
 }

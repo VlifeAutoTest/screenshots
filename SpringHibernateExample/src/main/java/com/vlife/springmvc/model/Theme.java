@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="theme")
+@Table(name = "theme")
 public class Theme {
 
 	@Id
@@ -18,16 +18,16 @@ public class Theme {
 	private int id;
 
 	@NotNull
-	@Size(min=1, max=128)
+	@Size(min = 1, max = 128)
 	@Column(name = "themename", nullable = false)
 	private String name;
-	
+
 	@Column(name = "path", nullable = true)
 	private String path;
-	
+
 	@Column(name = "checknumber", nullable = true)
 	private int checknumber;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -43,7 +43,7 @@ public class Theme {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getPath() {
 		return path;
 	}
@@ -51,7 +51,7 @@ public class Theme {
 	public void setPath(String path) {
 		this.path = path;
 	}
-	
+
 	public int getChecknumber() {
 		return checknumber;
 	}
