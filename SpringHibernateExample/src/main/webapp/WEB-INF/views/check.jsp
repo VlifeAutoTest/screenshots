@@ -125,8 +125,9 @@
 		            success:function(data){
 		            	if(jQuery.isEmptyObject( data )){
 		            		//alert("当前厂商下无手机连接!")
-		            		var txt=  "抱歉,当前选择的厂商下无手机连接!";
+		            		var txt=  "抱歉,当前选择的厂商下无可用手机!";
 							window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.error);
+						//	alert(txt);
 		            	}
 		                $("#mobile").empty();  
 		              //  $("#mobile").append("<option value=''>----请选择----</option>");  
