@@ -122,7 +122,7 @@ public class AppController {
 
 		// e_time, s_time
 		Date curday = new Date();
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		String time = simpleDateFormat.format(curday).trim();
 		res[2] = time;
 		SimpleDateFormat simpleDateFormat2 = new SimpleDateFormat("yyyyMMddHHmmss");

@@ -136,17 +136,27 @@ select {
 		var seperator2 = ":";
 		var month = date.getMonth() + 1;
 		var strDate = date.getDate() + interval;
+		var hour = date.getHours();
+		var minutes = date.getMinutes()
 		if (month >= 1 && month <= 9) {
 			month = "0" + month;
 		}
 		if (strDate >= 0 && strDate <= 9) {
 			strDate = "0" + strDate;
 		}
-		// 		    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-		// 		            + " " + date.getHours() + seperator2 + date.getMinutes();
+		
+		if (hour >= 0 && hour <= 9) {
+			hour = "0" + hour;
+		}
+		
+		if (minutes >= 0 && minutes <= 9) {
+			minutes = "0" + minutes;
+		}
+		var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+				            + "T" + hour + seperator2 + minutes;
 
-		var currentdate = date.getFullYear() + seperator1 + month + seperator1
-				+ strDate;
+/* 		var currentdate = date.getFullYear() + seperator1 + month + seperator1
+				+ strDate; */
 
 		return currentdate;
 	};
@@ -236,14 +246,14 @@ select {
 
 						<tr>
 							<td><label for="">开始日期: </label></td>
-							<td><form:input path="stime" id="s_time" type="date"
-									value="" pattern="yyyy-MM-dd" name="begintime" /></td>
+							<td><form:input path="stime" id="s_time" type="datetime-local"
+									value="" pattern="yyyy-MM-dd HH:mm" name="begintime" /></td>
 						</tr>
 
 						<tr>
 							<td><label for="">结束日期: </label></td>
-							<td><form:input path="etime" id="e_time" type="date"
-									value="" pattern="yyyy-MM-dd" name="endtime" /></td>
+							<td><form:input path="etime" id="e_time" type="datetime-local"
+									value="" pattern="yyyy-MM-dd HH:mm" name="endtime" /></td>
 
 						</tr>
 						<tr>

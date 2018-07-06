@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import com.vlife.springmvc.model.Runinfo;
@@ -77,6 +78,8 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 		if (mytime[0] != null && mytime[1] != null) {
 			criteria.add(Restrictions.between("stime", mytime[0], mytime[1]));
 		}
+		
+		criteria.addOrder(Order.desc("stime"));
 
 		return (List<Runinfo>) criteria.list();
 	}
