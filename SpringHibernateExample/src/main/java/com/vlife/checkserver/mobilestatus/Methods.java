@@ -20,7 +20,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 public class Methods {
-	public static final String URL = "jdbc:mysql://192.168.1.230:3306/newmobile_screenshot?characterEncoding=utf8&useSSL=true&serverTimezone=GMT";
+	public static final String URL = "jdbc:mysql://192.168.1.230:3306/mobile_screenshot?characterEncoding=utf8&useSSL=true&serverTimezone=GMT";
 	public static final String USER = "auto_test";
 	public static final String PASSWORD = "vlife";
 	private static Connection conn = null;
@@ -330,11 +330,70 @@ public class Methods {
 
 	}
 
+	//查询目前最大的bport
+	
+	public Integer getMaxBport() {
+
+		Integer result = null;
+		try {
+			String sql = "select distinct(max(bport))  as bport from mobile_status ";
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.execute();
+			ResultSet res = ps.executeQuery();
+			while (res.next()) {
+				result = res.getInt("bport");
+			}
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		return result;
+
+	}
+	
+	
+	//根据最大的bport获取目前最大的port
+	public Integer getMaxPort(int bport) {
+
+		Integer result = null;
+		try {
+			String sql = "select distinct(port) from mobile_status where bport= ?";
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, bport);
+			ps.execute();
+			ResultSet res = ps.executeQuery();
+			while (res.next()) {
+				result = res.getInt("port");
+			}
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		return result;
+
+	}
+	
+	
+	
 	// 给mobilestatus 表插入最新的手机信息
 
 	public void insertMobileStatus(int mobile_id, int server_id, String status) {
 		try {
-			String sql = "insert into mobile_status values (null,?,?,?,?,0,0)";
+			int maxBport=getMaxBport();
+			int maxPort=getMaxPort(maxBport);
+			String sql = "insert into mobile_status values (null,?,?,?,?,?,?)";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -347,6 +406,8 @@ public class Methods {
 			DateFormat fa = new SimpleDateFormat("yyyyMMddHHmm");
 			String da = fa.format(date);
 			ps.setString(4, da);
+			ps.setInt(5, maxBport+1);
+			ps.setInt(6, maxPort+1);
 			ps.execute();
 			conn.close();
 		} catch (ClassNotFoundException e) {

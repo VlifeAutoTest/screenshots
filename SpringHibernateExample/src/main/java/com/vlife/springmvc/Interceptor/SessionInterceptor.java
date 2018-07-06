@@ -17,7 +17,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 		String pageType = (String) request.getSession().getAttribute("pageType");
 		
 		if (tvendorid == null || searchValue == null || pageType==null ) {
-			request.getRequestDispatcher("/list").forward(request, response);
+			request.getRequestDispatcher("/query").forward(request, response);
 			return false;
 		}
 		return true;

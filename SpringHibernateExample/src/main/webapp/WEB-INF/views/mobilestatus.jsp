@@ -28,7 +28,7 @@ h4 {
 <%CheckMobileSattus cms = new CheckMobileSattus();
 			cms.run();%>
 	window.location.reload();
-			}, 5000);
+			}, 10000);
 		});
 	});
 </script>

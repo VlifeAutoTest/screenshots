@@ -46,6 +46,7 @@ public class CheckMobileSattus extends TimerTask {
 				e1.printStackTrace();
 			}
 
+			int serverID = methods.getTestServerID(host);
 			if (session != null) {
 
 				String devices[] = methods.getDevices(session);
@@ -54,7 +55,6 @@ public class CheckMobileSattus extends TimerTask {
 						int mobileStatusID = 0;
 						String device = devices[i].trim();
 						// 本次的server_id
-						int serverID = methods.getTestServerID(host);
 						// 判断是数据里是否有这个手机
 						// 如果数据库中没有这个手机device
 						if (methods.getMobileID(device) == null) {
@@ -77,7 +77,7 @@ public class CheckMobileSattus extends TimerTask {
 						// 如果已含有的手机
 						else {
 							int mobileID = methods.getMobileID(device);
-							mobileStatusID = methods.getMobileStatusID(mobileID, serverID);
+							
 							// 如果没有使用过
 							if (methods.getMobileStatus(mobileID, serverID) == null) {
 								methods.insertMobileStatus(mobileID, serverID, "free");
@@ -115,6 +115,7 @@ public class CheckMobileSattus extends TimerTask {
 									methods.updateMobileStatus(mobileID, serverID, "free");
 								}
 							}
+							mobileStatusID = methods.getMobileStatusID(mobileID, serverID);
 						}
 						list.add(mobileStatusID);
 					}

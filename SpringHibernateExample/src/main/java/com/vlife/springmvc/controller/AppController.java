@@ -147,7 +147,9 @@ public class AppController {
 
 	@RequestMapping(value = { "/query" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String queryResult(ModelMap model) {
-
+		model.addAttribute("searchValue", "");
+		model.addAttribute("tvendorid", "0");
+		model.addAttribute("pageType", "");
 		List<Vendor> vendors = vendor_service.findAllVendor();
 		Runinfo runinfo = new Runinfo();
 		model.addAttribute("runinfo", runinfo);
@@ -264,8 +266,7 @@ public class AppController {
 			int sid = runinfo.getSid();
 			TestServer server = runinfo_services.getTestServer(sid);
 
-			Session session = runinfo_services.getSession(server.getAddress(), 22, server.getUname(),
-					server.getPasswd());
+			Session session = runinfo_services.getSession(server.getAddress(), 22, server.getUname(),server.getPasswd());
 			// 执行脚本会返回执行时的信息
 			String command = "nohup  python  /home/lang/AutoScreenshot/run.py  -n   " + String.valueOf(runid) + "  &";
 			runinfo_services.execShellCommand(session, command);
@@ -293,9 +294,7 @@ public class AppController {
 	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
 	public String showMobile(ModelMap model) {
 		// 主页初始化下session的值
-		model.addAttribute("searchValue", "");
-		model.addAttribute("tvendorid", "0");
-		model.addAttribute("pageType", "");
+	
 
 		List<Object[]> status = status_services.findDeviceStatus();
 		List<Object[]> devinfo = status_services.deviceStatusInfo();

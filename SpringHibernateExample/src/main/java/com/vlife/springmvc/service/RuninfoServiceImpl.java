@@ -227,8 +227,8 @@ public class RuninfoServiceImpl implements RuninfoService {
 			os.write((python + "\r\n").getBytes());
 			os.flush();
 			os.close();
-			Thread.sleep(1000);
-			channel.disconnect();
+			Thread.sleep(5000);
+			//channel.disconnect();
 			// session.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
