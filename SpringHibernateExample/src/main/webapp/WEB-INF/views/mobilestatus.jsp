@@ -21,17 +21,7 @@ h4 {
 }
 </style>
 
-<script type="text/javascript">
-	$(document).ready(function() {
-		$("#fresh").click(function() {
-			setTimeout(function() {
-<%CheckMobileSattus cms = new CheckMobileSattus();
-			cms.run();%>
-	window.location.reload();
-			}, 10000);
-		});
-	});
-</script>
+
 
 
 </head>
@@ -41,6 +31,8 @@ h4 {
 		<div class="panel-heading">
 			<span class="glyphicon glyphicon-refresh"></span> <b> &nbsp;
 				插入新手机时,请 </b><a id="fresh" href="#">Click here</a>
+				<span id="me"></span><span style="color: red" id="time"></span><span id="sess"></span>
+				<font id="qwe" size="3" color="red">${message}</font>
 		</div>
 
 		<div class="container">
@@ -111,4 +103,39 @@ h4 {
 		</div>
 	</div>
 </body>
+
+<script type="text/javascript">
+
+var n=10;
+function showTime(){  
+       n=n-1;  
+       $("#time").empty();
+       $("#time").append(n);
+       
+       if(n>0){
+       setTimeout("showTime()",1000);  
+       }
+       
+   }  ;
+	$(document).ready(function() {
+		
+
+
+		$("#fresh").click(function() {
+			 $("#me").empty();
+			 $("#time").empty();
+			 $("#sess").empty() ;
+			$("#me").prepend("正在检测手机状态,请稍等, 倒计时") ;
+			 $("#time").prepend("10") ;
+			 $("#sess").prepend("秒!") ;
+			 showTime(); 
+			setTimeout(function() {
+<%CheckMobileSattus cms = new CheckMobileSattus();
+			cms.run();%>
+	window.location.reload();
+			}, 10000);
+		});
+
+	});
+</script>
 </html>

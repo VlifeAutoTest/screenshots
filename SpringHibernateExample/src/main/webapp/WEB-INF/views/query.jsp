@@ -248,7 +248,7 @@ select {
 						</tr>
 						<tr>
 							<td><input type="submit" value="查询" /></td>
-							<td><font size="3" color="red">${message}</font></td>
+							<td><font size="3" color="red" id ="showpath">${message}</font></td>
 						</tr>
 					</table>
 
@@ -312,7 +312,7 @@ select {
 								</c:otherwise>
 							</c:choose>
 						</tbody>
-						<tfoot>
+				<!-- 		<tfoot>
 							<tr>
 								<td colspan="8">
 									<ul class="pagination">
@@ -326,7 +326,7 @@ select {
 									</ul>
 								</td>
 							</tr>
-						</tfoot>
+						</tfoot> -->
 
 					</table>
 				</form:form>
@@ -342,10 +342,11 @@ select {
 					"#ww",
 					function(event) {
 						//alert("44444");
-						var ee = $(this).closest("tr").find("td").eq(6).find(
-								"b").text();
+						var ee = $(this).closest("tr").find("td").eq(6).find("b").text();
 						alert(ee);
 						// $("#ll").append(ee) ;
+						//$("#showpath").empty();
+						//$("#showpath").text(ee);
 					});
 		});
 	</script>

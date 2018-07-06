@@ -112,6 +112,6 @@ select {
 		</div>
 	</div>
 	Go back to
-	<a href="<c:url value='/applicationlist' />">应用列表</a>
+	<a href="<c:url value='/applicationlist-0-0' />">应用列表</a>
 </body>
 </html>

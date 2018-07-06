@@ -243,7 +243,7 @@ public class AppController {
 			// set sid
 			List infos = status_services.getOriginStatusInfo();
 			int mid = Integer.parseInt(runinfo.getMid());
-			// String uid = mobile_service.findById(mid).getUid();
+			 String uid = mobile_service.findById(mid).getUid();
 			Iterator it = infos.iterator();
 
 			while (it.hasNext()) {
@@ -252,8 +252,8 @@ public class AppController {
 
 				// get mid
 				int cmid = Integer.parseInt(temp[1].toString());
-
-				if (mid == cmid) {
+				String status=temp[2].toString(); 
+				if (mid == cmid && status.trim().equals("free")) {
 					int sid = Integer.parseInt(temp[0].toString());
 					runinfo.setSid(sid);
 				}
@@ -265,10 +265,15 @@ public class AppController {
 			int runid = runinfo.getId();
 			int sid = runinfo.getSid();
 			TestServer server = runinfo_services.getTestServer(sid);
-
-			Session session = runinfo_services.getSession(server.getAddress(), 22, server.getUname(),server.getPasswd());
+			String a=server.getAddress();
+			String b= server.getUname();
+			String c= server.getPasswd();
+				System.out.println(server.getAddress()+"      "+server.getUname()+"   "+server.getPasswd());
+			Session session = runinfo_services.getSession(server.getAddress().trim(), 22, server.getUname().trim(),server.getPasswd().trim());
+			//Session session = runinfo_services.getSession("10.0.11.0", 22, "lang","963852");
 			// 执行脚本会返回执行时的信息
 			String command = "nohup  python  /home/lang/AutoScreenshot/run.py  -n   " + String.valueOf(runid) + "  &";
+//			String command = "nohup  cd  /home/lang/AutoScreenshot && ./test.sh   &";
 			runinfo_services.execShellCommand(session, command);
 			// 结束本次的ssh连接
 			runinfo_services.endSSH();
@@ -833,8 +838,7 @@ public class AppController {
 		return "redirect:/applicationlist-0-0";
 	}
 
-	@RequestMapping(value = {
-			"/edit-{id}-application" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	@RequestMapping(value = {"/edit-{id}-application" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String editApplication(@PathVariable int id, ModelMap model) {
 		Application app = app_service.findById(id);
 		String vname = app.getVendor().getName();
@@ -844,8 +848,7 @@ public class AppController {
 		return "application";
 	}
 
-	@RequestMapping(value = {
-			"/edit-{id}-application" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@RequestMapping(value = {"/edit-{id}-application" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	public String updateApplication(@Valid Application app, BindingResult result, ModelMap model, @PathVariable int id)
 			throws UnsupportedEncodingException {
 
@@ -855,6 +858,9 @@ public class AppController {
 
 		String temp = new String(app.getName().getBytes("iso-8859-1"), "utf-8");
 		app.setName(temp);
+		System.out.println(app.getActivity()+"888888888888888888888888888888888888");
+		System.out.println(app.getPackagename()+"999999999999999999999999999999999");
+		System.out.println("baocun ");
 		app_service.updateApplication(app);
 
 		return "redirect:/applicationlist-0-0";
