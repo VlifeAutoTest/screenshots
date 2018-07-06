@@ -55,12 +55,15 @@
 							<td>${app.style}</td>
 							
 							<td>
-							<c:if test="${app.style  == 'Custom'}">
+							<c:if test="${app.style  == 'Random'}">
 							<a href="<c:url value='/edit-${app.id}-application' />">编辑</a>
 							</c:if>
 							</td>
-							<td><a
-								href="<c:url value='/delete-${app.id}-application-${page}' />">删除</a></td>
+							<td>
+							  <c:if test="${app.style  == 'Random'}">
+								<a href="<c:url value='/delete-${app.id}-application-${page}' />">删除</a>
+							  </c:if>
+							  </td>
 						</tr>
 					</c:forEach>
 				</tbody>

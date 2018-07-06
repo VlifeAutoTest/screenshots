@@ -62,7 +62,7 @@ select {
 					<tr>
 						<td><label for="style">截图方式: </label></td>
 						<td><form:select path="style" multiple="false" id="style">
-								<form:option value="Custom">Custom</form:option>
+<%-- 								<form:option value="Custom">Custom</form:option> --%>
 								<form:option value="Random">Random</form:option>
 							</form:select></td>
 						<td><form:errors path="style" cssClass="error" /></td>
