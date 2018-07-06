@@ -257,7 +257,7 @@ function replaceAll(str, oldStr, newStr){
 		        	var path="\\\\192.168.1.230"+$("#bpath").text();
 		     		 // alert(path);
 		        	//var txt="脚本调用成功,本次截图路径为:"+"<br>"+ path;
-		        	var txt="截图路径为: <a onclick='copyText()' >点击复制! </a> &nbsp;&nbsp;<font id='kkk' color='red' ></font> <p id='text'>"+path+"</p> <textarea id='mytxt'> </textarea>";
+		        	var txt="截图路径为: <a onclick='copyText()' >点击复制! </a>< &nbsp;&nbsp;<font id='kkk' color='red' ></font> <p id='text'>"+path+"</p> <textarea id='mytxt'> </textarea>";
 		        	//var txt="截图路径为: "+"<br>"+path;
 		        	//var txt="截图路径为222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222: ";
 					window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.success);
