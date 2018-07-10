@@ -43,13 +43,13 @@ select {
 				<form:input type="hidden" path="id" id="id" />
 				<table class="table table-striped table-hover table-responsive">
 					<tr>
-						<td><label for="name">名称: </label></td>
+						<td><label for="name">名称:</label></td>
 						<td><form:input path="name" id="name" /></td>
 						<td><form:errors path="name" cssClass="error" /></td>
 					</tr>
 
 					<tr>
-						<td><label for="uid">Udid: </label></td>
+						<td><label for="uid">Uid: </label></td>
 						<td><form:input path="uid" id="uid" /></td>
 						<td><form:errors path="uid" cssClass="error" /></td>
 					</tr>

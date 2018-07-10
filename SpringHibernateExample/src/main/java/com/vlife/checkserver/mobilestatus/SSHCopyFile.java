@@ -1,9 +1,12 @@
 package com.vlife.checkserver.mobilestatus;
 
+
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpException;
 import com.jcraft.jsch.UserInfo;
 
 /**
@@ -132,6 +135,38 @@ public class SSHCopyFile {
 		c.put(file, remoteFile);
 
 		channelSftp.disconnect();
+	}
+
+	/**
+	 * 删除文件
+	 *
+	 * @param directory
+	 *            要删除文件所在目录
+	 * @param deleteFile
+	 *            要删除的文件
+	 * @param sftp
+	 * @throws Exception
+	 */
+	public void deleteFileOrDirector(String fileOrDirectory) {
+		try {
+			this.initialSession();
+			Channel channelSftp = session.openChannel("sftp");
+			channelSftp.connect();
+			ChannelSftp sftp = (ChannelSftp) channelSftp;
+			//sftp.rmdir(fileOrDirectory);
+//			sftp.cd(fileOrDirectory);
+			sftp.rm(fileOrDirectory);
+		} catch (JSchException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (SftpException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+
 	}
 
 }

@@ -133,7 +133,6 @@ public class RuninfoServiceImpl implements RuninfoService {
 			session.setPassword(password);
 			session.connect();
 		} catch (JSchException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return session;
@@ -161,10 +160,8 @@ public class RuninfoServiceImpl implements RuninfoService {
 			result = IOUtils.toString(in, "UTF-8");
 			in.close();
 		} catch (JSchException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return result;
@@ -209,15 +206,12 @@ public class RuninfoServiceImpl implements RuninfoService {
 
 	@Override
 	public TestServer getTestServer(int sid) {
-		// TODO 自动生成的方法存根
 
 		return tdao.findById(sid);
-
 	}
 
 	@Override
 	public void execShellCommand(Session session, String python) {
-		// TODO 自动生成的方法存根
 		// shell方式执行
 		try {
 			ChannelShell channel = (ChannelShell) session.openChannel("shell");
@@ -229,7 +223,6 @@ public class RuninfoServiceImpl implements RuninfoService {
 			os.close();
 			Thread.sleep(2000);
 			channel.disconnect();
-			// session.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -238,17 +231,11 @@ public class RuninfoServiceImpl implements RuninfoService {
 
 	@Override
 	public Boolean checkPath(int newRunid) {
-		// TODO 自动生成的方法存根
 		Boolean status = false;
-		// Runinfo runinfo=dao.findById(newRunid);
-		// String path =runinfo.getImagepath();
-		// int s_id=runinfo.getSid();
-		// TestServer server =tdao.findById(s_id);
 		Session session = getSession("192.168.1.230", 22, "root", "vlifeqa");
 		for (int i = 0; i < 10; i++) {
 			String command = "ls";
 			String value = doCommand(session, command);
-			System.out.println("wwwwwwwwwwwwwwww" + value + "sss");
 			if (value.trim().length() == 0) {
 				status = true;
 				break;
@@ -257,7 +244,6 @@ public class RuninfoServiceImpl implements RuninfoService {
 			try {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
-				// TODO 自动生成的 catch 块
 				e.printStackTrace();
 			}
 		}

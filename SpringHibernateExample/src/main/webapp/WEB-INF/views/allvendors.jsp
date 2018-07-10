@@ -22,7 +22,6 @@
 					<tr>
 						<th>厂商名称</th>
 						<th></th>
-						<%--                             <td><a href="<c:url value='/newvendor' />">+ Add Vendor</a></td>   --%>
 					</tr>
 				</thead>
 				<tbody>
@@ -30,26 +29,12 @@
 						<tr>
 							<td>${vendor.name}</td>
 							<td>
-								<%-- <a href="<c:url value='/edit-${vendor.id}-vendor' />">edit</a> --%>
 							</td>
 							<td><a href="<c:url value='/delete-${vendor.id}-vendor' />">删除</a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
 				<tfoot>
-					<!--       <tr>  
-                            <td colspan="8">  
-                                <ul class="pagination">  
-                                    <li><a href="#">«</a></li>  
-                                    <li><a href="#">1</a></li>  
-                                    <li><a href="#">2</a></li>  
-                                    <li><a href="#">3</a></li>  
-                                    <li><a href="#">4</a></li>  
-                                    <li><a href="#">5</a></li>  
-                                    <li><a href="#">»</a></li>  
-                                </ul>  
-                            </td>  
-                        </tr>   -->
 				</tfoot>
 			</table>
 

@@ -43,14 +43,11 @@ public class ThemeServiceImpl implements ThemeService {
 
 	@Override
 	public List<Theme> searchByName(String name) {
-		// TODO 自动生成的方法存根
-
 		return dao.findByName(name);
 	}
 
 	@Override
 	public List<Theme> findThemeByPage(int offset, int length) {
-		// TODO 自动生成的方法存根
 		return dao.findThemeByPage(offset, length);
 
 	}

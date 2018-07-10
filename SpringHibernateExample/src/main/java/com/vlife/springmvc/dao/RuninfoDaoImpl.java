@@ -37,9 +37,6 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 		}
 
 		if (conditions.get("mid") != null && (conditions.get("mid").length() > 0)) {
-			// criteria.add(Restrictions.eq("mid",
-			// Integer.parseInt(conditions.get("mid"))));
-
 			String[] mid_list = conditions.get("mid").split(",");
 			Criterion[] cri_list = new Criterion[mid_list.length];
 			for (int i = 0; i < mid_list.length; i++) {
@@ -50,8 +47,6 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 		}
 
 		if (conditions.get("resource") != null && conditions.get("resource").length() > 0) {
-			// criteria.add(Restrictions.like("resource",
-			// "%"+conditions.get("resource")+"%"));
 			String[] res_list = conditions.get("resource").split(",");
 			Criterion[] cri_list = new Criterion[res_list.length];
 			for (int i = 0; i < res_list.length; i++) {
@@ -63,9 +58,6 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 		}
 
 		if (conditions.get("app") != null && conditions.get("app").length() > 0) {
-			// (^|,)1($|,)
-			// criteria.add(Restrictions.like("app", "%"+conditions.get("app")+"%"));
-
 			String[] app_list = conditions.get("app").split(",");
 			Criterion[] cri_list = new Criterion[app_list.length];
 			for (int i = 0; i < app_list.length; i++) {
@@ -78,7 +70,7 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 		if (mytime[0] != null && mytime[1] != null) {
 			criteria.add(Restrictions.between("stime", mytime[0], mytime[1]));
 		}
-		
+
 		criteria.addOrder(Order.desc("stime"));
 
 		return (List<Runinfo>) criteria.list();

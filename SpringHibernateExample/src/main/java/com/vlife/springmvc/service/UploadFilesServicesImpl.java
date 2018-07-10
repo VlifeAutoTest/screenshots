@@ -27,20 +27,18 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 	
 	@Autowired
 	private ThemeDao dao;
+	//文教保存路径
 	String savePath="/diskb/uploadfiles";
-	//String savePath="F:\\abc\\";
 	private String name;
-	//private String tempPath="F:\\abc\\ap\\";
+	//临时文件存储路径
 	private String tempPath="/diskb/tempData";
 	private String  filename2;
 	private String filename ;
 	private String path;
 	private String updateName;
 	private String updatePath;
-
 	@Override
 	public void doGet(HttpServletRequest request) {
-		// TODO 自动生成的方法存根
 		// request.setCharacterEncoding("UTF-8");
 		// 要执行文件上传的操作
 		// 判断表单是否支持文件上传。即：enctype="multipart/form-data"
@@ -51,7 +49,6 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 
 		// 创建一个DiskFileItemfactory工厂类
 		DiskFileItemFactory factory = new DiskFileItemFactory();
-//		factory.setRepository(new File("/diskb/tempData"));// 指定临时文件的存储目录
 		
 		File file =new File (tempPath);
 		if(!file.exists()) {
@@ -65,9 +62,6 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 
 		// 解析request对象，并得到一个表单项的集合
 		try {
-			// 限制上传文件的大小
-			// sfu.setFileSizeMax(1024*1024*3);//表示3M大小
-			// sfu.setSizeMax(1024*1024*6);
 			List<FileItem> fileItems = sfu.parseRequest(request);
 
 			// 遍历表单项数据
@@ -95,7 +89,6 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 	
 	@Override
 	public void doUpdate(HttpServletRequest request) {
-		// TODO 自动生成的方法存根
 		// request.setCharacterEncoding("UTF-8");
 		// 要执行文件上传的操作
 		// 判断表单是否支持文件上传。即：enctype="multipart/form-data"
@@ -142,13 +135,7 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 
 	@Override
 	public void processUploadField(FileItem fileitem) {
-		// TODO 自动生成的方法存根
 		try {
-			// 得到文件输入流
-			//InputStream is = fileitem.getInputStream();
-
-			// 创建一个文件存盘的目录
-//			String directoryRealPath = this.getServletContext().getRealPath("/WEB-INF/upload");
 			String directoryRealPath= savePath;
 			File storeDirectory = new File(directoryRealPath);// 即代表文件又代表目录
 			if (!storeDirectory.exists()) {
@@ -157,23 +144,11 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 			// 得到上传的名子
 			 filename = fileitem.getName();// 文件项中的值 F:\图片素材\小清新\43.jpg 或者
 					filename2=filename;								// 43.jpg
-//			if (filename != null) {
-//				// filename =
-//				// filename.substring(filename.lastIndexOf(File.separator)+1);
-//				filename = FilenameUtils.getName(filename);// 效果同上
-//			}
-			// 解决文件同名的问题
-//			filename = UUID.randomUUID() + "_" + filename;
 			Date  date =new Date();
 			 DateFormat dateformat= new SimpleDateFormat("yyyyMMdd-HHmmss");
 			 String date1 = dateformat.format(date); 
 			 
 			filename = date1+filename;
-			// 目录打散
-			// String childDirectory = makeChildDirectory(storeDirectory); //
-			// 2015-10-19
-			//String childDirectory = makeChildDirectory(storeDirectory, filename); // a/b
-
 			// 上传文件，自动删除临时文件
 			fileitem.write(new File(storeDirectory,filename));
 			fileitem.delete();
@@ -186,7 +161,6 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 
 	@Override
 	public String makeChildDirectory(File storeDirectory, String filename) {
-		// TODO 自动生成的方法存根
 		 childDirectory = savePath;
 
 		// 创建指定目录
@@ -194,23 +168,17 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 		if (!file.exists()) {
 			file.mkdirs();
 		}
-//		return childDirectory;
 		return childDirectory;
 	}
 
 	@Override
 	public void processFormField(FileItem fileitem) {
-		// TODO 自动生成的方法存根
 		try {
 			
 			String fieldname = fileitem.getFieldName();// 字段名
 			String fieldvalue = fileitem.getString("UTF-8");// 字段值
-			//fieldvalue = new String(fieldvalue.getBytes("iso-8859-1"),"utf-8");
 			
 			if(fieldname.equals("name")) {
-				/*Date  date =new Date();
-				 DateFormat dateformat= new SimpleDateFormat("yyyyMMdd-HHmmss");
-				 String date1 = dateformat.format(date);*/
 				name=fieldvalue;
 			}
 			if(fieldname.equals("path")) {
@@ -225,13 +193,11 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 
 	@Override
 	public void saveTheme(Theme theme) {
-		// TODO 自动生成的方法存根
 		dao.saveTheme(theme);
 	}
 
 	@Override
 	public String getPath() {
-		// TODO 自动生成的方法存根
 		return path;
 	}
 	public String getName() {
@@ -255,7 +221,6 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 
 	@Override
 	public void updateTheme(Theme theme) {
-		// TODO 自动生成的方法存根
 		Theme entity = dao.findById(theme.getId());
 		if(entity!=null){
 			entity.setName(theme.getName());
@@ -267,12 +232,10 @@ public class UploadFilesServicesImpl implements  UploadFilesServices {
 
 	@Override
 	public void updateProcessFormField(FileItem fileitem) {
-		// TODO 自动生成的方法存根
 try {
 			
 			String fieldname = fileitem.getFieldName();// 字段名
 			String fieldvalue = fileitem.getString("UTF-8");// 字段值
-			//fieldvalue = new String(fieldvalue.getBytes("iso-8859-1"),"utf-8");
 			
 			if(fieldname.equals("name")) {
 				
@@ -302,7 +265,6 @@ try {
 
 @Override
 public String getSavePath() {
-	// TODO 自动生成的方法存根
 	return savePath;
 }
 

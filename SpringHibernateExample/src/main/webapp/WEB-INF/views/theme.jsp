@@ -46,44 +46,32 @@
 				<form:input type="hidden" path="id" id="id" />
 				<table class="table table-striped table-hover">
 					<tr>
-						<td><label for="name">名称: </label></td> 
-						<td><form:input path="name" id="name" /> <font id="qwe"
-							size="3" color="red">${message}</font></td> 
+						<td><label for="name">名称:</label></td>
+						<td><form:input path="name" id="name" />(请填写资源在手机中的名称)<font
+							id="qwe" size="3" color="red">${message}</font></td>
 						<td><form:errors path="name" cssClass="error" /></td>
 					</tr>
 					<form:input type="hidden" path="path" id="path]" />
-
-					<%-- <tr id ="we" >
-		    <tr id ="we" >
-				<td><label for="path">保存路径： </label> </td>
-				<td><form:input path="path" id="path" /></td>
-				<td><form:errors path="path" cssClass="error"/></td>
-		    </tr> --%>
-
 					<tr id="wq">
-						<td><label for="">文件名: </label></td> 
-						<td><input type="file" name="file"> <font id="qwe"
-							size="3" color="red">${messagetwo}</font></td>
-						
+						<td><label for="">文件名: </label></td>
+						<td><input type="file" name="file"><font id="qwe"
+							size="3" color="red"> ${messagetwo}</font></td>
 					</tr>
-
-
 					<tr>
 						<td colspan="3"><c:choose>
 								<c:when test="${edit}">
 									<input type="submit" value="更新" />
 								</c:when>
 								<c:otherwise>
-							<input type="submit" value="增加" />
-						</c:otherwise>
+									<input type="submit" value="增加" />
+								</c:otherwise>
 							</c:choose></td>
 					</tr>
 				</table>
 			</form:form>
 		</div>
-		
+
 	</div>
-	<!--   <a href="<c:url value='/themelist-1' />">字体与主题列表</a> ======= Go back to -->
 </body>
 
 

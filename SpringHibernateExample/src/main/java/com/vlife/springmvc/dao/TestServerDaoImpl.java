@@ -33,15 +33,6 @@ public class TestServerDaoImpl extends AbstractDao<Integer, TestServer> implemen
 	}
 
 	public int[] findAllServerId() {
-
-		// Query query = getSession().createSQLQuery("select id from testserver");
-		// List<TestServer> tserver = query.getResultList();
-		// int[] temp = new int[tserver.size()];
-		// int i = 0;
-		// for(TestServer t : tserver) {
-		// temp[i] = t.getId();
-		// i ++;
-		// }
 		int[] temp = { 1, 2, 3 };
 
 		return temp;

@@ -84,7 +84,7 @@
 								<li><a href="<c:url value="/applicationlist-${page+1}-0"/>">
 										&raquo;</a></li>
 								<li><a
-									href="<c:url value="/applicationlist-${totalPages}-0"/>">末页</a></li>
+									href="<c:url value="/applicationlist-${totalPages == 0 ? 1 : totalPages }-0"/>">末页</a></li>
 							</ul>
 
 

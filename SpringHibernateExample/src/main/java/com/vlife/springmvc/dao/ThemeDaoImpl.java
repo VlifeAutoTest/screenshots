@@ -46,8 +46,6 @@ public class ThemeDaoImpl extends AbstractDao<Integer, Theme> implements ThemeDa
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Theme> findThemeByPage(int offset, int length) {
-		// TODO 自动生成的方法存根
-
 		Query query = getSession().createQuery("from Theme order by id desc");
 		query.setFirstResult(offset);
 		query.setMaxResults(length);
@@ -56,7 +54,6 @@ public class ThemeDaoImpl extends AbstractDao<Integer, Theme> implements ThemeDa
 
 	@Override
 	public List<Theme> findThemeByNameAndPage(String partName, int offset, int length) {
-		// TODO 自动生成的方法存根
 		String strSQL = "from Theme WHERE themename like :name order by id desc";
 		Query query = getSession().createQuery(strSQL);
 		query.setString("name", "%" + partName + "%");
@@ -68,7 +65,6 @@ public class ThemeDaoImpl extends AbstractDao<Integer, Theme> implements ThemeDa
 	}
 
 	public Integer getMaxCheckNumberByName(String name) {
-
 		String strSql = "select max(t.checknumber) from Theme t where t.name=:thname";
 		Query query = getSession().createQuery(strSql);
 		query.setString("thname", name);

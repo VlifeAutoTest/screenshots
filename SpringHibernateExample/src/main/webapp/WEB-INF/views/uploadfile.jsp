@@ -28,9 +28,6 @@
 				<input type="submit" value="上传" class="btn btn-success" />
 			</form:form>
 
-
-
-
 		</div>
 	</div>
 	Go back to

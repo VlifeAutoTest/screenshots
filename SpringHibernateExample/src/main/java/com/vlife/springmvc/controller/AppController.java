@@ -37,6 +37,7 @@ import com.vlife.springmvc.service.UploadFilesServices;
 import com.vlife.springmvc.service.VendorService;
 import com.jcraft.jsch.Session;
 import com.vlife.checkserver.mobilestatus.CheckMobileSattus;
+import com.vlife.checkserver.mobilestatus.Methods;
 import com.vlife.checkserver.mobilestatus.SSHCopyFile;
 import com.vlife.springmvc.model.Application;
 import com.vlife.springmvc.model.Mobile;
@@ -50,7 +51,7 @@ import com.vlife.springmvc.service.TestServerService;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes(value = { "tvendorid", "searchValue" ,"pageType"})
+@SessionAttributes(value = { "tvendorid", "searchValue", "pageType" })
 public class AppController {
 	/*
 	 * @Autowired EmployeeService service;
@@ -97,25 +98,31 @@ public class AppController {
 		return tserver_service.findAllTestServer();
 	}
 
-	public String getErrorString(BindingResult bindingResult) {
+	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
+	public String showMobile(ModelMap model) {
 
-		List<FieldError> err = bindingResult.getFieldErrors();
-		FieldError fe;
-		String field;
-		String errorMessage;
-		StringBuffer buffer = new StringBuffer("");
-		String temp;
-		for (int i = 0; i < err.size(); i++) {
-			fe = err.get(i);
-			field = fe.getField();
-			errorMessage = fe.getDefaultMessage();
-			temp = field + " : " + errorMessage;
-			buffer.append(temp);
-		}
-		String errors = buffer.toString();
-		return errors;
+		List<Object[]> status = status_services.findDeviceStatus();
+		List<Object[]> devinfo = status_services.deviceStatusInfo();
+
+		model.addAttribute("status", status);
+		model.addAttribute("devinfo", devinfo);
+
+		return "mobilestatus";
 	}
 
+	@RequestMapping(value = { "/refresh" }, method = RequestMethod.GET)
+	public String refreshMobileStatus(ModelMap model) {
+
+		CheckMobileSattus cms = new CheckMobileSattus();
+		cms.run();
+		return "redirect:/list";
+	}
+	
+	
+	
+	
+	//审核查询代码
+	
 	public String[] getDetailInfo(Runinfo rinfo) {
 
 		String[] res = new String[4];
@@ -155,7 +162,6 @@ public class AppController {
 		model.addAttribute("runinfo", runinfo);
 		model.addAttribute("vendors", vendors);
 		model.addAttribute("queryflag", false);
-
 		return "query";
 	}
 
@@ -243,7 +249,6 @@ public class AppController {
 			// set sid
 			List infos = status_services.getOriginStatusInfo();
 			int mid = Integer.parseInt(runinfo.getMid());
-			 String uid = mobile_service.findById(mid).getUid();
 			Iterator it = infos.iterator();
 
 			while (it.hasNext()) {
@@ -252,7 +257,7 @@ public class AppController {
 
 				// get mid
 				int cmid = Integer.parseInt(temp[1].toString());
-				String status=temp[2].toString(); 
+				String status = temp[2].toString();
 				if (mid == cmid && status.trim().equals("free")) {
 					int sid = Integer.parseInt(temp[0].toString());
 					runinfo.setSid(sid);
@@ -265,15 +270,11 @@ public class AppController {
 			int runid = runinfo.getId();
 			int sid = runinfo.getSid();
 			TestServer server = runinfo_services.getTestServer(sid);
-			String a=server.getAddress();
-			String b= server.getUname();
-			String c= server.getPasswd();
-				System.out.println(server.getAddress()+"      "+server.getUname()+"   "+server.getPasswd());
-			Session session = runinfo_services.getSession(server.getAddress().trim(), 22, server.getUname().trim(),server.getPasswd().trim());
-			//Session session = runinfo_services.getSession("10.0.11.0", 22, "lang","963852");
+			Session session = runinfo_services.getSession(server.getAddress().trim(), 22, server.getUname().trim(),
+					server.getPasswd().trim());
 			// 执行脚本会返回执行时的信息
-			String command = "nohup  python  /home/lang/AutoScreenshot/run.py  -n   " + String.valueOf(runid) + "  &";
-//			String command = "nohup  cd  /home/lang/AutoScreenshot && ./test.sh   &";
+			String command = "nohup  python  " + Methods.getProperty("execute.python.path") + "  -n   "
+					+ String.valueOf(runid) + "  &";
 			runinfo_services.execShellCommand(session, command);
 			// 结束本次的ssh连接
 			runinfo_services.endSSH();
@@ -288,409 +289,65 @@ public class AppController {
 
 	}
 
-	@RequestMapping(value = { "refresh" }, method = RequestMethod.GET)
-	public String refreshMobileStatus(ModelMap model) {
+	@RequestMapping(value = { "/list-apps-with-{para}" }, method = RequestMethod.GET)
+	@ResponseBody
+	public List<Application> listAppsByStyle(@PathVariable String para, ModelMap model) {
+		String[] temp = para.split("-");
 
-		CheckMobileSattus cms = new CheckMobileSattus();
-		cms.run();
-		return "redirect:/";
+		Vendor vendor = vendor_service.findById(Integer.parseInt(temp[0]));
+		List<Application> apps = app_service.findApplicationByVendorIDAndStyle(vendor, temp[1]);
+		return apps;
 	}
 
-	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
-	public String showMobile(ModelMap model) {
-		// 主页初始化下session的值
-	
+	@RequestMapping(value = { "/list-mobiles-by-{vendorid}" }, method = RequestMethod.GET)
+	@ResponseBody
+	public List<Mobile> listMobiles(@PathVariable int vendorid, ModelMap model) {
+		List<Mobile> res = new ArrayList<>();
+		List<Mobile> conn = status_services.getFreeDevices();
+		for (int i = 0; i < conn.size(); i++) {
 
-		List<Object[]> status = status_services.findDeviceStatus();
-		List<Object[]> devinfo = status_services.deviceStatusInfo();
+			int tmp = conn.get(i).getVendor().getId();
 
-		model.addAttribute("status", status);
-		model.addAttribute("devinfo", devinfo);
+			if (tmp == vendorid) {
 
-		return "mobilestatus";
-	}
-
-	@RequestMapping(value = { "/newmobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public String newMobile(ModelMap model) {
-		Mobile app = new Mobile();
-		model.addAttribute("mobile", app);
-		model.addAttribute("edit", false);
-		return "mobile";
-	}
-
-	@RequestMapping(value = { "/mobilelist-{page}" }, method = RequestMethod.GET)
-	public String listMobiles(ModelMap model, @PathVariable() int page) {
-		// 每页显示多少个手机
-		int pageSize = 12;
-		List<Mobile> allMobiles = mobile_service.findAllMobile();
-		int totalPages = allMobiles.size() % pageSize == 0 ? allMobiles.size() / pageSize
-				: allMobiles.size() / pageSize + 1;
-		int offset = 1;
-		if (page <= 0) {
-			offset = 0;
-		} else if (page > totalPages) {
-			offset = (totalPages - 1) * pageSize;
-		} else {
-			offset = (page - 1) * pageSize;
-		}
-		List<Mobile> mobiles = mobile_service.findMobileByPage(offset, pageSize);
-		model.addAttribute("mobiles", mobiles);
-		// 总页数
-		model.addAttribute("totalPages", totalPages);
-		// 当前的页数
-		model.addAttribute("page", page);
-
-		return "allmobiles";
-	}
-
-	@RequestMapping(value = { "/newmobile" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public String saveMobile(@Valid Mobile mobile, BindingResult result, ModelMap model)
-			throws UnsupportedEncodingException {
-
-		if (result.hasErrors()) {
-			return "mobile";
-		}
-
-		if (!mobile_service.isMobileUidUnique(mobile.getId(), mobile.getUid())) {
-			FieldError ssnError = new FieldError("mobile", "uid",
-					messageSource.getMessage("non.unique.uid", new String[] { mobile.getUid() }, Locale.getDefault()));
-			result.addError(ssnError);
-			return "mobile";
-		}
-
-		String temp = new String(mobile.getName().getBytes("iso-8859-1"), "utf-8");
-
-		// delete spaces
-		mobile.setName(temp.trim().replace(" ", ""));
-
-		mobile_service.saveMobile(mobile);
-		return "redirect:/mobilelist-1";
-	}
-
-	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public String editmobile(@PathVariable String uid, ModelMap model) {
-		Mobile mobile = mobile_service.findMobileByUid(uid);
-		String vname = mobile.getVendor().getName();
-		model.addAttribute("vname", vname);
-		model.addAttribute("mobile", mobile);
-		model.addAttribute("edit", true);
-		return "mobile";
-	}
-
-	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.POST)
-	public String updatemobile(@Valid Mobile mobile, BindingResult result, ModelMap model)
-			throws UnsupportedEncodingException {
-		if (result.hasErrors()) {
-			return "mobile";
-		}
-
-		if (!mobile_service.isMobileUidUnique(mobile.getId(), mobile.getUid())) {
-			FieldError ssnError = new FieldError("mobile", "uid",
-					messageSource.getMessage("non.unique.uid", new String[] { mobile.getUid() }, Locale.getDefault()));
-			result.addError(ssnError);
-			return "mobile";
-		}
-
-		String temp = new String(mobile.getName().getBytes("iso-8859-1"), "utf-8");
-		mobile.setName(temp.trim().replace(" ", ""));
-
-		mobile_service.updateMobile(mobile);
-
-		return "redirect:/mobilelist-1";
-	}
-
-	@RequestMapping(value = { "/delete-{uid}-mobile-{page}" }, method = RequestMethod.GET)
-	public String deleteMobile(@PathVariable String uid, @PathVariable String page) {
-		mobile_service.deleteMobileByUid(uid);
-		return "redirect:/mobilelist-" + page;
-	}
-
-	@RequestMapping(value = { "/serverlist" }, method = RequestMethod.GET)
-	public String listServers(ModelMap model) {
-
-		List<TestServer> servers = tserver_service.findAllTestServer();
-		model.addAttribute("servers", servers);
-		return "allservers";
-	}
-
-	@RequestMapping(value = { "/vendorlist" }, method = RequestMethod.GET)
-	public String listVendors(ModelMap model) {
-
-		List<Vendor> vendors = vendor_service.findAllVendor();
-		model.addAttribute("vendors", vendors);
-		return "allvendors";
-	}
-
-	@RequestMapping(value = { "/newvendor" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public String newvendor(ModelMap model) {
-		Vendor vendor = new Vendor();
-		model.addAttribute("vendor", vendor);
-		model.addAttribute("edit", false);
-		return "vendor";
-	}
-
-	@RequestMapping(value = { "/newvendor" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public String saveVendor(@Valid Vendor vendor, BindingResult result, ModelMap model)
-			throws UnsupportedEncodingException {
-
-		if (result.hasErrors()) {
-			return "vendor";
-		}
-
-		String temp = new String(vendor.getName().getBytes("iso-8859-1"), "utf-8");
-		vendor.setName(temp);
-		vendor_service.saveVendor(vendor);
-		return "redirect:/vendorlist";
-	}
-
-	@RequestMapping(value = { "/edit-{id}-vendor" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public String editVendor(@PathVariable int id, ModelMap model) {
-		Vendor vendor = vendor_service.findById(id);
-		model.addAttribute("vendor", vendor);
-		model.addAttribute("edit", true);
-		return "vendor";
-	}
-
-	@RequestMapping(value = { "/edit-{id}-vendor" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public String updateVendor(@Valid Vendor vendor, BindingResult result, ModelMap model, @PathVariable int id)
-			throws UnsupportedEncodingException {
-
-		if (result.hasErrors()) {
-			return "vendor";
-		}
-
-		String temp = new String(vendor.getName().getBytes("iso-8859-1"), "utf-8");
-		vendor.setName(temp);
-		vendor_service.updateVendor(vendor);
-
-		return "redirect:/vendorlist";
-	}
-
-	@RequestMapping(value = { "/delete-{id}-vendor" }, method = RequestMethod.GET)
-	public String deleteVendor(@PathVariable int id) {
-		vendor_service.deleteVendorByID(id);
-		return "redirect:/vendorlist";
-	}
-
-	@RequestMapping(value = { "/servernew" }, method = RequestMethod.GET)
-	public String newServer(ModelMap model) {
-		TestServer server = new TestServer();
-		model.addAttribute("server", server);
-		model.addAttribute("edit", false);
-		return "addserver";
-	}
-
-	@Validated
-	@RequestMapping(value = { "/servernew" }, method = RequestMethod.POST)
-	public String saveServer(@Valid TestServer server, BindingResult result, ModelMap model)
-			throws UnsupportedEncodingException {
-
-		if (result.hasErrors()) {
-			String errors = getErrorString(result);
-			model.addAttribute("errorInfo", errors);
-			model.addAttribute("server", server);
-			model.addAttribute("edit", false);
-			return "addserver";
-		}
-
-		if (!tserver_service.isTestServerSsnUnique(server.getId(), server.getSsn())) {
-			FieldError ssnError = new FieldError("server", "ssn",
-					messageSource.getMessage("non.unique.ssn", new String[] { server.getSsn() }, Locale.getDefault()));
-			result.addError(ssnError);
-			model.addAttribute("errorInfo", ssnError.getDefaultMessage());
-			model.addAttribute("server", server);
-			model.addAttribute("edit", false);
-			return "addserver";
-		}
-		String temp = new String(server.getSsn().getBytes("iso-8859-1"), "utf-8");
-		server.setSsn(temp);
-		tserver_service.saveTestServer(server);
-
-		return "redirect:/serverlist";
-	}
-
-	@RequestMapping(value = {
-			"/edit-{ssn}-testserver" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public String editServer(@PathVariable String ssn, ModelMap model) {
-		TestServer server = tserver_service.findTestServerBySsn(ssn);
-		model.addAttribute("server", server);
-		model.addAttribute("edit", true);
-		return "addserver";
-	}
-
-	@RequestMapping(value = { "/edit-{ssn}-testserver" }, method = RequestMethod.POST)
-	public String updateServer(@Valid TestServer server, BindingResult result, ModelMap model)
-			throws UnsupportedEncodingException {
-
-		if (result.hasErrors()) {
-			return "addserver";
-		}
-
-		if (!tserver_service.isTestServerSsnUnique(server.getId(), server.getSsn())) {
-			FieldError ssnError = new FieldError("server", "ssn",
-					messageSource.getMessage("non.unique.ssn", new String[] { server.getSsn() }, Locale.getDefault()));
-			result.addError(ssnError);
-			model.addAttribute("server", server);
-			model.addAttribute("edit", true);
-			return "addserver";
-		}
-
-		String temp = new String(server.getSsn().getBytes("iso-8859-1"), "utf-8");
-		server.setSsn(temp);
-
-		tserver_service.updateTestServer(server);
-
-		return "redirect:/serverlist";
-	}
-
-	@RequestMapping(value = { "/delete-{ssn}-testserver" }, method = RequestMethod.GET)
-	public String deleteTestServer(@PathVariable String ssn) {
-		tserver_service.deleteTestServerBySsn(ssn);
-		return "redirect:/serverlist";
-	}
-
-	@RequestMapping(value = { "/newtheme-{type}" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public String newTheme(ModelMap model,@PathVariable String type) {
-		
-			
-		Theme app = new Theme();
-		// Long aa=theme_service.findMaxCheckNum("七彩小仙女");
-		// model.addAttribute("message",123);
-		model.addAttribute("theme", app);
-		model.addAttribute("edit", false);
-		if(type.length()!=0) {
-			model.addAttribute("pageType", type);
-		}
-			
-		return "theme";
-	}
-
-	@RequestMapping(value = { "/newtheme" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public String saveTheme(@Valid Theme theme, BindingResult result, ModelMap model, HttpServletRequest request,
-			@RequestParam(value = "file", required = true) MultipartFile attach,@ModelAttribute("pageType") String pageType) {
-		
-//			if(type.equals("0")) {
-		String name = theme.getName();
-		name = name.trim();
-		if (name.length() == 0 || name == null) {
-			Theme app = new Theme();
-			model.addAttribute("theme", app);
-			model.addAttribute("edit", false);
-			model.addAttribute("message", "请输入名称!");
-			return "theme";
-		} else {
-			// 存储图片过程
-			if (!attach.isEmpty()) {
-				String path = "/diskb/tempData/";
-				File file = new File(path);
-				if (!file.exists()) {
-					file.mkdirs();
-				}
-				String oldFileName = attach.getOriginalFilename();
-				// 上传文件后缀
-				String prefix = FilenameUtils.getExtension(oldFileName);
-				System.out.println("999999999999" + oldFileName);
-				System.out.println(prefix);
-				// 可以限制上传那文件的大小
-				// int filesize = 4000000;
-				// if (attach.getSize() > filesize) {
-				// return false;
-				// }
-				Date date = new Date();
-				DateFormat dateformat = new SimpleDateFormat("yyyyMMdd-HHmmss");
-				String date1 = dateformat.format(date);
-				oldFileName = date1 + oldFileName;
-
-				File targetFile = new File(path, oldFileName);
-				if (!targetFile.exists()) {
-					targetFile.mkdirs();
-				}
-				try {
-					attach.transferTo(targetFile);
-				} catch (Exception e) {
-					model.addAttribute("messagetwo", "文件上传失败!");
-					Theme app = new Theme();
-					model.addAttribute("theme", app);
-					model.addAttribute("edit", false);
-					return "theme";
-				}
-				// 拷贝文件到230服务器
-				SSHCopyFile sshcf = new SSHCopyFile("192.168.1.230", "root", "vlifeqa", 22);
-				try {
-					sshcf.putFile(path, oldFileName, "/diskb/uploadfiles");
-				} catch (Exception e) {
-					// TODO 自动生成的 catch 块
-					model.addAttribute("messagetwo", "文件上传失败!");
-					Theme app = new Theme();
-					model.addAttribute("theme", app);
-					model.addAttribute("edit", false);
-					return "theme";
-				}
-
-				String filePath = "/diskb/uploadfiles" + "/" + oldFileName;
-				String tempFile = path + "/" + oldFileName;
-				File file2 = new File(tempFile);
-				//file2.deleteOnExit();
-				Integer maxNum = theme_service.getMaxCheckNumberByName(name);
-				if (maxNum == null) {
-					maxNum = 1;
-				}
-				System.out.println(name);
-				// System.out.println("888888888888888888888888"+ maxNum);
-				theme.setChecknumber(maxNum + 1);
-				theme.setName(name);
-				theme.setPath(filePath);
-				System.out.println("33333333333333+  "+pageType);
-				upload_files.saveTheme(theme);
-				if(pageType.trim().equals("0")) {
-					return "redirect:/themelist-0";
-					
-				}else {
-					return "redirect:/check";
-				}
-
-			} else {
-				Theme app = new Theme();
-				model.addAttribute("theme", app);
-				model.addAttribute("edit", false);
-				model.addAttribute("messagetwo", "文件上传失败!");
-				return "theme";
+				res.add(conn.get(i));
 			}
-
 		}
-
+		return res;
 	}
 
-	@RequestMapping(value = { "/edit-{id}-theme" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public String editTheme(@PathVariable int id, ModelMap model) {
-		Theme theme = theme_service.findById(id);
-		model.addAttribute("theme", theme);
-		model.addAttribute("edit", true);
-		return "theme";
+	@RequestMapping(value = { "/list-all-resources" }, method = RequestMethod.GET)
+	@ResponseBody
+	public List<Theme> listResources(ModelMap model) {
+		List<Theme> themes = theme_service.findAllTheme();
+		return themes;
 	}
 
-	@RequestMapping(value = { "/edit-{id}-theme" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public String updateTheme(@Valid Theme theme, BindingResult result, ModelMap model, @PathVariable int id,
-			HttpServletRequest request) {
-		upload_files.doUpdate(request);
-
-		theme.setName(upload_files.getUpdateName());
-		theme.setPath(upload_files.getUpdatePath());
-		upload_files.updateTheme(theme);
-		return "redirect:/themelist-1";
+	@RequestMapping(value = { "/list-apps-by-{vendorid}" }, method = RequestMethod.GET)
+	@ResponseBody
+	public List<Application> listApps(@PathVariable int vendorid, ModelMap model) {
+		Vendor vendor = vendor_service.findById(vendorid);
+		List<Application> apps = app_service.findApplicationByVendorID(vendor);
+		return apps;
 	}
 
-	@RequestMapping(value = { "/delete-{id}-theme-{page}" }, method = RequestMethod.GET)
-	public String deleteTheme(@PathVariable int id, @PathVariable String page) {
-		theme_service.deleteThemeByID(id);
-		return "redirect:/themelist-" + page;
+	@RequestMapping(value = { "/list-all-mobiles-{vendorid}" }, method = RequestMethod.GET)
+	@ResponseBody
+	public List<Mobile> listAllMobiles(@PathVariable int vendorid, ModelMap model) {
+		Vendor vendor = vendor_service.findById(vendorid);
+		List<Mobile> res = mobile_service.findMobileByVendor(vendor);
+		return res;
 	}
 
+	
+	//资源管理
+	
+	
 	@RequestMapping(value = { "/themelist-{page}" }, method = RequestMethod.GET)
 	public String listThemes(ModelMap model, @PathVariable() int page,
 			@ModelAttribute("searchValue") String searchValue) {
 		// 每页显示多少条数据
-		int pageSize = 12;
+		int pageSize = Integer.parseInt(Methods.getProperty("resource.list.page.size"));
 		if (page == 0) {
 			model.addAttribute("searchValue", "");
 			searchValue = "";
@@ -746,7 +403,6 @@ public class AppController {
 		try {
 			search = new String(search.getBytes("iso-8859-1"), "utf-8").trim();
 		} catch (UnsupportedEncodingException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 
 		}
@@ -761,127 +417,176 @@ public class AppController {
 
 	}
 
-	@RequestMapping(value = { "/applicationlist-{page}-{vendorid}" }, method = RequestMethod.GET)
-	public String listApplications(ModelMap model, @PathVariable int page, @PathVariable String vendorid,
-			@ModelAttribute("tvendorid") String tvendorid) {
-		// 每页显示的数量
-		int pageSize = 12;
-		if (page == 0) {
-			model.addAttribute("tvendorid", "0");
-			tvendorid = "0";
-		}
-		if (!vendorid.equals("0")) {
-			model.addAttribute("tvendorid", vendorid);
-			tvendorid = vendorid;
-		}
+	@RequestMapping(value = { "/newtheme-{type}" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String newTheme(ModelMap model, @PathVariable String type) {
 
-		if (tvendorid.equals("0")) {
-			List<Application> applications = app_service.findAllApplication();
-			int totalPages = applications.size() % pageSize == 0 ? applications.size() / pageSize
-					: applications.size() / pageSize + 1;
-			int offset = 1;
-			if (page <= 0) {
-				offset = 0;
-			} else if (page > totalPages) {
-				offset = (totalPages - 1) * pageSize;
-			} else {
-				offset = (page - 1) * pageSize;
-			}
-			List<Application> application = app_service.findApplicationByPage(offset, pageSize);
-			model.addAttribute("applications", application);
-			model.addAttribute("totalPages", totalPages);
-			model.addAttribute("page", page);
-			return "allapplications";
-		} else {
-
-			int venid = Integer.parseInt(tvendorid.trim());
-			Vendor vendor = vendor_service.findById(venid);
-			List<Application> apps = app_service.findApplicationByVendorID(vendor);
-			int totalPages = apps.size() % pageSize == 0 ? apps.size() / pageSize : apps.size() / pageSize + 1;
-			int offset = 1;
-			if (page <= 0) {
-				offset = 0;
-			} else if (page > totalPages) {
-				offset = (totalPages - 1) * pageSize;
-			} else {
-				offset = (page - 1) * pageSize;
-			}
-			List<Application> applica = app_service.findApplicationByVendorIDaAndPage(vendor, offset, pageSize);
-
-			model.addAttribute("totalPages", totalPages);
-			model.addAttribute("page", page);
-			model.addAttribute("applications", applica);
-			return "allapplications";
-
-		}
-
-	}
-
-	@RequestMapping(value = { "/newapplication" }, method = RequestMethod.GET)
-	public String newApplication(ModelMap model) {
-		Application app = new Application();
-		model.addAttribute("application", app);
+		Theme app = new Theme();
+		model.addAttribute("theme", app);
 		model.addAttribute("edit", false);
-		return "application";
-	}
-
-	@RequestMapping(value = { "/newapplication" }, method = RequestMethod.POST)
-	public String saveApplication(@Valid Application app, BindingResult result, ModelMap model)
-			throws UnsupportedEncodingException {
-
-		if (result.hasErrors()) {
-			return "application";
+		if (type.length() != 0) {
+			model.addAttribute("pageType", type);
 		}
-		String temp = new String(app.getName().getBytes("iso-8859-1"), "utf-8");
-		app.setName(temp);
-		app_service.saveApplication(app);
-		return "redirect:/applicationlist-0-0";
+
+		return "theme";
 	}
 
-	@RequestMapping(value = {"/edit-{id}-application" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public String editApplication(@PathVariable int id, ModelMap model) {
-		Application app = app_service.findById(id);
-		String vname = app.getVendor().getName();
-		model.addAttribute("vname", vname);
-		model.addAttribute("application", app);
+	@RequestMapping(value = { "/newtheme" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	public String saveTheme(@Valid Theme theme, BindingResult result, ModelMap model, HttpServletRequest request,
+			@RequestParam(value = "file", required = true) MultipartFile attach,
+			@ModelAttribute("pageType") String pageType) {
+
+		// if(type.equals("0")) {
+		String name = theme.getName();
+		name = name.trim();
+		if (name.length() == 0 || name == null) {
+			Theme app = new Theme();
+			model.addAttribute("theme", app);
+			model.addAttribute("edit", false);
+			model.addAttribute("message", "请输入名称!");
+			return "theme";
+		} else {
+			// 存储图片过程
+			if (!attach.isEmpty()) {
+				String path = Methods.getProperty("files.upload.temp.path");
+				File file = new File(path);
+				if (!file.exists()) {
+					file.mkdirs();
+				}
+				String oldFileName = attach.getOriginalFilename();
+				// 上传文件后缀
+				// String prefix = FilenameUtils.getExtension(oldFileName);
+				// 可以限制上传那文件的大小
+				// int filesize = 4000000;
+				// if (attach.getSize() > filesize) {
+				// return false;
+				// }
+				Date date = new Date();
+				DateFormat dateformat = new SimpleDateFormat("yyyyMMdd-HHmmss");
+				String date1 = dateformat.format(date);
+				oldFileName = date1 + oldFileName;
+
+				File targetFile = new File(path, oldFileName);
+				if (!targetFile.exists()) {
+					targetFile.mkdirs();
+				}
+				try {
+					attach.transferTo(targetFile);
+				} catch (Exception e) {
+					model.addAttribute("messagetwo", "文件上传失败!");
+					Theme app = new Theme();
+					model.addAttribute("theme", app);
+					model.addAttribute("edit", false);
+					return "theme";
+				}
+				// 拷贝文件到230服务器
+				SSHCopyFile sshcf = new SSHCopyFile(Methods.getProperty("file.server.ip"),
+						Methods.getProperty("file.server.uname"), Methods.getProperty("file.server.pwd"),
+						Integer.parseInt(Methods.getProperty("file.server.port")));
+				try {
+					sshcf.putFile(path, oldFileName, Methods.getProperty("file.server.filepath"));
+				} catch (Exception e) {
+					if (sshcf != null) {
+						try {
+							sshcf.close();
+						} catch (Exception e1) {
+							// TODO 自动生成的 catch 块
+							e1.printStackTrace();
+						}
+					}
+					model.addAttribute("messagetwo", "文件上传失败!");
+					Theme app = new Theme();
+					model.addAttribute("theme", app);
+					model.addAttribute("edit", false);
+					return "theme";
+				} finally {
+					if (sshcf != null) {
+						try {
+							sshcf.close();
+						} catch (Exception e) {
+							// TODO 自动生成的 catch 块
+							e.printStackTrace();
+						}
+					}
+				}
+
+				String filePath = Methods.getProperty("file.server.filepath") + oldFileName;
+				String tempFile = path + "/" + oldFileName;
+				File file2 = new File(tempFile);
+				file2.deleteOnExit();
+				Integer maxNum = theme_service.getMaxCheckNumberByName(name);
+				if (maxNum == null) {
+					maxNum = 1;
+				}
+				theme.setChecknumber(maxNum + 1);
+				theme.setName(name);
+				theme.setPath(filePath);
+				upload_files.saveTheme(theme);
+				if (pageType.trim().equals("0")) {
+					return "redirect:/themelist-0";
+
+				} else {
+					return "redirect:/check";
+				}
+
+			} else {
+				Theme app = new Theme();
+				model.addAttribute("theme", app);
+				model.addAttribute("edit", false);
+				model.addAttribute("messagetwo", "文件上传失败!");
+				return "theme";
+			}
+
+		}
+
+	}
+
+	@RequestMapping(value = { "/edit-{id}-theme" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String editTheme(@PathVariable int id, ModelMap model) {
+		Theme theme = theme_service.findById(id);
+		model.addAttribute("theme", theme);
 		model.addAttribute("edit", true);
-		return "application";
+		return "theme";
 	}
 
-	@RequestMapping(value = {"/edit-{id}-application" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public String updateApplication(@Valid Application app, BindingResult result, ModelMap model, @PathVariable int id)
-			throws UnsupportedEncodingException {
+	@RequestMapping(value = { "/edit-{id}-theme" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	public String updateTheme(@Valid Theme theme, BindingResult result, ModelMap model, @PathVariable int id,
+			HttpServletRequest request) {
+		upload_files.doUpdate(request);
 
-		if (result.hasErrors()) {
-			return "application";
+		theme.setName(upload_files.getUpdateName());
+		theme.setPath(upload_files.getUpdatePath());
+		upload_files.updateTheme(theme);
+		return "redirect:/themelist-1";
+	}
+
+	@RequestMapping(value = { "/delete-{id}-theme-{page}" }, method = RequestMethod.GET)
+	public String deleteTheme(@PathVariable int id, @PathVariable String page) {
+
+		SSHCopyFile sshcf = new SSHCopyFile(Methods.getProperty("file.server.ip"),
+				Methods.getProperty("file.server.uname"), Methods.getProperty("file.server.pwd"),
+				Integer.parseInt(Methods.getProperty("file.server.port")));
+		Theme theme = theme_service.findById(id);
+		try {
+			sshcf.deleteFileOrDirector(theme.getPath());
+		} catch (Exception e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} finally {
+			if (sshcf != null) {
+				try {
+					sshcf.close();
+				} catch (Exception e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+				}
+
+			}
+
 		}
 
-		String temp = new String(app.getName().getBytes("iso-8859-1"), "utf-8");
-		app.setName(temp);
-		System.out.println(app.getActivity()+"888888888888888888888888888888888888");
-		System.out.println(app.getPackagename()+"999999999999999999999999999999999");
-		System.out.println("baocun ");
-		app_service.updateApplication(app);
-
-		return "redirect:/applicationlist-0-0";
+		theme_service.deleteThemeByID(id);
+		return "redirect:/themelist-" + page;
 	}
-
-	@RequestMapping(value = { "/delete-{id}-application-{page}" }, method = RequestMethod.GET)
-	public String deleteApplication(@PathVariable int id, @PathVariable String page) {
-		app_service.deleteApplicationByID(id);
-		return "redirect:/applicationlist-" + page + "-0";
-	}
-
-	// @RequestMapping(value = { "/alist-{vendorid}-application" }, method =
-	// RequestMethod.GET)
-	// public String listApplicationByVendor(@PathVariable int vendorid,ModelMap
-	// model) {
-	//
-	// Vendor vendor = vendor_service.findById(vendorid);
-	// List<Application> apps= app_service.findApplicationByVendorID(vendor);
-	// model.addAttribute("applications", apps);
-	// return "allapplications";
-	// }
 
 	@RequestMapping(value = { "/uploadfiles" }, method = RequestMethod.GET)
 	public String uploadFiles(ModelMap model) {
@@ -907,55 +612,380 @@ public class AppController {
 
 		return "allthemes";
 	}
+	
+	
+	// 厂商管理
 
-	@RequestMapping(value = { "/list-apps-by-{vendorid}" }, method = RequestMethod.GET)
-	@ResponseBody
-	public List<Application> listApps(@PathVariable int vendorid, ModelMap model) {
-		Vendor vendor = vendor_service.findById(vendorid);
-		List<Application> apps = app_service.findApplicationByVendorID(vendor);
-		return apps;
-	}
+		@RequestMapping(value = { "/vendorlist" }, method = RequestMethod.GET)
+		public String listVendors(ModelMap model) {
 
-	@RequestMapping(value = { "/list-apps-with-{para}" }, method = RequestMethod.GET)
-	@ResponseBody
-	public List<Application> listAppsByStyle(@PathVariable String para, ModelMap model) {
-		String[] temp = para.split("-");
-
-		Vendor vendor = vendor_service.findById(Integer.parseInt(temp[0]));
-		List<Application> apps = app_service.findApplicationByVendorIDAndStyle(vendor, temp[1]);
-		return apps;
-	}
-
-	@RequestMapping(value = { "/list-all-resources" }, method = RequestMethod.GET)
-	@ResponseBody
-	public List<Theme> listResources(ModelMap model) {
-		List<Theme> themes = theme_service.findAllTheme();
-		return themes;
-	}
-
-	@RequestMapping(value = { "/list-mobiles-by-{vendorid}" }, method = RequestMethod.GET)
-	@ResponseBody
-	public List<Mobile> listMobiles(@PathVariable int vendorid, ModelMap model) {
-		List<Mobile> res = new ArrayList<>();
-		List<Mobile> conn = status_services.getFreeDevices();
-		for (int i = 0; i < conn.size(); i++) {
-
-			int tmp = conn.get(i).getVendor().getId();
-
-			if (tmp == vendorid) {
-
-				res.add(conn.get(i));
-			}
+			List<Vendor> vendors = vendor_service.findAllVendor();
+			model.addAttribute("vendors", vendors);
+			return "allvendors";
 		}
-		return res;
-	}
 
-	@RequestMapping(value = { "/list-all-mobiles-{vendorid}" }, method = RequestMethod.GET)
-	@ResponseBody
-	public List<Mobile> listAllMobiles(@PathVariable int vendorid, ModelMap model) {
-		Vendor vendor = vendor_service.findById(vendorid);
-		List<Mobile> res = mobile_service.findMobileByVendor(vendor);
-		return res;
-	}
+		@RequestMapping(value = { "/newvendor" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+		public String newvendor(ModelMap model) {
+			Vendor vendor = new Vendor();
+			model.addAttribute("vendor", vendor);
+			model.addAttribute("edit", false);
+			return "vendor";
+		}
+
+		@RequestMapping(value = { "/newvendor" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+		public String saveVendor(@Valid Vendor vendor, BindingResult result, ModelMap model)
+				throws UnsupportedEncodingException {
+
+			if (result.hasErrors()) {
+				return "vendor";
+			}
+
+			String temp = new String(vendor.getName().getBytes("iso-8859-1"), "utf-8");
+			vendor.setName(temp);
+			vendor_service.saveVendor(vendor);
+			return "redirect:/vendorlist";
+		}
+
+		@RequestMapping(value = { "/edit-{id}-vendor" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+		public String editVendor(@PathVariable int id, ModelMap model) {
+			Vendor vendor = vendor_service.findById(id);
+			model.addAttribute("vendor", vendor);
+			model.addAttribute("edit", true);
+			return "vendor";
+		}
+
+		@RequestMapping(value = { "/edit-{id}-vendor" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+		public String updateVendor(@Valid Vendor vendor, BindingResult result, ModelMap model, @PathVariable int id)
+				throws UnsupportedEncodingException {
+
+			if (result.hasErrors()) {
+				return "vendor";
+			}
+
+			String temp = new String(vendor.getName().getBytes("iso-8859-1"), "utf-8");
+			vendor.setName(temp);
+			vendor_service.updateVendor(vendor);
+			return "redirect:/vendorlist";
+		}
+
+		@RequestMapping(value = { "/delete-{id}-vendor" }, method = RequestMethod.GET)
+		public String deleteVendor(@PathVariable int id) {
+			vendor_service.deleteVendorByID(id);
+			return "redirect:/vendorlist";
+		}
+
+		// 手机管理
+
+		@RequestMapping(value = { "/newmobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+		public String newMobile(ModelMap model) {
+			Mobile app = new Mobile();
+			model.addAttribute("mobile", app);
+			model.addAttribute("edit", false);
+			return "mobile";
+		}
+
+		@RequestMapping(value = { "/mobilelist-{page}" }, method = RequestMethod.GET)
+		public String listMobiles(ModelMap model, @PathVariable() int page) {
+			// 每页显示多少个手机
+			int pageSize = Integer.parseInt(Methods.getProperty("mobile.management.page.size"));
+			List<Mobile> allMobiles = mobile_service.findAllMobile();
+			int totalPages = allMobiles.size() % pageSize == 0 ? allMobiles.size() / pageSize
+					: allMobiles.size() / pageSize + 1;
+			int offset = 1;
+			if (page <= 0) {
+				offset = 0;
+			} else if (page > totalPages) {
+				offset = (totalPages - 1) * pageSize;
+			} else {
+				offset = (page - 1) * pageSize;
+			}
+			List<Mobile> mobiles = mobile_service.findMobileByPage(offset, pageSize);
+			model.addAttribute("mobiles", mobiles);
+			// 总页数
+			model.addAttribute("totalPages", totalPages);
+			// 当前的页数
+			model.addAttribute("page", page);
+
+			return "allmobiles";
+		}
+
+		@RequestMapping(value = { "/newmobile" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+		public String saveMobile(@Valid Mobile mobile, BindingResult result, ModelMap model)
+				throws UnsupportedEncodingException {
+
+			if (result.hasErrors()) {
+				return "mobile";
+			}
+
+			if (!mobile_service.isMobileUidUnique(mobile.getId(), mobile.getUid())) {
+				FieldError ssnError = new FieldError("mobile", "uid",
+						messageSource.getMessage("non.unique.uid", new String[] { mobile.getUid() }, Locale.getDefault()));
+				result.addError(ssnError);
+				return "mobile";
+			}
+
+			String temp = new String(mobile.getName().getBytes("iso-8859-1"), "utf-8");
+			// delete spaces
+			mobile.setName(temp.trim().replace(" ", ""));
+			mobile_service.saveMobile(mobile);
+			return "redirect:/mobilelist-1";
+		}
+
+		@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+		public String editmobile(@PathVariable String uid, ModelMap model) {
+			Mobile mobile = mobile_service.findMobileByUid(uid);
+			String vname = mobile.getVendor().getName();
+			model.addAttribute("vname", vname);
+			model.addAttribute("mobile", mobile);
+			model.addAttribute("edit", true);
+			return "mobile";
+		}
+
+		@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.POST)
+		public String updatemobile(@Valid Mobile mobile, BindingResult result, ModelMap model)
+				throws UnsupportedEncodingException {
+			if (result.hasErrors()) {
+				return "mobile";
+			}
+
+			if (!mobile_service.isMobileUidUnique(mobile.getId(), mobile.getUid())) {
+				FieldError ssnError = new FieldError("mobile", "uid",
+						messageSource.getMessage("non.unique.uid", new String[] { mobile.getUid() }, Locale.getDefault()));
+				result.addError(ssnError);
+				return "mobile";
+			}
+
+			String temp = new String(mobile.getName().getBytes("iso-8859-1"), "utf-8");
+			mobile.setName(temp.trim().replace(" ", ""));
+
+			mobile_service.updateMobile(mobile);
+
+			return "redirect:/mobilelist-1";
+		}
+
+		@RequestMapping(value = { "/delete-{uid}-mobile-{page}" }, method = RequestMethod.GET)
+		public String deleteMobile(@PathVariable String uid, @PathVariable String page) {
+			mobile_service.deleteMobileByUid(uid);
+			return "redirect:/mobilelist-" + page;
+		}
+
+		// 服务器管理
+
+		public String getErrorString(BindingResult bindingResult) {
+
+			List<FieldError> err = bindingResult.getFieldErrors();
+			FieldError fe;
+			String field;
+			String errorMessage;
+			StringBuffer buffer = new StringBuffer("");
+			String temp;
+			for (int i = 0; i < err.size(); i++) {
+				fe = err.get(i);
+				field = fe.getField();
+				errorMessage = fe.getDefaultMessage();
+				temp = field + " : " + errorMessage;
+				buffer.append(temp);
+			}
+			String errors = buffer.toString();
+			return errors;
+		}
+
+		@RequestMapping(value = { "/serverlist" }, method = RequestMethod.GET)
+		public String listServers(ModelMap model) {
+
+			List<TestServer> servers = tserver_service.findAllTestServer();
+			model.addAttribute("servers", servers);
+			return "allservers";
+		}
+
+		@RequestMapping(value = { "/servernew" }, method = RequestMethod.GET)
+		public String newServer(ModelMap model) {
+			TestServer server = new TestServer();
+			model.addAttribute("server", server);
+			model.addAttribute("edit", false);
+			return "addserver";
+		}
+
+		@Validated
+		@RequestMapping(value = { "/servernew" }, method = RequestMethod.POST)
+		public String saveServer(@Valid TestServer server, BindingResult result, ModelMap model)
+				throws UnsupportedEncodingException {
+
+			if (result.hasErrors()) {
+				String errors = getErrorString(result);
+				model.addAttribute("errorInfo", errors);
+				model.addAttribute("server", server);
+				model.addAttribute("edit", false);
+				return "addserver";
+			}
+
+			if (!tserver_service.isTestServerSsnUnique(server.getId(), server.getSsn())) {
+				FieldError ssnError = new FieldError("server", "ssn",
+						messageSource.getMessage("non.unique.ssn", new String[] { server.getSsn() }, Locale.getDefault()));
+				result.addError(ssnError);
+				model.addAttribute("errorInfo", ssnError.getDefaultMessage());
+				model.addAttribute("server", server);
+				model.addAttribute("edit", false);
+				return "addserver";
+			}
+			String temp = new String(server.getSsn().getBytes("iso-8859-1"), "utf-8");
+			server.setSsn(temp);
+			tserver_service.saveTestServer(server);
+
+			return "redirect:/serverlist";
+		}
+
+		@RequestMapping(value = {
+				"/edit-{ssn}-testserver" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+		public String editServer(@PathVariable String ssn, ModelMap model) {
+			TestServer server = tserver_service.findTestServerBySsn(ssn);
+			model.addAttribute("server", server);
+			model.addAttribute("edit", true);
+			return "addserver";
+		}
+
+		@RequestMapping(value = { "/edit-{ssn}-testserver" }, method = RequestMethod.POST)
+		public String updateServer(@Valid TestServer server, BindingResult result, ModelMap model)
+				throws UnsupportedEncodingException {
+
+			if (result.hasErrors()) {
+				return "addserver";
+			}
+
+			if (!tserver_service.isTestServerSsnUnique(server.getId(), server.getSsn())) {
+				FieldError ssnError = new FieldError("server", "ssn",
+						messageSource.getMessage("non.unique.ssn", new String[] { server.getSsn() }, Locale.getDefault()));
+				result.addError(ssnError);
+				model.addAttribute("server", server);
+				model.addAttribute("edit", true);
+				return "addserver";
+			}
+
+			String temp = new String(server.getSsn().getBytes("iso-8859-1"), "utf-8");
+			server.setSsn(temp);
+
+			tserver_service.updateTestServer(server);
+
+			return "redirect:/serverlist";
+		}
+
+		@RequestMapping(value = { "/delete-{ssn}-testserver" }, method = RequestMethod.GET)
+		public String deleteTestServer(@PathVariable String ssn) {
+			tserver_service.deleteTestServerBySsn(ssn);
+			return "redirect:/serverlist";
+		}
+
+		// 应用管理
+
+		@RequestMapping(value = { "/applicationlist-{page}-{vendorid}" }, method = RequestMethod.GET)
+		public String listApplications(ModelMap model, @PathVariable int page, @PathVariable String vendorid,
+				@ModelAttribute("tvendorid") String tvendorid) {
+			// 每页显示的数量
+			int pageSize = Integer.parseInt(Methods.getProperty("application.management.page.size"));
+			if (page == 0) {
+				model.addAttribute("tvendorid", "0");
+				tvendorid = "0";
+			}
+			if (!vendorid.equals("0")) {
+				model.addAttribute("tvendorid", vendorid);
+				tvendorid = vendorid;
+			}
+
+			if (tvendorid.equals("0")) {
+				List<Application> applications = app_service.findAllApplication();
+				int totalPages = applications.size() % pageSize == 0 ? applications.size() / pageSize
+						: applications.size() / pageSize + 1;
+				int offset = 1;
+				if (page <= 0) {
+					offset = 0;
+				} else if (page > totalPages) {
+					offset = (totalPages - 1) * pageSize;
+				} else {
+					offset = (page - 1) * pageSize;
+				}
+				List<Application> application = app_service.findApplicationByPage(offset, pageSize);
+				model.addAttribute("applications", application);
+				model.addAttribute("totalPages", totalPages);
+				model.addAttribute("page", page);
+				return "allapplications";
+			} else {
+
+				int venid = Integer.parseInt(tvendorid.trim());
+				Vendor vendor = vendor_service.findById(venid);
+				List<Application> apps = app_service.findApplicationByVendorID(vendor);
+				int totalPages = apps.size() % pageSize == 0 ? apps.size() / pageSize : apps.size() / pageSize + 1;
+				int offset = 1;
+				if (page <= 0) {
+					offset = 0;
+				} else if (page > totalPages) {
+					offset = (totalPages - 1) * pageSize;
+				} else {
+					offset = (page - 1) * pageSize;
+				}
+				List<Application> applica = app_service.findApplicationByVendorIDaAndPage(vendor, offset, pageSize);
+
+				model.addAttribute("totalPages", totalPages);
+				model.addAttribute("page", page);
+				model.addAttribute("applications", applica);
+				return "allapplications";
+
+			}
+
+		}
+
+		@RequestMapping(value = { "/newapplication" }, method = RequestMethod.GET)
+		public String newApplication(ModelMap model) {
+			Application app = new Application();
+			model.addAttribute("application", app);
+			model.addAttribute("edit", false);
+			return "application";
+		}
+
+		@RequestMapping(value = { "/newapplication" }, method = RequestMethod.POST)
+		public String saveApplication(@Valid Application app, BindingResult result, ModelMap model)
+				throws UnsupportedEncodingException {
+
+			if (result.hasErrors()) {
+				return "application";
+			}
+			String temp = new String(app.getName().getBytes("iso-8859-1"), "utf-8");
+			app.setName(temp);
+			app_service.saveApplication(app);
+			return "redirect:/applicationlist-0-0";
+		}
+
+		@RequestMapping(value = {
+				"/edit-{id}-application" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+		public String editApplication(@PathVariable int id, ModelMap model) {
+			Application app = app_service.findById(id);
+			String vname = app.getVendor().getName();
+			model.addAttribute("vname", vname);
+			model.addAttribute("application", app);
+			model.addAttribute("edit", true);
+			return "application";
+		}
+
+		@RequestMapping(value = {
+				"/edit-{id}-application" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+		public String updateApplication(@Valid Application app, BindingResult result, ModelMap model, @PathVariable int id)
+				throws UnsupportedEncodingException {
+
+			if (result.hasErrors()) {
+				return "application";
+			}
+
+			String temp = new String(app.getName().getBytes("iso-8859-1"), "utf-8");
+			app.setName(temp);
+			app_service.updateApplication(app);
+
+			return "redirect:/applicationlist-0-0";
+		}
+
+		@RequestMapping(value = { "/delete-{id}-application-{page}" }, method = RequestMethod.GET)
+		public String deleteApplication(@PathVariable int id, @PathVariable String page) {
+			app_service.deleteApplicationByID(id);
+			return "redirect:/applicationlist-" + page + "-0";
+		}
+
 
 }

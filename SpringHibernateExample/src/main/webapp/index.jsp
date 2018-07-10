@@ -33,11 +33,6 @@
 		$("#iframe-page-content").attr('src', menuUrl);
 	};
 
-	/*  	$(function() {
-	 var height=document.documentElement.clientHeight; 
-	 document.getElementById('iframe-page-content').style.height=height+'px';
-	 });  */
-
 	function autoResize(id) {
 		var newheight;
 		var newwidth;
@@ -158,7 +153,6 @@
 											onclick="menuClick('mobilelist-1')">手机管理</a></li>
 										<li class="on"><a id="server" href="#"
 											onclick="menuClick('serverlist')">服务器管理</a></li>
-										<!--   <li onclick="add()" ><a href="#"  onclick="menuClick('applicationlist')">应用管理</a></li> -->
 										<li class="on"><a href="#"
 											onclick="menuClick('applicationlist-0-0')">应用管理</a></li>
 									</ul>
@@ -188,28 +182,8 @@
 			</div>
 		</div>
 	</div>
-	<script>
-		/* $(document).ready(function(){
-		 $("#breadcrumbs").mouseenter(function(){
-		 $(".clo").css("display","inline");
-		 });
-		 $("#breadcrumbs").mouseleave(function(){
-		 $(".clo").css("display","none");
-		 });
-		 }); */
-	</script>
-	<script>
-		/* $(function(){  
-		 $(".on").one("click",function(){  
-		 var ab=this.innerHTML;
-		 $(".breadcrumb").empty();  
-		
-		 $(".breadcrumb").append("<li id ='ddd'><span class='glyphicon glyphicon-home'></span><a  href=''#' onclick='menuClick('list')'>Home</a><span class='glyphicon glyphicon-remove clo' style='display:none'></span></li>  ");
-		 $(".breadcrumb").append("<li>"+ab+"</li>");
-		
-		 }) ;  
-		 }) ;   */
 
+	<script>
 		$(function() {
 			$(".on")
 					.click(

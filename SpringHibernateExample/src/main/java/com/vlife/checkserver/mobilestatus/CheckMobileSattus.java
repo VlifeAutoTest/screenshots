@@ -15,7 +15,6 @@ public class CheckMobileSattus extends TimerTask {
 
 	@Override
 	public void run() {
-		// TODO 自动生成的方法存根
 
 		List<String[]> serverList = methods.getTestServerValues();
 		for (String[] temp : serverList) {
@@ -23,7 +22,6 @@ public class CheckMobileSattus extends TimerTask {
 				// 把连接在机器上的手机状态判断了
 				status(temp[0], 22, temp[1], temp[2]);
 			} catch (Exception e) {
-				// TODO 自动生成的 catch 块
 				System.out.println("连接测试机: " + temp[0] + "出现错误!");
 				e.printStackTrace();
 			}
@@ -42,7 +40,6 @@ public class CheckMobileSattus extends TimerTask {
 			try {
 				session = methods.getSession(host, port, user, password);
 			} catch (Exception e1) {
-				// TODO 自动生成的 catch 块
 				e1.printStackTrace();
 			}
 
@@ -77,7 +74,7 @@ public class CheckMobileSattus extends TimerTask {
 						// 如果已含有的手机
 						else {
 							int mobileID = methods.getMobileID(device);
-							
+
 							// 如果没有使用过
 							if (methods.getMobileStatus(mobileID, serverID) == null) {
 								methods.insertMobileStatus(mobileID, serverID, "free");
@@ -100,7 +97,6 @@ public class CheckMobileSattus extends TimerTask {
 									try {
 										date2 = fa.parse(str);
 									} catch (ParseException e) {
-										// TODO 自动生成的 catch 块
 										e.printStackTrace();
 									}
 									long getTime = date2.getTime();
@@ -120,12 +116,9 @@ public class CheckMobileSattus extends TimerTask {
 						list.add(mobileStatusID);
 					}
 
-					// methods.assertFreeMobile();
-					// list.add(devices);
 				}
 			}
 		} catch (Exception e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} finally {
 			if (session != null) {

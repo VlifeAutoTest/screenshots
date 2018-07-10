@@ -1,5 +1,7 @@
 package com.vlife.checkserver.mobilestatus;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -13,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Properties;
+
 import org.apache.commons.io.IOUtils;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
@@ -20,14 +24,30 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 public class Methods {
-	public static final String URL = "jdbc:mysql://192.168.1.230:3306/mobile_screenshot?characterEncoding=utf8&useSSL=true&serverTimezone=GMT";
-	public static final String USER = "auto_test";
-	public static final String PASSWORD = "vlife";
+	private static String jdbcURL = getProperty("jdbc.url").split("\\?")[0];
+	private static final String URL = jdbcURL + "?characterEncoding=utf8&useSSL=true&serverTimezone=GMT";
+	private static final String USER = getProperty("jdbc.username");
+	private static final String PASSWORD = getProperty("jdbc.password");
 	private static Connection conn = null;
 	JSch jsch = new JSch();
 	Session session = null;
 	ChannelExec channelExec = null;
 	InputStream in = null;
+
+	public static String getProperty(String propertyName) {
+		Properties pro = new Properties();
+		try {
+			FileInputStream in = new FileInputStream(
+					Methods.class.getClassLoader().getResource("application.properties").getPath());
+			pro.load(in);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return pro.getProperty(propertyName).trim();
+	}
 
 	public Session getSession(String host, int port, String user, String password) {
 		try {
@@ -36,7 +56,6 @@ public class Methods {
 			session.setPassword(password);
 			session.connect(6000);
 		} catch (JSchException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return session;
@@ -59,7 +78,7 @@ public class Methods {
 			channelExec = (ChannelExec) session.openChannel("exec");
 			in = channelExec.getInputStream();
 			// 获取devices
-			channelExec.setCommand("adb devices");
+			channelExec.setCommand("source /etc/profile  && adb devices");
 			channelExec.setErrStream(System.err);
 			channelExec.connect();
 			// 获取返回的结果
@@ -78,10 +97,8 @@ public class Methods {
 			}
 			in.close();
 		} catch (JSchException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 
@@ -93,16 +110,15 @@ public class Methods {
 		try {
 			channelExec = (ChannelExec) session.openChannel("exec");
 			in = channelExec.getInputStream();
-			channelExec.setCommand("adb -s  " + device + "  " + command);
+			channelExec.setCommand("source /etc/profile  && adb -s  "
+					+ device + "  " + command);
 			channelExec.setErrStream(System.err);
 			channelExec.connect();
 			result = IOUtils.toString(in, "UTF-8");
 			in.close();
 		} catch (JSchException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return result;
@@ -156,10 +172,8 @@ public class Methods {
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return result;
@@ -183,10 +197,8 @@ public class Methods {
 			ps.execute();
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 
@@ -206,10 +218,8 @@ public class Methods {
 			ps.execute();
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 
@@ -234,10 +244,8 @@ public class Methods {
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return result;
@@ -263,10 +271,8 @@ public class Methods {
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return result;
@@ -292,10 +298,8 @@ public class Methods {
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return result;
@@ -320,18 +324,16 @@ public class Methods {
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return result;
 
 	}
 
-	//查询目前最大的bport
-	
+	// 查询目前最大的bport
+
 	public Integer getMaxBport() {
 
 		Integer result = null;
@@ -347,18 +349,15 @@ public class Methods {
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return result;
 
 	}
-	
-	
-	//根据最大的bport获取目前最大的port
+
+	// 根据最大的bport获取目前最大的port
 	public Integer getMaxPort(int bport) {
 
 		Integer result = null;
@@ -375,24 +374,20 @@ public class Methods {
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return result;
 
 	}
-	
-	
-	
+
 	// 给mobilestatus 表插入最新的手机信息
 
 	public void insertMobileStatus(int mobile_id, int server_id, String status) {
 		try {
-			int maxBport=getMaxBport();
-			int maxPort=getMaxPort(maxBport);
+			int maxBport = getMaxBport();
+			int maxPort = getMaxPort(maxBport);
 			String sql = "insert into mobile_status values (null,?,?,?,?,?,?)";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
@@ -406,15 +401,13 @@ public class Methods {
 			DateFormat fa = new SimpleDateFormat("yyyyMMddHHmm");
 			String da = fa.format(date);
 			ps.setString(4, da);
-			ps.setInt(5, maxBport+1);
-			ps.setInt(6, maxPort+1);
+			ps.setInt(5, maxBport + 1);
+			ps.setInt(6, maxPort + 1);
 			ps.execute();
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 
@@ -439,10 +432,8 @@ public class Methods {
 			ps.execute();
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 
@@ -462,10 +453,6 @@ public class Methods {
 				int mobile_id = res.getInt("mobile_id");
 				int server_id = res.getInt("server_id");
 				String str = res.getString("last_update");
-				// if(str==null){
-				// updateMobileStatus(mobile_id, server_id, "disconnect");
-				// continue;
-				// }
 				Date date = new Date();
 				DateFormat fa = new SimpleDateFormat("yyyyMMddHHmm");
 				long thistime = date.getTime();
@@ -473,7 +460,6 @@ public class Methods {
 				try {
 					date2 = fa.parse(str);
 				} catch (ParseException e) {
-					// TODO 自动生成的 catch 块
 					e.printStackTrace();
 				}
 				long getTime = date2.getTime();
@@ -489,10 +475,8 @@ public class Methods {
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 
@@ -520,10 +504,8 @@ public class Methods {
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 
@@ -552,10 +534,8 @@ public class Methods {
 			ps.execute();
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 
@@ -580,10 +560,8 @@ public class Methods {
 			}
 			conn.close();
 		} catch (ClassNotFoundException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
 		return result;

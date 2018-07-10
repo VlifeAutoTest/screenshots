@@ -30,7 +30,7 @@ h4 {
 	<div class="panle panel-success">
 		<div class="panel-heading">
 			<span class="glyphicon glyphicon-refresh"></span> <b> &nbsp;
-				插入新手机时,请 </b><a id="fresh" href="#">Click here</a>
+				插入新手机时,请 </b><a id="fresh" href='<c:url value="/refresh"></c:url>'>Click here</a>
 				<span id="me"></span><span style="color: red" id="time"></span><span id="sess"></span>
 				<font id="qwe" size="3" color="red">${message}</font>
 		</div>
@@ -130,8 +130,6 @@ function showTime(){
 			 $("#sess").prepend("秒!") ;
 			 showTime(); 
 			setTimeout(function() {
-<%CheckMobileSattus cms = new CheckMobileSattus();
-			cms.run();%>
 	window.location.reload();
 			}, 10000);
 		});

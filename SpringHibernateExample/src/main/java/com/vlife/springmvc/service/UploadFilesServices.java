@@ -23,7 +23,6 @@ public interface UploadFilesServices {
 	// 目录打散
 	String makeChildDirectory(File storeDirectory, String filename);
 	// 按日期打散
-
 	void processFormField(FileItem fileitem);
 
 	void updateProcessFormField(FileItem fileitem);

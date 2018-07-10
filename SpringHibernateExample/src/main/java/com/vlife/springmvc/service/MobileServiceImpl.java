@@ -60,7 +60,6 @@ public class MobileServiceImpl implements MobileService {
 
 	@Override
 	public List<Mobile> findMobileByPage(int offset, int length) {
-		// TODO 自动生成的方法存根
 		return dao.findMobileByPage(offset, length);
 
 	}
