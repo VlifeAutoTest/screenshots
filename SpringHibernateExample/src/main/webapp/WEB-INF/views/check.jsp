@@ -217,7 +217,7 @@ select {
 						<td><form:select path="resource" multiple="multiple"
 								itemValue="id" itemLabel="name" id="resource"
 								class="selectpicker bla bla bli" data-live-search="true" /> <a
-							href="<c:url value='/newtheme-1' />"> +增加资源</a></td>
+							href="<c:url value='/newtheme-1' />"> +增加资源▲</a></td>
 						<td><form:errors path="resource" cssClass="error" /></td>
 					</tr>
 

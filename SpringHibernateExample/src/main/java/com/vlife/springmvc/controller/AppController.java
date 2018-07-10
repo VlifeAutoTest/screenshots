@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import com.vlife.springmvc.model.Theme;
+import com.vlife.springmvc.model.User;
 import com.vlife.springmvc.model.Vendor;
 import com.vlife.springmvc.service.ThemeService;
 import com.vlife.springmvc.service.UploadFilesServices;
@@ -992,5 +993,20 @@ public class AppController {
 		app_service.deleteApplicationByID(id);
 		return "redirect:/applicationlist-" + page + "-0";
 	}
+	
+	
+	
+	
+	//登录
+	
+	
+	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
+	public String assertLogIn(ModelMap model,User user) {
 
+		System.out.println("222222222222222222222222222222222");
+		return "/index.jsp";
+	}
+	
+	
+	
 }
