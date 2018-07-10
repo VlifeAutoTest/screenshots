@@ -65,7 +65,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new SessionInterceptor()).addPathPatterns("/applicationlist-{page}-{vendorid}",
-				"/themelist-{page}","newtheme","/newtheme-{type}");
+				"/themelist-{page}", "newtheme", "/newtheme-{type}");
 	}
 
 	// 上传文件解析器
