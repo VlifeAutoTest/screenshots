@@ -84,6 +84,7 @@ public class Runinfo {
 	}
 
 	public void setStime(String stime) throws ParseException {
+		stime = stime.replace("T", " ");
 		Date sdate = null;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		sdate = format.parse(stime);
@@ -95,6 +96,7 @@ public class Runinfo {
 	}
 
 	public void setEtime(String etime) throws ParseException {
+		etime = etime.replace("T", " ");
 		Date edate = null;
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		edate = format.parse(etime);
