@@ -46,8 +46,7 @@
 							<td><a id="aa"
 								href="http://192.168.1.230:8080/${fn:substring(theme.path, 7, -1)}"
 								target="_blank">${theme.path}</a></td>
-							<td><a
-								href="<c:url value='/delete-${theme.id}-theme-${page}' />">delete</a></td>
+							<td><%-- <a href="<c:url value='/delete-${theme.id}-theme-${page}' />">delete</a> --%></td>
 							<td></td>
 						</tr>
 					</c:forEach>
@@ -65,7 +64,7 @@
 									<li class="${active}"><a
 										href="<c:url value="/themelist-${loop.index}"/>">${loop.index}</a></li>
 								</c:forEach>
-								<li><a href="<c:url value="/themelist-${page+1}"/>">&raquo;</a></li>
+								<li><a href="<c:url value="/themelist-${page+1<totalPages?page+1:totalPages}"/>">&raquo;</a></li>
 								<li><a href="<c:url value="/themelist-${totalPages}"/>">末页</a></li>
 							</ul>
 

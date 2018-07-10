@@ -81,7 +81,7 @@
 									<li class="${active}"><a
 										href="<c:url value="/applicationlist-${loop.index}-0"/>">${loop.index}</a></li>
 								</c:forEach>
-								<li><a href="<c:url value="/applicationlist-${page+1}-0"/>">
+								<li><a href="<c:url value="/applicationlist-${page+1<totalPages?page+1:totalPages}-0"/>">
 										&raquo;</a></li>
 								<li><a
 									href="<c:url value="/applicationlist-${totalPages == 0 ? 1 : totalPages }-0"/>">末页</a></li>

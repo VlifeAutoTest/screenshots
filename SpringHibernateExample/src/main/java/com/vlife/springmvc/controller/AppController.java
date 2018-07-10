@@ -365,7 +365,9 @@ public class AppController {
 			} else {
 				offset = (page - 1) * pageSize;
 			}
-
+			if(totalPages ==0) {
+				totalPages=1;
+			}
 			List<Theme> themes = theme_service.findThemeByPage(offset, pageSize);
 			model.addAttribute("themes", themes);
 			// 总页数
@@ -388,7 +390,10 @@ public class AppController {
 				offset = (page - 1) * pageSize;
 			}
 			List<Theme> Themes = theme_service.findThemeByNameAndPage(searchValue, offset, pageSize);
-
+			if(totalPages ==0) {
+				totalPages=1;
+			}
+			
 			model.addAttribute("themes", Themes);
 			model.addAttribute("totalPages", totalPages);
 			model.addAttribute("page", page);
@@ -559,26 +564,24 @@ public class AppController {
 
 	@RequestMapping(value = { "/delete-{id}-theme-{page}" }, method = RequestMethod.GET)
 	public String deleteTheme(@PathVariable int id, @PathVariable String page) {
-
-		SSHCopyFile sshcf = new SSHCopyFile(Methods.getProperty("file.server.ip"),
-				Methods.getProperty("file.server.uname"), Methods.getProperty("file.server.pwd"),
-				Integer.parseInt(Methods.getProperty("file.server.port")));
-		Theme theme = theme_service.findById(id);
-		try {
-			sshcf.deleteFileOrDirector(theme.getPath());
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (sshcf != null) {
-				try {
-					sshcf.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-
-			}
-
-		}
+		//此方法用于删除文件服务器上的对应文件--暂时保留
+//		SSHCopyFile sshcf = new SSHCopyFile(Methods.getProperty("file.server.ip"),
+//				Methods.getProperty("file.server.uname"), Methods.getProperty("file.server.pwd"),
+//				Integer.parseInt(Methods.getProperty("file.server.port")));
+//		Theme theme = theme_service.findById(id);
+//		try {
+//			sshcf.deleteFileOrDirector(theme.getPath());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		} finally {
+//			if (sshcf != null) {
+//				try {
+//					sshcf.close();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
 
 		theme_service.deleteThemeByID(id);
 		return "redirect:/themelist-" + page;
@@ -697,6 +700,9 @@ public class AppController {
 		List<Mobile> mobiles = mobile_service.findMobileByPage(offset, pageSize);
 		model.addAttribute("mobiles", mobiles);
 		// 总页数
+		if(totalPages ==0) {
+			totalPages=1;
+		}
 		model.addAttribute("totalPages", totalPages);
 		// 当前的页数
 		model.addAttribute("page", page);
@@ -900,6 +906,9 @@ public class AppController {
 			}
 			List<Application> application = app_service.findApplicationByPage(offset, pageSize);
 			model.addAttribute("applications", application);
+			if(totalPages ==0) {
+				totalPages=1;
+			}
 			model.addAttribute("totalPages", totalPages);
 			model.addAttribute("page", page);
 			return "allapplications";
@@ -918,7 +927,9 @@ public class AppController {
 				offset = (page - 1) * pageSize;
 			}
 			List<Application> applica = app_service.findApplicationByVendorIDaAndPage(vendor, offset, pageSize);
-
+			if(totalPages ==0) {
+				totalPages=1;
+			}
 			model.addAttribute("totalPages", totalPages);
 			model.addAttribute("page", page);
 			model.addAttribute("applications", applica);
