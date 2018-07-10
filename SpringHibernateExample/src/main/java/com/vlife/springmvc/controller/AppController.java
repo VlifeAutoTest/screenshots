@@ -8,10 +8,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+
 import javax.validation.Valid;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.io.FilenameUtils;
@@ -44,6 +47,7 @@ import com.vlife.springmvc.model.Runinfo;
 import com.vlife.springmvc.service.ApplicationService;
 import com.vlife.springmvc.service.MobileService;
 import com.vlife.springmvc.service.MobileStatusService;
+import com.vlife.springmvc.service.PermissionService;
 import com.vlife.springmvc.service.RuninfoService;
 import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.TestServerService;
@@ -81,7 +85,7 @@ public class AppController {
 
 	@Autowired
 	RuninfoService runinfo_services;
-
+	
 	@ModelAttribute("vendors")
 	public List<Vendor> initializeVendors() {
 		return vendor_service.findAllVendor();
@@ -147,6 +151,7 @@ public class AppController {
 
 	@RequestMapping(value = { "/query" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String queryResult(ModelMap model) {
+		
 		model.addAttribute("searchValue", "");
 		model.addAttribute("tvendorid", "0");
 		model.addAttribute("pageType", "");

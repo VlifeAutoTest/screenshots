@@ -16,6 +16,9 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import com.vlife.springmvc.model.Permission;
+import com.vlife.springmvc.model.Resources;
+
 @Configuration
 @EnableTransactionManagement
 @ComponentScan({ "com.vlife.springmvc.configuration" })
@@ -31,6 +34,8 @@ public class HibernateConfiguration {
 		sessionFactory.setDataSource(dataSource());
 		sessionFactory.setPackagesToScan(new String[] { "com.vlife.springmvc.model" });
 		sessionFactory.setHibernateProperties(hibernateProperties());
+		sessionFactory.setAnnotatedClasses(Permission.class);
+		sessionFactory.setAnnotatedClasses(Resources.class);
 		return sessionFactory;
 	}
 
