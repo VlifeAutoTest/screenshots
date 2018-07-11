@@ -15,6 +15,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.apache.commons.io.FilenameUtils;
@@ -32,12 +33,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import com.vlife.springmvc.model.Theme;
 import com.vlife.springmvc.model.User;
 import com.vlife.springmvc.model.Vendor;
 import com.vlife.springmvc.service.ThemeService;
 import com.vlife.springmvc.service.UploadFilesServices;
+import com.vlife.springmvc.service.UserService;
 import com.vlife.springmvc.service.VendorService;
 import com.jcraft.jsch.Session;
 import com.vlife.checkserver.mobilestatus.CheckMobileSattus;
@@ -56,7 +59,7 @@ import com.vlife.springmvc.service.TestServerService;
 
 @Controller
 @RequestMapping("/")
-@SessionAttributes(value = { "tvendorid", "searchValue", "pageType" })
+@SessionAttributes(value = { "tvendorid", "searchValue", "pageType", "logSuccessUser" })
 public class AppController {
 	/*
 	 * @Autowired EmployeeService service;
@@ -88,6 +91,9 @@ public class AppController {
 	@Autowired
 	RuninfoService runinfo_services;
 
+	@Autowired
+	UserService user_services;
+
 	@ModelAttribute("vendors")
 	public List<Vendor> initializeVendors() {
 		return vendor_service.findAllVendor();
@@ -103,7 +109,7 @@ public class AppController {
 		return tserver_service.findAllTestServer();
 	}
 
-	@RequestMapping(value = { "/", "/list" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/list" }, method = RequestMethod.GET)
 	public String showMobile(ModelMap model) {
 
 		List<Object[]> status = status_services.findDeviceStatus();
@@ -113,6 +119,12 @@ public class AppController {
 		model.addAttribute("devinfo", devinfo);
 
 		return "mobilestatus";
+	}
+
+	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
+	public String home(ModelMap model, @ModelAttribute("logSuccessUser") User user) {
+		model.addAttribute("user", user);
+		return "home";
 	}
 
 	@RequestMapping(value = { "/refresh" }, method = RequestMethod.GET)
@@ -157,9 +169,6 @@ public class AppController {
 	@RequestMapping(value = { "/query" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String queryResult(ModelMap model) {
 
-		model.addAttribute("searchValue", "");
-		model.addAttribute("tvendorid", "0");
-		model.addAttribute("pageType", "");
 		List<Vendor> vendors = vendor_service.findAllVendor();
 		Runinfo runinfo = new Runinfo();
 		model.addAttribute("runinfo", runinfo);
@@ -366,8 +375,8 @@ public class AppController {
 			} else {
 				offset = (page - 1) * pageSize;
 			}
-			if(totalPages ==0) {
-				totalPages=1;
+			if (totalPages == 0) {
+				totalPages = 1;
 			}
 			List<Theme> themes = theme_service.findThemeByPage(offset, pageSize);
 			model.addAttribute("themes", themes);
@@ -391,10 +400,10 @@ public class AppController {
 				offset = (page - 1) * pageSize;
 			}
 			List<Theme> Themes = theme_service.findThemeByNameAndPage(searchValue, offset, pageSize);
-			if(totalPages ==0) {
-				totalPages=1;
+			if (totalPages == 0) {
+				totalPages = 1;
 			}
-			
+
 			model.addAttribute("themes", Themes);
 			model.addAttribute("totalPages", totalPages);
 			model.addAttribute("page", page);
@@ -565,7 +574,7 @@ public class AppController {
 
 	@RequestMapping(value = { "/delete-{id}-theme-{page}" }, method = RequestMethod.GET)
 	public String deleteTheme(@PathVariable int id, @PathVariable String page) {
-		//此方法用于删除文件服务器上的对应文件--暂时保留
+		// 此方法用于删除文件服务器上的对应文件--暂时保留
 //		SSHCopyFile sshcf = new SSHCopyFile(Methods.getProperty("file.server.ip"),
 //				Methods.getProperty("file.server.uname"), Methods.getProperty("file.server.pwd"),
 //				Integer.parseInt(Methods.getProperty("file.server.port")));
@@ -701,8 +710,8 @@ public class AppController {
 		List<Mobile> mobiles = mobile_service.findMobileByPage(offset, pageSize);
 		model.addAttribute("mobiles", mobiles);
 		// 总页数
-		if(totalPages ==0) {
-			totalPages=1;
+		if (totalPages == 0) {
+			totalPages = 1;
 		}
 		model.addAttribute("totalPages", totalPages);
 		// 当前的页数
@@ -907,8 +916,8 @@ public class AppController {
 			}
 			List<Application> application = app_service.findApplicationByPage(offset, pageSize);
 			model.addAttribute("applications", application);
-			if(totalPages ==0) {
-				totalPages=1;
+			if (totalPages == 0) {
+				totalPages = 1;
 			}
 			model.addAttribute("totalPages", totalPages);
 			model.addAttribute("page", page);
@@ -928,8 +937,8 @@ public class AppController {
 				offset = (page - 1) * pageSize;
 			}
 			List<Application> applica = app_service.findApplicationByVendorIDaAndPage(vendor, offset, pageSize);
-			if(totalPages ==0) {
-				totalPages=1;
+			if (totalPages == 0) {
+				totalPages = 1;
 			}
 			model.addAttribute("totalPages", totalPages);
 			model.addAttribute("page", page);
@@ -993,20 +1002,52 @@ public class AppController {
 		app_service.deleteApplicationByID(id);
 		return "redirect:/applicationlist-" + page + "-0";
 	}
-	
-	
-	
-	
-	//登录
-	
-	
-	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
-	public String assertLogIn(ModelMap model,User user) {
 
-		System.out.println("222222222222222222222222222222222");
-		return "/index.jsp";
+	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
+	public String login(HttpServletRequest request) {
+		User user = (User) request.getSession().getAttribute("logSuccessUser");
+		if(user !=null) {
+			return "redirect:/home";
+		}
+		System.out.println("登录页面进来了!!-------------------------------------------------");
+		return "login";
 	}
-	
-	
+
+	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
+	public String assertLogIn(ModelMap model, String logname, String logpass) {
+		if (user_services.findByName(logname)) {
+
+			List<User> list = user_services.findUserByName(logname);
+			User user2 = list.get(0);
+			if (user2.getPasswd().equals(logpass)) {
+				model.addAttribute("logSuccessUser", user2);
+				model.addAttribute("searchValue", "");
+				model.addAttribute("tvendorid", "0");
+				model.addAttribute("pageType", "");
+
+				return "redirect:/home";
+			} else {
+				model.addAttribute("message", "帐号或密码错误，请重新输入");
+				return "login";
+			}
+
+		} else {
+			model.addAttribute("message", "帐号或密码错误，请重新输入");
+			return "login";
+		}
+
+	}
+	//
+	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
+	public String logOut(HttpSession session,SessionStatus sessionStatus) {
+		session.removeAttribute("logSuccessUser");
+		session.removeAttribute("pageType");
+		session.removeAttribute("searchValue");
+		session.removeAttribute("tvendorid");
+		session.invalidate();
+		sessionStatus.setComplete();
+		
+		 return "login";
+	}
 	
 }

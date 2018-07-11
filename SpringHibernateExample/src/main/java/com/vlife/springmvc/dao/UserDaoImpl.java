@@ -18,12 +18,11 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 
 	@Override
 	public Boolean findByName(String name) {
-		String strSQL = "from User WHERE  name like :name ";
+		String strSQL = "from User WHERE  name = :name ";
 		Query query = getSession().createQuery(strSQL);
-		query.setString("name", "%" + name + "%");
-		query.uniqueResult();
-		Integer num = query.getFirstResult();
-		if (num == null) {
+		query.setString("name",  name );
+		Object obj =query.uniqueResult();
+		if (obj == null) {
 
 			return false;
 		} else {
@@ -34,7 +33,7 @@ public class UserDaoImpl extends AbstractDao<Integer, User> implements UserDao {
 	}
 
 	@Override
-	public List<User> findPasswdByName(String name) {
+	public List<User> findUserByName(String name) {
 		String strSQL = "from User WHERE name = :name";
 		Query query = getSession().createQuery(strSQL);
 		query.setString("name", name);

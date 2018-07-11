@@ -21,7 +21,7 @@
 					<canvas id="demo-canvas"></canvas>
 					<div class="logo_box">
 						<h3>欢迎访问自动化测试平台</h3>
-						<form action="##" name="f" method="post" id="form1">
+						<form action="login" name="f" method="post" id="form1">
 							<div class="input_outer">
 								<span class="u_user"></span>
 								<input name="logname" class="text" style="color: #000000 !important" type="text" placeholder="请输入账户">
@@ -32,8 +32,7 @@
 							</div>
 							<div class="mb2">
 							
-							<a class="act-but submit"   onclick="login()" type="submit" href="" style="color: #FFFFFF"> 登录  </a>
-							<!-- <input type="submit" class="act-but submit" style="color: #FFFFFF" value="登录"> -->
+							<a class="act-but submit" href="javascript:document.f.submit();" style="color: #FFFFFF">登录</a>
 							
 							
 							</div>
@@ -51,24 +50,4 @@
 
 
 </body>
-
-
-<script type="text/javascript">
-function login(){
-    $.ajax({
-    //几个参数需要注意一下
-        type: "POST",//方法类型
-        dataType: "json",//预期服务器返回的数据类型
-        url: "login" ,//url
-        data: $('#form1').serialize(),
-        success: function (result) {
-           
-        },
-        error : function() {
-            alert("异常！");
-            
-        }
-    });
-}
-</script>
 </html>

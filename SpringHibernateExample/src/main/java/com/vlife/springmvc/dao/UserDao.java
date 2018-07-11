@@ -8,6 +8,6 @@ public interface UserDao {
 	
 	void saveUser(User user);
 	Boolean findByName(String name);
-	List<User>  findPasswdByName(String name);
+	List<User>  findUserByName(String name);
 	
 }
