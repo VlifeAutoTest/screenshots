@@ -10,7 +10,7 @@
 <title>主题与字体资源</title>
 
 <script
-	src="assets/css/jquery.min.js"></script>
+	src="assets/js/jquery-2.0.2.min.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="assets/css/bootstrap.min.3.css" />
 <style type="text/css"></style>

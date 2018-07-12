@@ -81,7 +81,7 @@
 								Profile
 						</a></li>
 						<li class="divider"></li>
-						<li><a href="/logout"> <span class="glyphicon glyphicon-off"></span>
+						<li><a href="<c:url   value="/logout"/>"> <span class="glyphicon glyphicon-off"></span>
 								Logout
 						</a></li>
 					</ul></li>

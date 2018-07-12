@@ -8,17 +8,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -52,7 +49,6 @@ import com.vlife.springmvc.model.Runinfo;
 import com.vlife.springmvc.service.ApplicationService;
 import com.vlife.springmvc.service.MobileService;
 import com.vlife.springmvc.service.MobileStatusService;
-import com.vlife.springmvc.service.PermissionService;
 import com.vlife.springmvc.service.RuninfoService;
 import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.TestServerService;
@@ -204,11 +200,51 @@ public class AppController {
 			List<Object[]> detail = runinfo_services.translaterinfo(qresult);
 			for (Object str[] : detail) {
 				String path = (String) str[7];
-				System.out.println(path);
 				String bb = path.replaceAll("/", "\\\\");
-				System.out.println(bb);
 				str[7] = bb;
 			}
+
+			for (int i = 0; i < detail.size(); i++) {
+				Object obj[] = detail.get(i);
+				String str = (String) obj[4];
+
+				String str2[] = str.split(",");
+				String res = "";
+				for (int j = 0; j < str2.length; j++) {
+
+					if (j != 0 && j % 8 == 0) {
+
+						res = res + str2[j] + "，" + "<br/>";
+					} else {
+						res = res + str2[j] + "，";
+					}
+
+				}
+				obj[4] = res;
+
+				Object obj2[] = detail.get(i);
+				String str3 = (String) obj[3];
+
+				String str4[] = str3.split(",");
+				String res2 = "";
+				for (int j = 0; j < str4.length; j++) {
+					
+					
+
+					if (j != 0 && j % 2 != 0) {
+						res2 = res2 + str4[j] + "，" +"<br/>";
+					} else {
+						res2 = res2 + str4[j] + "，";
+					}
+
+				}
+				obj2[3] = res2;
+
+			}
+			for (int i = 0; i < detail.size(); i++) {
+
+			}
+
 			model.addAttribute("detail", detail);
 			model.addAttribute("queryflag", true);
 			model.addAttribute("message", "");
@@ -1006,7 +1042,7 @@ public class AppController {
 	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
 	public String login(HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("logSuccessUser");
-		if(user !=null) {
+		if (user != null) {
 			return "redirect:/home";
 		}
 		System.out.println("登录页面进来了!!-------------------------------------------------");
@@ -1021,7 +1057,8 @@ public class AppController {
 			User user2 = list.get(0);
 			if (user2.getPasswd().equals(logpass)) {
 				user2.setLasted_update(new Date());
-				user_services.updateUserLastLogin(user2);;
+				user_services.updateUserLastLogin(user2);
+				;
 				model.addAttribute("logSuccessUser", user2);
 				model.addAttribute("searchValue", "");
 				model.addAttribute("tvendorid", "0");
@@ -1039,17 +1076,51 @@ public class AppController {
 		}
 
 	}
-	//
+
 	@RequestMapping(value = { "/logout" }, method = RequestMethod.GET)
-	public String logOut(HttpSession session,SessionStatus sessionStatus) {
+	public String logOut(HttpSession session, SessionStatus sessionStatus) {
 		session.removeAttribute("logSuccessUser");
 		session.removeAttribute("pageType");
 		session.removeAttribute("searchValue");
 		session.removeAttribute("tvendorid");
 		session.invalidate();
 		sessionStatus.setComplete();
-		
-		 return "login";
+
+		return "redirect:/login";
 	}
 	
+	
+	//注册
+	@RequestMapping(value = { "/signin" }, method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String signIn(ModelMap model,String signinemail,String signinname,String signpasswd) {
+		
+		
+		
+		if(!user_services.findByName(signinname)) {
+			User  user=new User();
+			user.setEmail(signinemail);
+			user.setIs_active(0);
+			user.setName(signinname);
+			user.setPasswd(signpasswd);
+			Date date =new Date();
+			user.setJoined_date(date );
+			user.setLasted_update(date);
+			user_services.saveUser(user);
+			
+			if(user_services.findByName(signinname)) {
+				return "恭喜!注册成功,请登录!";
+			}else {
+				return"注册失败,请重试!";
+			}
+			
+		}else {
+			return "用户名已存在,注册失败。";
+		}
+		
+		
+		
+		
+	}
+
 }

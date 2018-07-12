@@ -5,10 +5,10 @@
 <head>
 <meta charset="UTF-8">
 <title>欢迎访问自动化测试平台</title>
+<script src="assets/js/jquery-1.10.2.min.js"></script>
 <link href="assets/css/bootstrap.min.3.css" rel="stylesheet"
 	id="bootstrap-css">
 <script src="assets/js/bootstrap.min.3.js"></script>
-<script src="assets/js/jquery-1.10.2.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
 <style>
@@ -35,8 +35,8 @@ body {
 						<a href="#">忘记密码?</a>
 					</div>
 				</div>
-
 				<div style="padding-top: 30px" class="panel-body">
+					<font id="qwe" size="2" color="red">${message}</font>
 
 					<div style="display: none" id="login-alert"
 						class="alert alert-danger col-sm-12"></div>
@@ -123,8 +123,8 @@ body {
 						<div class="form-group">
 							<label for="email" class="col-md-3 control-label">邮箱</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" name="email"
-									placeholder="邮件地址">
+								<input type="text" class="form-control" name="signinemail"
+									placeholder="请填写邮件地址">
 							</div>
 						</div>
 
@@ -132,39 +132,25 @@ body {
 							<label for="firstname" class="col-md-3 control-label">
 								用户名</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" name="firstname"
+								<input type="text" class="form-control" name="signinname"
 									placeholder="请设置用户名">
 							</div>
 						</div>
-						<!-- <div class="form-group">
-							<label for="lastname" class="col-md-3 control-label">Last
-								Name</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control" name="lastname"
-									placeholder="Last Name">
-							</div>
-						</div> -->
+
 						<div class="form-group">
 							<label for="password" class="col-md-3 control-label">密码</label>
 							<div class="col-md-9">
-								<input type="password" class="form-control" name="passwd"
-									placeholder="请设置登录密码">
+								<input type="password" class="form-control" name="signpasswd"
+									placeholder="请设置登录密码" value="">
 							</div>
 						</div>
 
-						<!-- <div class="form-group">
-							<label for="icode" class="col-md-3 control-label">Invitation
-								Code</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control" name="icode"
-									placeholder="">
-							</div>
-						</div> -->
 
 						<div class="form-group">
 							<!-- Button -->
 							<div class="col-md-offset-3 col-md-9">
-								<button id="btn-signup" type="button" class="btn btn-info">
+								<button id="btn-signup" type="button" class="btn btn-info"
+									onclick="sigin()">
 									<i class="icon-hand-right"></i> &nbsp 注册
 								</button>
 								<span style="margin-left: 8px;"></span>
@@ -174,11 +160,7 @@ body {
 						<div style="border-top: 1px solid #999; padding-top: 20px"
 							class="form-group">
 
-							<div class="col-md-offset-3 col-md-9">
-								<!-- <button id="btn-fbsignup" type="button" class="btn btn-primary">
-									<i class="icon-facebook"></i>   Sign Up with Facebook
-								</button> -->
-							</div>
+							<div class="col-md-offset-3 col-md-9"></div>
 
 						</div>
 
@@ -195,7 +177,24 @@ body {
 	</div>
 
 
-
+	<script type="text/javascript">
+		function sigin() {
+			$.ajax({
+				type : "POST",
+				dataType : "TEXT",
+				url : "/signin",
+				data : $("#signupform").serialize(),
+				success : function(result) {
+					alert(result);
+					window.location.reload();
+				},
+				error : function() {
+					alert("注册失败!请检测信息填写是否符合规范.");
+					window.location.reload();
+				}
+			});
+		}
+	</script>
 
 
 

@@ -8,16 +8,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import org.hibernate.validator.constraints.Email;
 
 @Entity
-@Table(name = "auth_user")
+@Table(name = "auth_user",uniqueConstraints = {@UniqueConstraint(columnNames="name")})
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(name = "name", nullable = false)
+	
 	private String name;
 	private String passwd;
+	@Email
 	private String email;
 	private Date joined_date;
 	private Date lasted_update;

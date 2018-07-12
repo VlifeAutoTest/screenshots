@@ -9,4 +9,5 @@ public interface UserService {
 	Boolean findByName(String name);
 	List<User>  findUserByName(String name);
 	void updateUserLastLogin(User user) ;
+	
 }

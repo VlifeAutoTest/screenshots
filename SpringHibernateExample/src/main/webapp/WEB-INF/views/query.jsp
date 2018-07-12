@@ -9,13 +9,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>厂商应用列表</title>
 <script type="text/javascript" src="assets/js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript"src="assets/js/bootstrap-select.js"></script>
+<script type="text/javascript" src="assets/js/bootstrap-select.js"></script>
 <script src="assets/js/bootstrap.min-3.0.0.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="assets/css/bootstrap-select.css">
-<link
-	href="assets/css/bootstrap.min.3.css"
-	rel="stylesheet">
+<link href="assets/css/bootstrap.min.3.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="assets/css/xcConfirm.css" />
 <script src="assets/js/xcConfirm.js" type="text/javascript"
 	charset="utf-8"></script>
@@ -135,19 +133,19 @@ select {
 		if (strDate >= 0 && strDate <= 9) {
 			strDate = "0" + strDate;
 		}
-		
+
 		if (hour >= 0 && hour <= 9) {
 			hour = "0" + hour;
 		}
-		
+
 		if (minutes >= 0 && minutes <= 9) {
 			minutes = "0" + minutes;
 		}
-		var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
-				            + "T" + hour + seperator2 + minutes;
+		var currentdate = date.getFullYear() + seperator1 + month + seperator1
+				+ strDate + "T" + hour + seperator2 + minutes;
 
-/* 		var currentdate = date.getFullYear() + seperator1 + month + seperator1
-				+ strDate; */
+		/* 		var currentdate = date.getFullYear() + seperator1 + month + seperator1
+		 + strDate; */
 
 		return currentdate;
 	};
@@ -237,25 +235,29 @@ select {
 
 						<tr>
 							<td><label for="">开始日期: </label></td>
-							<td><form:input path="stime" id="s_time" type="datetime-local"
-									value="" pattern="yyyy-MM-dd HH:mm" name="begintime" /></td>
+							<td><form:input path="stime" id="s_time"
+									type="datetime-local" value="" pattern="yyyy-MM-dd HH:mm"
+									name="begintime" /></td>
 						</tr>
 
 						<tr>
 							<td><label for="">结束日期: </label></td>
-							<td><form:input path="etime" id="e_time" type="datetime-local"
-									value="" pattern="yyyy-MM-dd HH:mm" name="endtime" /></td>
+							<td><form:input path="etime" id="e_time"
+									type="datetime-local" value="" pattern="yyyy-MM-dd HH:mm"
+									name="endtime" /></td>
 
 						</tr>
 						<tr>
 							<td><input type="submit" value="查询" /></td>
-							<td><font size="3" color="red" id ="showpath">${message}</font></td>
+							<td><font size="3" color="red" id="showpath">${message}</font></td>
 						</tr>
 					</table>
 
 					<table
 						class="table table-striped table-hover table-nonfluid table-responsive "
 						id="result_table">
+
+
 						<thead>
 							<tr>
 								<th>厂商</th>
@@ -277,14 +279,6 @@ select {
 
 									<c:forEach items="${detail}" var="dt">
 										<tr>
-											<%-- 								<td>${qr.getVid()}</td> --%>
-											<%-- 								<td>${qr.getMid()}</td> --%>
-											<%-- 								<td>${qr.getResource()}</td> --%>
-											<%-- 								<td>${qr.getApp()}</td> --%>
-											<%-- 								<td>${qr.getStime()}</td> --%>
-											<%-- 								<td>${qr.getEtime()}</td> --%>
-											<%-- 							    <td><a>${qr.getZip()}</a></td> --%>
-											<%-- 								<td><a>${qr.getLogFile()}</a></td> --%>
 											<td>${dt[0]}</td>
 											<td>${dt[1]}</td>
 											<td>${dt[3]}</td>
@@ -300,9 +294,7 @@ select {
 
 
 
-											</td>
-											<%-- 							     <td><a href="http://192.168.1.230:8080${dt[7]}/${dt[8]} " target="_blank">${dt[8]}</a></td> --%>
-											<%-- <td><a href="http://192.168.1.230:8080${dt[7]}/${dt[9]}" target="_blank" >${dt[9]}</a></td>  --%>
+											
 										</tr>
 									</c:forEach>
 
@@ -313,7 +305,7 @@ select {
 								</c:otherwise>
 							</c:choose>
 						</tbody>
-				<!-- 		<tfoot>
+						<!-- 		<tfoot>
 							<tr>
 								<td colspan="8">
 									<ul class="pagination">
@@ -343,7 +335,8 @@ select {
 					"#ww",
 					function(event) {
 						//alert("44444");
-						var ee = $(this).closest("tr").find("td").eq(6).find("b").text();
+						var ee = $(this).closest("tr").find("td").eq(6).find(
+								"b").text();
 						alert(ee);
 						// $("#ll").append(ee) ;
 						//$("#showpath").empty();
