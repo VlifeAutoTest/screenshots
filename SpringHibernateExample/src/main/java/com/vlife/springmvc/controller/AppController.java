@@ -1020,6 +1020,8 @@ public class AppController {
 			List<User> list = user_services.findUserByName(logname);
 			User user2 = list.get(0);
 			if (user2.getPasswd().equals(logpass)) {
+				user2.setLasted_update(new Date());
+				user_services.updateUserLastLogin(user2);;
 				model.addAttribute("logSuccessUser", user2);
 				model.addAttribute("searchValue", "");
 				model.addAttribute("tvendorid", "0");

@@ -30,4 +30,15 @@ public class UserServiceImpl implements UserService {
 		return dao.findUserByName(name);
 	}
 
+	@Override
+	public void updateUserLastLogin(User user) {
+		User use = dao.findByID(user.getId());
+		if (use != null) {
+
+			use.setLasted_update(user.getLasted_update());
+
+		}
+
+	}
+
 }

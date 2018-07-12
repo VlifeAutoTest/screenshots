@@ -9,16 +9,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>厂商应用列表</title>
 <script type="text/javascript" src="assets/js/jquery-1.10.2.min.js"></script>
-<script type="text/javascript"
-	src="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/js/bootstrap-select.js"></script>
-<script
-	src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css"
-	href="http://cdn.bootcss.com/bootstrap-select/2.0.0-beta1/css/bootstrap-select.css">
-<link
-	href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
-	rel="stylesheet">
-
+<script type="text/javascript" src="assets/js/bootstrap-select.2.0.js"></script>
+<script src="assets/js/bootstrap.min.3.js"></script>
+<link rel="stylesheet" type="text/css" href="assets/css/bootstrap-select.2.css">
+<link href="assets/css/bootstrap.min.3.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="assets/css/xcConfirm.css" />
 <script src="assets/js/xcConfirm.js" type="text/javascript"
 	charset="utf-8"></script>
@@ -217,7 +211,7 @@ select {
 						<td><form:select path="resource" multiple="multiple"
 								itemValue="id" itemLabel="name" id="resource"
 								class="selectpicker bla bla bli" data-live-search="true" /> <a
-							href="<c:url value='/newtheme-1' />"> +增加资源▲</a></td>
+							href="<c:url value='/newtheme-1' />"> +增加资源</a></td>
 						<td><form:errors path="resource" cssClass="error" /></td>
 					</tr>
 

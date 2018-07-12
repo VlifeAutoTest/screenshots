@@ -10,9 +10,9 @@
 <title>主题与字体资源</title>
 
 <script
-	src="http://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+	src="assets/css/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	href="assets/css/bootstrap.min.3.css" />
 <style type="text/css"></style>
 
 <script>
@@ -47,7 +47,7 @@
 				<table class="table table-striped table-hover">
 					<tr>
 						<td><label for="name">名称:</label></td>
-						<td><form:input path="name" id="name" />(请填写资源在手机中的名称)<font
+						<td><form:input path="name" id="name" />(请填写该资源的正确名称)<font
 							id="qwe" size="3" color="red">${message}</font></td>
 						<td><form:errors path="name" cssClass="error" /></td>
 					</tr>

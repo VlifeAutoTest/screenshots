@@ -28,7 +28,6 @@ public interface RuninfoService {
 
 	void execShellCommand(Session session, String python);
 
-	Boolean checkPath(int newRunid);
 
 	String doCommand(Session session, String command);
 }

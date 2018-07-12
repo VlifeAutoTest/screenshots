@@ -6,10 +6,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Themes and Fonts</title>
 <link rel="stylesheet" type="text/css"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	href="assets/css/bootstrap.min.3.css" />
 <style type="text/css"></style>
 <script
-	src="http://upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.2.min.js"></script>
+	src="assets/js/jquery.min.js"></script>
 
 </head>
 <body>

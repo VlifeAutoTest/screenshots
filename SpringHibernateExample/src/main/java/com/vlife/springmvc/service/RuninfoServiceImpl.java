@@ -187,7 +187,6 @@ public class RuninfoServiceImpl implements RuninfoService {
 				// System.out.println(buf);
 				value = value + buf;
 			}
-			System.out.println("2222222" + value);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (JSchException e) {
@@ -229,26 +228,6 @@ public class RuninfoServiceImpl implements RuninfoService {
 
 	}
 
-	@Override
-	public Boolean checkPath(int newRunid) {
-		Boolean status = false;
-		Session session = getSession("192.168.1.230", 22, "root", "vlifeqa");
-		for (int i = 0; i < 10; i++) {
-			String command = "ls";
-			String value = doCommand(session, command);
-			if (value.trim().length() == 0) {
-				status = true;
-				break;
-			}
 
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
-		return status;
-	}
 
 }

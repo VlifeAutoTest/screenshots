@@ -14,7 +14,7 @@
 <link rel="stylesheet" type="text/css"
 	href="assets/css/bootstrap-select.css">
 <link
-	href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"
+	href="assets/css/bootstrap.min.3.css"
 	rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="assets/css/xcConfirm.css" />
 <script src="assets/js/xcConfirm.js" type="text/javascript"
