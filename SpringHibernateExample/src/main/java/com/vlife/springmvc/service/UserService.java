@@ -10,4 +10,5 @@ public interface UserService {
 	List<User>  findUserByName(String name);
 	void updateUserLastLogin(User user) ;
 	
+	
 }

@@ -32,7 +32,8 @@ body {
 					<div class="panel-title">登录</div>
 					<div
 						style="float: right; font-size: 80%; position: relative; top: -10px">
-						<a href="#">忘记密码?</a>
+						<a href="#"
+							onclick="$('#signupbox').hide(); $('#loginbox').hide(); $('#findpasswd').show(); ">忘记密码?</a>
 					</div>
 				</div>
 				<div style="padding-top: 30px" class="panel-body">
@@ -86,7 +87,7 @@ body {
 								<div
 									style="border-top: 1px solid #888; padding-top: 15px; font-size: 85%">
 									还没有账号! <a href="#"
-										onClick="$('#loginbox').hide(); $('#signupbox').show()">
+										onClick="$('#loginbox').hide(); $('#signupbox').show();$('#findpasswd').hide(); ">
 										点击注册 </a>
 								</div>
 							</div>
@@ -98,6 +99,8 @@ body {
 				</div>
 			</div>
 		</div>
+
+
 		<div id="signupbox" style="display: none; margin-top: 15%"
 			class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
 			<div class="panel panel-info">
@@ -106,7 +109,7 @@ body {
 					<div
 						style="float: right; font-size: 85%; position: relative; top: -10px">
 						<a id="signinlink" href="#"
-							onclick="$('#signupbox').hide(); $('#loginbox').show()">登录</a>
+							onclick="$('#signupbox').hide(); $('#loginbox').show();$('#findpasswd').hide();">登录</a>
 					</div>
 				</div>
 				<div class="panel-body">
@@ -169,12 +172,99 @@ body {
 					</form>
 				</div>
 			</div>
+		</div>
+		<!-- 试写找密码 -->
+		<div id="findpasswd" style="display: none; margin-top: 15%"
+			class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					<div class="panel-title">找回密码</div>
+					<div
+						style="float: right; font-size: 85%; position: relative; top: -10px">
+						<a id="signinlink" href="#"
+							onclick="$('#signupbox').hide(); $('#loginbox').show();$('#findpasswd').hide()">登录</a>
+					</div>
+				</div>
+				<div class="panel-body">
+					<form id="findpass" class="form-horizontal" role="form">
+
+						<div id="signupalert" style="display: none"
+							class="alert alert-danger">
+							<p>Error:</p>
+							<span></span>
+						</div>
+						<div class="form-group">
+							<label for="firstname" class="col-md-3 control-label">
+								用户名</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="signinname"
+									placeholder="请填写要找回账号的用户名">
+							</div>
+						</div>
+
+
+						<div class="form-group">
+							<label for="email" class="col-md-3 control-label">邮箱</label>
+							<div class="col-md-9">
+								<input type="text" class="form-control" name="signinemail"
+									placeholder="请填写账号绑定的邮箱">
+							</div>
+						</div>
+
+
+
+
+						<div class="form-group">
+							<!-- Button -->
+							<div class="col-md-offset-3 col-md-9">
+								<button id="btn-signup" type="button" class="btn btn-info"
+									onclick="findpass()">
+									<i class="icon-hand-right"></i> &nbsp 确认提交
+								</button>
+								<span style="margin-left: 8px;"></span>
+							</div>
+						</div>
+
+						<div style="border-top: 1px solid #999; padding-top: 20px"
+							class="form-group">
+
+							<div class="col-md-offset-3 col-md-9"></div>
+
+						</div>
+
+
+
+					</form>
+				</div>
+			</div>
 
 
 
 
 		</div>
+
+
+
+
+
+
+
+
 	</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 	<script type="text/javascript">
@@ -184,6 +274,25 @@ body {
 				dataType : "TEXT",
 				url : "/signin",
 				data : $("#signupform").serialize(),
+				success : function(result) {
+					alert(result);
+					window.location.reload();
+				},
+				error : function() {
+					alert("注册失败!请检测信息填写是否符合规范.");
+					window.location.reload();
+				}
+			});
+		}
+	</script>
+
+	<script type="text/javascript">
+		function findpass() {
+			$.ajax({
+				type : "POST",
+				dataType : "TEXT",
+				url : "/findpwd",
+				data : $("#findpasswd").serialize(),
 				success : function(result) {
 					alert(result);
 					window.location.reload();

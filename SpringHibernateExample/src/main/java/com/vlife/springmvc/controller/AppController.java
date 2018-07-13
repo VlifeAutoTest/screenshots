@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -52,6 +53,7 @@ import com.vlife.springmvc.service.MobileStatusService;
 import com.vlife.springmvc.service.RuninfoService;
 import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.TestServerService;
+
 
 @Controller
 @RequestMapping("/")
@@ -1095,8 +1097,6 @@ public class AppController {
 	@ResponseBody
 	public String signIn(ModelMap model,String signinemail,String signinname,String signpasswd) {
 		
-		
-		
 		if(!user_services.findByName(signinname)) {
 			User  user=new User();
 			user.setEmail(signinemail);
@@ -1113,14 +1113,29 @@ public class AppController {
 			}else {
 				return"注册失败,请重试!";
 			}
-			
 		}else {
 			return "用户名已存在,注册失败。";
 		}
 		
+	}
+	@RequestMapping(value = { "/findpwd" }, method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String findPasswd(ModelMap model,String signinemail,String signinname) {
 		
-		
+		if(!user_services.findByName(signinname)) {
+			
+			if(user_services.findByName(signinname)) {
+				return "恭喜!注册成功,请登录!";
+			}else {
+				return"注册失败,请重试!";
+			}
+		}else {
+			return "抱歉用户名不存在,请重试";
+		}
 		
 	}
-
+	
+	
+	
+	
 }

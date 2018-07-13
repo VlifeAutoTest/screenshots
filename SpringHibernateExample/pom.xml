@@ -23,6 +23,11 @@
 		<h2.version>1.4.187</h2.version>
 		<dbunit.version>2.2</dbunit.version>
 		<jackson.version>2.5.4</jackson.version>
+		 <!-- 文件拷贝时的编码 -->  
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>  
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>  
+        <!-- 编译时的编码 -->  
+        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>  
 	</properties>
 
 
@@ -31,6 +36,14 @@
 
 
 	<dependencies>
+
+
+		<!--send mail -->
+		<dependency>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.0</version>
+		</dependency>
 		<!-- Spring -->
 
 		<dependency>
