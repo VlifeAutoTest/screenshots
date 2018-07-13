@@ -1037,7 +1037,7 @@ public class AppController {
 		return "redirect:/applicationlist-" + page + "-0";
 	}
 
-	@RequestMapping(value = { "/login" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/", "/login" }, method = RequestMethod.GET)
 	public String login(HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("logSuccessUser");
 		if (user != null) {
@@ -1048,7 +1048,7 @@ public class AppController {
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
 	public String assertLogIn(ModelMap model, String logname, String logpass) {
-		if ( logname.trim().length()!=0 && user_services.findByName(logname)) {
+		if (logname.trim().length() != 0 && user_services.findByName(logname)) {
 
 			List<User> list = user_services.findUserByName(logname);
 			User user2 = list.get(0);

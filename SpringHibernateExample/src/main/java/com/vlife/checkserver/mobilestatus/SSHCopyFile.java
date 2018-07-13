@@ -1,6 +1,5 @@
 package com.vlife.checkserver.mobilestatus;
 
-
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -30,14 +29,10 @@ public class SSHCopyFile {
 	/**
 	 * 创建一个连接
 	 * 
-	 * @param host
-	 *            地址
-	 * @param user
-	 *            用户名
-	 * @param password
-	 *            密码
-	 * @param port
-	 *            ssh2端口
+	 * @param host     地址
+	 * @param user     用户名
+	 * @param password 密码
+	 * @param port     ssh2端口
 	 */
 	public SSHCopyFile(String host, String user, String password, int port) {
 		this.host = host;
@@ -96,12 +91,9 @@ public class SSHCopyFile {
 	/**
 	 * 上传文件
 	 * 
-	 * @param localPath
-	 *            本地路径，若为空，表示当前路径
-	 * @param localFile
-	 *            本地文件名，若为空或是“*”，表示目前下全部文件
-	 * @param remotePath
-	 *            远程路径，若为空，表示当前路径，若服务器上无此目录，则会自动创建
+	 * @param localPath  本地路径，若为空，表示当前路径
+	 * @param localFile  本地文件名，若为空或是“*”，表示目前下全部文件
+	 * @param remotePath 远程路径，若为空，表示当前路径，若服务器上无此目录，则会自动创建
 	 * @throws Exception
 	 */
 	public void putFile(String localPath, String localFile, String remotePath) throws Exception {
@@ -140,10 +132,8 @@ public class SSHCopyFile {
 	/**
 	 * 删除文件
 	 *
-	 * @param directory
-	 *            要删除文件所在目录
-	 * @param deleteFile
-	 *            要删除的文件
+	 * @param directory  要删除文件所在目录
+	 * @param deleteFile 要删除的文件
 	 * @param sftp
 	 * @throws Exception
 	 */
@@ -153,7 +143,7 @@ public class SSHCopyFile {
 			Channel channelSftp = session.openChannel("sftp");
 			channelSftp.connect();
 			ChannelSftp sftp = (ChannelSftp) channelSftp;
-			//sftp.rmdir(fileOrDirectory);
+			// sftp.rmdir(fileOrDirectory);
 //			sftp.cd(fileOrDirectory);
 			sftp.rm(fileOrDirectory);
 		} catch (JSchException e) {

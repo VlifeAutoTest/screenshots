@@ -12,9 +12,10 @@ public class TimerManager {
 	public TimerManager() {
 		Calendar calendar = Calendar.getInstance();
 		// 定制每日12:30:30执行
-		// calendar.set(Calendar.HOUR_OF_DAY, 12);
-		// calendar.set(Calendar.MINUTE, 10);
-		calendar.set(Calendar.SECOND, 10);
+		int year = calendar.get(Calendar.YEAR);
+		int month = calendar.get(Calendar.MONTH);
+		int day = calendar.get(Calendar.DAY_OF_MONTH);// 每天
+		calendar.set(year, month, day, 5, 0, 0);
 		Date date = calendar.getTime(); // 第一次执行定时任务的时间
 		// 如果当前时间已经过去所定时的时间点，则在第二天时间点开始执行
 		if (date.before(new Date())) {

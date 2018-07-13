@@ -10,7 +10,7 @@ import java.util.TimerTask;
 import com.jcraft.jsch.Session;
 
 public class CheckMobileSattus extends TimerTask {
-	Methods methods = new Methods(); 
+	Methods methods = new Methods();
 	List<Integer> list = new LinkedList<Integer>();
 
 	@Override

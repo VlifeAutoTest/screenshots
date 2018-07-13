@@ -110,8 +110,7 @@ public class Methods {
 		try {
 			channelExec = (ChannelExec) session.openChannel("exec");
 			in = channelExec.getInputStream();
-			channelExec.setCommand("source /etc/profile  && adb -s  "
-					+ device + "  " + command);
+			channelExec.setCommand("source /etc/profile  && adb -s  " + device + "  " + command);
 			channelExec.setErrStream(System.err);
 			channelExec.connect();
 			result = IOUtils.toString(in, "UTF-8");
@@ -567,9 +566,5 @@ public class Methods {
 		return result;
 
 	}
-	
-	
-	
-	
 
 }
