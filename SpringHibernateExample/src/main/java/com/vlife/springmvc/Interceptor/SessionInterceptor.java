@@ -14,7 +14,6 @@ public class SessionInterceptor implements HandlerInterceptor {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// TODO 自动生成的方法存根
-		System.out.println("进入拦截器工作了");
 		String tvendorid = (String) request.getSession().getAttribute("tvendorid");
 		String searchValue = (String) request.getSession().getAttribute("searchValue");
 		String pageType = (String) request.getSession().getAttribute("pageType");

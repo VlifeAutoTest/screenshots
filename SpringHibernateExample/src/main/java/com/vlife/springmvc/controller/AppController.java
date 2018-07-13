@@ -1043,7 +1043,6 @@ public class AppController {
 		if (user != null) {
 			return "redirect:/home";
 		}
-		System.out.println("登录页面进来了!!-------------------------------------------------");
 		return "login";
 	}
 

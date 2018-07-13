@@ -259,7 +259,7 @@ body {
 			$.ajax({
 				type : "POST",
 				dataType : "TEXT",
-				url : "/signin",
+				url : "signin",
 				data : $("#signupform").serialize(),
 				success : function(result) {
 					alert(result);
@@ -278,7 +278,7 @@ body {
 			$.ajax({
 				type : "POST",
 				dataType : "TEXT",
-				url : "/findpwd",
+				url : "findpwd",
 				data : $("#findpass").serialize(),
 				success : function(result) {
 					alert(result);
