@@ -197,7 +197,7 @@ body {
 							<label for="firstname" class="col-md-3 control-label">
 								用户名</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" name="signinname"
+								<input type="text" class="form-control" name="findpasswdname"
 									placeholder="请填写要找回账号的用户名">
 							</div>
 						</div>
@@ -206,7 +206,7 @@ body {
 						<div class="form-group">
 							<label for="email" class="col-md-3 control-label">邮箱</label>
 							<div class="col-md-9">
-								<input type="text" class="form-control" name="signinemail"
+								<input type="text" class="form-control" name="findpasswdemail"
 									placeholder="请填写账号绑定的邮箱">
 							</div>
 						</div>
@@ -254,19 +254,6 @@ body {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 	<script type="text/javascript">
 		function sigin() {
 			$.ajax({
@@ -292,13 +279,13 @@ body {
 				type : "POST",
 				dataType : "TEXT",
 				url : "/findpwd",
-				data : $("#findpasswd").serialize(),
+				data : $("#findpass").serialize(),
 				success : function(result) {
 					alert(result);
 					window.location.reload();
 				},
 				error : function() {
-					alert("注册失败!请检测信息填写是否符合规范.");
+					alert("找回密码失败请重试!");
 					window.location.reload();
 				}
 			});

@@ -12,8 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
-
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -44,6 +42,7 @@ import com.jcraft.jsch.Session;
 import com.vlife.checkserver.mobilestatus.CheckMobileSattus;
 import com.vlife.checkserver.mobilestatus.Methods;
 import com.vlife.checkserver.mobilestatus.SSHCopyFile;
+import com.vlife.checkserver.mobilestatus.SendEmailMethods;
 import com.vlife.springmvc.model.Application;
 import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.model.Runinfo;
@@ -53,7 +52,6 @@ import com.vlife.springmvc.service.MobileStatusService;
 import com.vlife.springmvc.service.RuninfoService;
 import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.TestServerService;
-
 
 @Controller
 @RequestMapping("/")
@@ -230,11 +228,9 @@ public class AppController {
 				String str4[] = str3.split(",");
 				String res2 = "";
 				for (int j = 0; j < str4.length; j++) {
-					
-					
 
 					if (j != 0 && j % 2 != 0) {
-						res2 = res2 + str4[j] + "，" +"<br/>";
+						res2 = res2 + str4[j] + "，" + "<br/>";
 					} else {
 						res2 = res2 + str4[j] + "，";
 					}
@@ -1053,11 +1049,11 @@ public class AppController {
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
 	public String assertLogIn(ModelMap model, String logname, String logpass) {
-		if (user_services.findByName(logname)) {
+		if ( logname.trim().length()!=0 && user_services.findByName(logname)) {
 
 			List<User> list = user_services.findUserByName(logname);
 			User user2 = list.get(0);
-			if (user2.getPasswd().equals(logpass)) {
+			if (user2.getPasswd().trim().equals(logpass)) {
 				user2.setLasted_update(new Date());
 				user_services.updateUserLastLogin(user2);
 				;
@@ -1090,52 +1086,65 @@ public class AppController {
 
 		return "redirect:/login";
 	}
-	
-	
-	//注册
-	@RequestMapping(value = { "/signin" }, method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
+
+	// 注册
+	@RequestMapping(value = { "/signin" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String signIn(ModelMap model,String signinemail,String signinname,String signpasswd) {
-		
-		if(!user_services.findByName(signinname)) {
-			User  user=new User();
+	public String signIn(ModelMap model, String signinemail, String signinname, String signpasswd) {
+
+		if (signinname.trim().length() != 0 && signpasswd.trim().length() != 0 && signinemail.trim().length() != 0
+				&& !user_services.findByName(signinname)) {
+			User user = new User();
 			user.setEmail(signinemail);
 			user.setIs_active(0);
 			user.setName(signinname);
 			user.setPasswd(signpasswd);
-			Date date =new Date();
-			user.setJoined_date(date );
+			Date date = new Date();
+			user.setJoined_date(date);
 			user.setLasted_update(date);
 			user_services.saveUser(user);
-			
-			if(user_services.findByName(signinname)) {
+
+			if (user_services.findByName(signinname)) {
 				return "恭喜!注册成功,请登录!";
-			}else {
-				return"注册失败,请重试!";
+			} else {
+				return "注册失败,请重试!";
 			}
-		}else {
+		} else {
 			return "用户名已存在,注册失败。";
 		}
-		
+
 	}
-	@RequestMapping(value = { "/findpwd" }, method = RequestMethod.POST,produces = "text/html;charset=UTF-8")
+
+	@RequestMapping(value = { "/findpwd" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	@ResponseBody
-	public String findPasswd(ModelMap model,String signinemail,String signinname) {
-		
-		if(!user_services.findByName(signinname)) {
-			
-			if(user_services.findByName(signinname)) {
-				return "恭喜!注册成功,请登录!";
-			}else {
-				return"注册失败,请重试!";
+	public String findPasswd(ModelMap model, String findpasswdname, String findpasswdemail) {
+		if (findpasswdname.trim().length() != 0 && user_services.findByName(findpasswdname)) {
+
+			List<User> list = user_services.findUserByName(findpasswdname);
+			User user = list.get(0);
+			String email = user.getEmail().trim();
+			if (email.equals(findpasswdemail.trim())) {
+
+				String emailSubject = "自动化测试平台密码找回邮件";
+				String messageBody = "您的登录密码为: " + user.getPasswd() + "    (系统自动发送,切勿回复!)";
+				try {
+					SendEmailMethods.sendEmail(email, emailSubject, messageBody, null);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+					return "邮件发送失败,请联系管理人员";
+				}
+				return "密码找回成功,登录密码已发送到您的邮箱,注意查收";
+
+			} else {
+				return "抱歉,输入的邮箱地址与账号绑定的不一致";
 			}
-		}else {
-			return "抱歉用户名不存在,请重试";
+
 		}
-		
+
+		else {
+			return "抱歉,密码找回失败,用户名不存在.";
+		}
+
 	}
-	
-	
-	
-	
+
 }

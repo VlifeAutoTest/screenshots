@@ -64,9 +64,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	// 拦截器
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
-		/*registry.addInterceptor(new SessionInterceptor()).addPathPatterns("/applicationlist-{page}-{vendorid}",
-				"/themelist-{page}", "newtheme", "/newtheme-{type}","");*/
-		registry.addInterceptor(new SessionInterceptor()).excludePathPatterns("/login","/signin").addPathPatterns("/**");
+		registry.addInterceptor(new SessionInterceptor()).excludePathPatterns("/login","/signin","/findpwd").addPathPatterns("/**");
 		
 	}
 
