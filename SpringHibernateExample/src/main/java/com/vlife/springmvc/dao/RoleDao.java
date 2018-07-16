@@ -5,7 +5,7 @@ import java.util.List;
 import com.vlife.springmvc.model.Role;
 
 public interface RoleDao {
-	
+
 	Role findById(int id);
 
 	void saveRole(Role role);

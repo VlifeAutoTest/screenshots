@@ -27,4 +27,3 @@ public class IdToResourceConverter implements Converter<Object, Resources> {
 	}
 
 }
-

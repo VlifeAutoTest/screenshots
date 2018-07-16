@@ -31,15 +31,17 @@ public class Role {
 
 	@Column(name = "description", nullable = false)
 	private String description;
-	
+
 	@Column(name = "available", nullable = false)
 	private int available;
-	
-	@ManyToMany(cascade={CascadeType.MERGE}, fetch=FetchType.EAGER)
-	@JoinTable(name="auth_role_resource",joinColumns={@JoinColumn(name="role_id")},inverseJoinColumns={@JoinColumn(name="resource_id")})
-	@Cascade(value= {org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
-	private Set<Resources> relresources=new HashSet<Resources>(0);
-	
+
+	@ManyToMany(cascade = { CascadeType.MERGE }, fetch = FetchType.EAGER)
+	@JoinTable(name = "auth_role_resource", joinColumns = { @JoinColumn(name = "role_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "resource_id") })
+	@Cascade(value = { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
+			org.hibernate.annotations.CascadeType.DELETE })
+	private Set<Resources> relresources = new HashSet<Resources>(0);
+
 	public int getId() {
 		return id;
 	}
@@ -55,7 +57,7 @@ public class Role {
 	public void setName(String role) {
 		this.name = role;
 	}
-	
+
 	public String getDescription() {
 		return description;
 	}
@@ -63,7 +65,7 @@ public class Role {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public int getAvailable() {
 		return available;
 	}
@@ -71,13 +73,12 @@ public class Role {
 	public void setAvailable(int value) {
 		this.available = value;
 	}
-	
-	 public Set<Resources> getRelresources() {
-		  return relresources;
-	 }
-		 
+
+	public Set<Resources> getRelresources() {
+		return relresources;
+	}
+
 	public void setRelresources(Set<Resources> resource) {
-		  this.relresources = resource;
+		this.relresources = resource;
 	}
 }
-

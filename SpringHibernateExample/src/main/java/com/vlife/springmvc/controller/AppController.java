@@ -97,13 +97,12 @@ public class AppController {
 	@Autowired
 	UserService user_services;
 
-	
 	@Autowired
 	RoleService role_services;
-	
+
 	@Autowired
 	ResourceService resource_service;
-	
+
 	@ModelAttribute("vendors")
 	public List<Vendor> initializeVendors() {
 		return vendor_service.findAllVendor();
@@ -175,28 +174,28 @@ public class AppController {
 		return res;
 
 	}
-	
+
 	@RequestMapping(value = { "/role-permission" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String roleManage(ModelMap model) {
-		
+
 		List<Role> roles = role_services.findAllRole();
 		model.addAttribute("roles", roles);
 		return "rolepermission";
 	}
-	
+
 	@RequestMapping(value = { "/newrole" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String newRole(ModelMap model) {
 		Role role = new Role();
 		List<Resources> resources = resource_service.findAllResource();
 		model.addAttribute("resources", resources);
-		model.addAttribute("role", role);;
+		model.addAttribute("role", role);
+		;
 		model.addAttribute("edit", false);
 		return "role";
 	}
 
 	@RequestMapping(value = { "/newrole" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public String saveRole(@Valid Role role, BindingResult result, ModelMap model)
-			throws UnsupportedEncodingException {
+	public String saveRole(@Valid Role role, BindingResult result, ModelMap model) throws UnsupportedEncodingException {
 
 		if (result.hasErrors()) {
 			return "role";
@@ -209,25 +208,26 @@ public class AppController {
 		role_services.saveRole(role);
 		return "redirect:/role-permission";
 	}
-	
+
 	@RequestMapping(value = { "/edit-{id}-role" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String editRole(@PathVariable int id, ModelMap model) {
 		Role role = role_services.findById(id);
 		Set<Resources> rlist = role.getRelresources();
-		Iterator<Resources> it= rlist.iterator();
+		Iterator<Resources> it = rlist.iterator();
 		List<Integer> relID = new ArrayList<Integer>();
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			Resources rese = it.next();
 			relID.add(rese.getId());
 		}
 		List<Resources> resources = resource_service.findAllResource();
 		model.addAttribute("resources", resources);
-		model.addAttribute("role", role);;
+		model.addAttribute("role", role);
+		;
 		model.addAttribute("edit", true);
 		model.addAttribute("relID", relID);
 		return "role";
 	}
-	
+
 	@RequestMapping(value = { "/edit-{id}-role" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	public String updateRole(@Valid Role role, BindingResult result, ModelMap model, @PathVariable int id)
 			throws UnsupportedEncodingException {
@@ -244,7 +244,7 @@ public class AppController {
 		role_services.updateRole(role);
 		return "redirect:/role-permission";
 	}
-	
+
 	@RequestMapping(value = { "/delete-{id}-role" }, method = RequestMethod.GET)
 	public String deleteRole(@PathVariable int id) {
 		role_services.deleteRoleByID(id);

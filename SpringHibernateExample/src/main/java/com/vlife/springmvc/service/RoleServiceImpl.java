@@ -9,11 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vlife.springmvc.dao.RoleDao;
 import com.vlife.springmvc.model.Role;
 
-
 @Service("roleService")
 @Transactional
-public class RoleServiceImpl implements RoleService{
-	
+public class RoleServiceImpl implements RoleService {
+
 	@Autowired
 	private RoleDao dao;
 
@@ -28,7 +27,7 @@ public class RoleServiceImpl implements RoleService{
 	public List<Role> findAllRole() {
 		return dao.findAllRole();
 	}
-	
+
 	public void updateRole(Role role) {
 		Role entity = dao.findById(role.getId());
 		if (entity != null) {
@@ -37,18 +36,17 @@ public class RoleServiceImpl implements RoleService{
 			entity.setDescription(role.getDescription());
 			entity.setAvailable(role.getAvailable());
 			entity.setRelresources(role.getRelresources());
-			
 
 		}
 	}
-	
+
 	public void removeResources(Role role) {
 		Role entity = dao.findById(role.getId());
 		if (entity != null) {
 			entity.setRelresources(null);
 		}
 	}
-	
+
 	public void deleteRoleByID(int id) {
 		dao.deleteRoleByID(id);
 	}

@@ -1,6 +1,5 @@
 package com.vlife.springmvc.configuration;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -33,7 +32,6 @@ import com.vlife.springmvc.converter.NameToVendorEntityConverter;
 //<url-pattern>/*</url-pattern>
 //</filter-mapping>
 
-
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
@@ -42,7 +40,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Autowired
 	NameToVendorEntityConverter vendorConverter;
-	
+
 	@Autowired
 	IdToResourceConverter resourceConverter;
 
