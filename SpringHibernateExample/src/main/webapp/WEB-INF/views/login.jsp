@@ -14,7 +14,7 @@
 <style>
 body {
 	margin: 0;
-	background-image: url('assets/img/dominik-schroder-14534-unsplash.jpg');
+	background-image: url('assets/img/th.jpg');
 	background-repeat: no-repeat;
 	background-position: 0% 0%;
 	background-size: cover;
@@ -27,7 +27,7 @@ body {
 	<div class="container">
 		<div id="loginbox" style="margin-top: 15%;"
 			class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-			<div class="panel panel-info">
+			<div class="panel panel-success">
 				<div class="panel-heading">
 					<div class="panel-title">登录</div>
 					<div
@@ -103,7 +103,7 @@ body {
 
 		<div id="signupbox" style="display: none; margin-top: 15%"
 			class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-			<div class="panel panel-info">
+			<div class="panel panel-success">
 				<div class="panel-heading">
 					<div class="panel-title">注册</div>
 					<div
@@ -152,7 +152,7 @@ body {
 						<div class="form-group">
 							<!-- Button -->
 							<div class="col-md-offset-3 col-md-9">
-								<button id="btn-signup" type="button" class="btn btn-info"
+								<button id="btn-signup" type="button" class="btn btn-success"
 									onclick="sigin()">
 									<i class="icon-hand-right"></i> &nbsp 注册
 								</button>
@@ -176,7 +176,7 @@ body {
 		<!-- 试写找密码 -->
 		<div id="findpasswd" style="display: none; margin-top: 15%"
 			class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-			<div class="panel panel-info">
+			<div class="panel panel-success">
 				<div class="panel-heading">
 					<div class="panel-title">找回密码</div>
 					<div
@@ -217,9 +217,9 @@ body {
 						<div class="form-group">
 							<!-- Button -->
 							<div class="col-md-offset-3 col-md-9">
-								<button id="btn-signup" type="button" class="btn btn-info"
+								<button id="btn-signup" type="button" class="btn btn-success"
 									onclick="findpass()">
-									<i class="icon-hand-right"></i> &nbsp 确认提交
+									<i class="icon-hand-right"></i> &nbsp确认提交
 								</button>
 								<span style="margin-left: 8px;"></span>
 							</div>
