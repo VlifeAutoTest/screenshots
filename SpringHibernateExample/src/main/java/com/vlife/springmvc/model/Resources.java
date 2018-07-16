@@ -41,7 +41,7 @@ public class Resources {
 	private int available;
 	
 	@ManyToMany(mappedBy="relresources")
-	private Set<Permission> relpermission=new HashSet<Permission>(0);
+	private Set<Role> relrole=new HashSet<Role>(0);
 
 	
 	public int getId() {
@@ -83,11 +83,11 @@ public class Resources {
 		this.available = value;
 	}
 	
-	 public Set<Permission> getRelpermission() {
-		  return relpermission;
+	 public Set<Role> getRelrole() {
+		  return relrole;
 	 }
 		 
-	 public void setRelpermission(Set<Permission> relpermission) {
-		 this.relpermission = relpermission;
+	 public void setRelrole(Set<Role> relrole) {
+		 this.relrole = relrole;
 	 }
 }

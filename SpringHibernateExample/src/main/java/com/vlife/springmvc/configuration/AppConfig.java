@@ -1,5 +1,6 @@
 package com.vlife.springmvc.configuration;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +20,19 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 import com.vlife.springmvc.Interceptor.SessionInterceptor;
-import com.vlife.springmvc.converter.NameToVendorEntityConverter;;
+import com.vlife.springmvc.converter.IdToResourceConverter;
+import com.vlife.springmvc.converter.NameToVendorEntityConverter;
+
+//<filter>
+//<filter-name>OpenSessionInViewFilter</filter-name>
+//<filter-class>org.springframework.orm.hibernate3.support.OpenSessionInViewFilter</filter-class>
+//</filter>
+//
+//<filter-mapping>
+//<filter-name>OpenSessionInViewFilter</filter-name>
+//<url-pattern>/*</url-pattern>
+//</filter-mapping>
+
 
 @Configuration
 @EnableWebMvc
@@ -29,6 +42,9 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 
 	@Autowired
 	NameToVendorEntityConverter vendorConverter;
+	
+	@Autowired
+	IdToResourceConverter resourceConverter;
 
 	@Bean
 	public ViewResolver viewResolver() {
@@ -52,6 +68,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 	@Override
 	public void addFormatters(FormatterRegistry registry) {
 		registry.addConverter(vendorConverter);
+		registry.addConverter(resourceConverter);
 	}
 
 	@Bean

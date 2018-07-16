@@ -44,11 +44,15 @@ import com.vlife.checkserver.mobilestatus.Methods;
 import com.vlife.checkserver.mobilestatus.SSHCopyFile;
 import com.vlife.springmvc.model.Application;
 import com.vlife.springmvc.model.Mobile;
+import com.vlife.springmvc.model.Resources;
+import com.vlife.springmvc.model.Role;
 import com.vlife.springmvc.model.Runinfo;
 import com.vlife.springmvc.service.ApplicationService;
 import com.vlife.springmvc.service.MobileService;
 import com.vlife.springmvc.service.MobileStatusService;
-import com.vlife.springmvc.service.PermissionService;
+
+import com.vlife.springmvc.service.ResourceService;
+import com.vlife.springmvc.service.RoleService;
 import com.vlife.springmvc.service.RuninfoService;
 import com.vlife.springmvc.model.TestServer;
 import com.vlife.springmvc.service.TestServerService;
@@ -86,7 +90,13 @@ public class AppController {
 
 	@Autowired
 	RuninfoService runinfo_services;
-
+	
+	@Autowired
+	RoleService role_services;
+	
+	@Autowired
+	ResourceService resource_service;
+	
 	@ModelAttribute("vendors")
 	public List<Vendor> initializeVendors() {
 		return vendor_service.findAllVendor();
@@ -151,6 +161,81 @@ public class AppController {
 
 		return res;
 
+	}
+	
+	@RequestMapping(value = { "/role-permission" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String roleManage(ModelMap model) {
+		
+		List<Role> roles = role_services.findAllRole();
+		model.addAttribute("roles", roles);
+		return "rolepermission";
+	}
+	
+	@RequestMapping(value = { "/newrole" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String newRole(ModelMap model) {
+		Role role = new Role();
+		List<Resources> resources = resource_service.findAllResource();
+		model.addAttribute("resources", resources);
+		model.addAttribute("role", role);;
+		model.addAttribute("edit", false);
+		return "role";
+	}
+
+	@RequestMapping(value = { "/newrole" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	public String saveRole(@Valid Role role, BindingResult result, ModelMap model)
+			throws UnsupportedEncodingException {
+
+		if (result.hasErrors()) {
+			return "role";
+		}
+
+		String temp = new String(role.getName().getBytes("iso-8859-1"), "utf-8");
+		role.setName(temp);
+		temp = new String(role.getDescription().getBytes("iso-8859-1"), "utf-8");
+		role.setDescription(temp);
+		role_services.saveRole(role);
+		return "redirect:/role-permission";
+	}
+	
+	@RequestMapping(value = { "/edit-{id}-role" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String editRole(@PathVariable int id, ModelMap model) {
+		Role role = role_services.findById(id);
+		Set<Resources> rlist = role.getRelresources();
+		Iterator<Resources> it= rlist.iterator();
+		List<Integer> relID = new ArrayList<Integer>();
+		while(it.hasNext()) {
+			Resources rese = it.next();
+			relID.add(rese.getId());
+		}
+		List<Resources> resources = resource_service.findAllResource();
+		model.addAttribute("resources", resources);
+		model.addAttribute("role", role);;
+		model.addAttribute("edit", true);
+		model.addAttribute("relID", relID);
+		return "role";
+	}
+	
+	@RequestMapping(value = { "/edit-{id}-role" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	public String updateRole(@Valid Role role, BindingResult result, ModelMap model, @PathVariable int id)
+			throws UnsupportedEncodingException {
+
+		if (result.hasErrors()) {
+			return "role";
+		}
+
+		String temp = new String(role.getName().getBytes("iso-8859-1"), "utf-8");
+		role.setName(temp);
+		temp = new String(role.getDescription().getBytes("iso-8859-1"), "utf-8");
+		role.setDescription(temp);
+		role_services.removeResources(role);
+		role_services.updateRole(role);
+		return "redirect:/role-permission";
+	}
+	
+	@RequestMapping(value = { "/delete-{id}-role" }, method = RequestMethod.GET)
+	public String deleteRole(@PathVariable int id) {
+		role_services.deleteRoleByID(id);
+		return "redirect:/role-permission";
 	}
 
 	@RequestMapping(value = { "/query" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")

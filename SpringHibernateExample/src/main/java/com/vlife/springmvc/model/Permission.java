@@ -25,7 +25,7 @@ public class Permission {
 	private int id;
 
 	@NotEmpty
-	@Column(name = "permission", nullable = false)
+	@Column(name = "name", nullable = false)
 	private String permission;
 
 	@Column(name = "description", nullable = false)
@@ -34,9 +34,9 @@ public class Permission {
 	@Column(name = "available", nullable = false)
 	private int available;
 	
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="auth_permission_resources",joinColumns={@JoinColumn(name="permission_id")},inverseJoinColumns={@JoinColumn(name="resource_id")})
-	private Set<Resources> relresources=new HashSet<Resources>(0);
+//	@ManyToMany(cascade=CascadeType.ALL)
+//	@JoinTable(name="auth_permission_resources",joinColumns={@JoinColumn(name="permission_id")},inverseJoinColumns={@JoinColumn(name="resource_id")})
+//	private Set<Resources> relresources=new HashSet<Resources>(0);
 	
 	public int getId() {
 		return id;
@@ -70,11 +70,11 @@ public class Permission {
 		this.available = value;
 	}
 	
-	 public Set<Resources> getResources() {
-		  return relresources;
-	 }
-		 
-	public void setResources(Set<Resources> resource) {
-		  this.relresources = resource;
-	}
+//	 public Set<Resources> getResources() {
+//		  return relresources;
+//	 }
+//		 
+//	public void setResources(Set<Resources> resource) {
+//		  this.relresources = resource;
+//	}
 }
