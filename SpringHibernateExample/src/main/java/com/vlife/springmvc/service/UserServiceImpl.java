@@ -12,6 +12,8 @@ import com.vlife.springmvc.model.User;
 @Service("userService")
 @Transactional
 public class UserServiceImpl implements UserService {
+	
+	
 	@Autowired
 	private UserDao dao;
 
@@ -39,6 +41,40 @@ public class UserServiceImpl implements UserService {
 
 		}
 
+	}
+	
+	public List<User> findAllUser() {
+		return dao.findAllUser();
+	}
+	
+	public User findById(int id) {
+		
+		return dao.findByID(id);
+	}
+	
+	public void removeRelRoles(User user) {
+		
+		User entity = dao.findByID(user.getId());
+		if (entity != null) {
+			entity.setRole(null);
+		}
+	}
+	
+	public void updateUser(User user) {
+		
+		User entity = dao.findByID(user.getId());
+		if (entity != null) {
+			entity.setName(user.getName());
+			entity.setPasswd(user.getPasswd());
+			entity.setEmail(user.getEmail());
+			entity.setIs_active(user.getIs_active());
+			entity.setRole(user.getRole());
+
+		}
+	}
+	
+	public void deleteUserByID(int id) {
+		dao.deleteUserByID(id);
 	}
 
 }

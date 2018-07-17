@@ -34,6 +34,7 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 	@SuppressWarnings("unchecked")
 	public List<Mobile> findAllMobile() {
 		Criteria criteria = createEntityCriteria();
+		criteria.setResultTransformer(criteria.DISTINCT_ROOT_ENTITY);
 		return (List<Mobile>) criteria.list();
 	}
 

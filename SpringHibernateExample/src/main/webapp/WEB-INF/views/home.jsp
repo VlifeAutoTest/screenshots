@@ -104,7 +104,7 @@
 							<div class="panel-collapse collapse" id="collapseA">
 								<div class="panel-body">
 									<ul class="nav nav-pills nav-stacked">
-										<li class="on"><a href="#">用户管理</a></li>
+										<li class="on"><a href="#" onclick="menuClick('userlist')">用户管理</a></li>
 										<li class="on"><a href="#"  onclick="menuClick('role-permission')" >角色分配</a></li>
 									</ul>
 								</div>

@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
@@ -41,6 +42,9 @@ public class Role {
 	@Cascade(value = { org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.DELETE })
 	private Set<Resources> relresources = new HashSet<Resources>(0);
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "role", cascade=CascadeType.REMOVE)
+	private Set<User> userInfo = new HashSet<User>(0);
 
 	public int getId() {
 		return id;
@@ -81,4 +85,13 @@ public class Role {
 	public void setRelresources(Set<Resources> resource) {
 		this.relresources = resource;
 	}
+	
+	public Set<User> getUserInfo() {
+		return this.userInfo;
+	}
+
+	public void setUserInfo(Set<User> userinfo) {
+		this.userInfo = userinfo;
+	}
+
 }
