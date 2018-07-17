@@ -89,9 +89,9 @@ select {
 							</c:when>
 
 							<c:otherwise>
-								<td><form:select path="vendor" items="${vendors}"
+								<td><form:select path="vendor.id" items="${vendors}"
 										multiple="false" itemValue="id" itemLabel="name" /></td>
-								<td><form:errors path="vendor" cssClass="error" /></td>
+								<td><form:errors path="vendor.id" cssClass="error" /></td>
 							</c:otherwise>
 						</c:choose>
 					</tr>

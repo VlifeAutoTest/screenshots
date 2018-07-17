@@ -11,7 +11,7 @@
 	href="assets/css/bootstrap.min.3.css" />
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.js"></script>
-<title>Font&Theme Validate</title>
+<title>自动化测试平台</title>
 <style type="text/css"></style>
 
 <script>
@@ -59,30 +59,35 @@
 				</div>
 			</div>
 			<ul class="nav navbar-nav nav-stacked navbar-right">
-				<li><a href="#"> <span class="glyphicon glyphicon-tasks"></span>
-						<i class="badge">2</i>
+				<li title="当前连接的手机数"><a href="http://10.0.11.0:7100"
+					target="_blank"> <span class="glyphicon glyphicon-phone"></span>
+						<i class="badge">${ counectnum }</i>
 				</a></li>
-				<li><a href="#"> <span class="glyphicon glyphicon-bell"></span>
-						<i class="badge">1</i>
+				<li title="正在运行的任务"><a href="#"> <span
+						class="glyphicon glyphicon-tasks"></span> <i class="badge"> ${ countrunningcase }
+					</i>
 				</a></li>
-				<li><a href="#"> <span class="glyphicon glyphicon-envelope"></span>
-						<i class="badge">1</i>
+				<li title="消息"><a href="#"> <span
+						class="glyphicon glyphicon-bell"></span> <i class="badge">1</i>
+				</a></li>
+				<li title="邮件"><a href="#"> <span
+						class="glyphicon glyphicon-envelope"></span> <i class="badge">1</i>
 				</a></li>
 				<li><a href="#" data-toggle="dropdown"> <img
 						class="img-circle" src="user_photo.png" width="25" height="25" />
-						<small>Welcome</small> ${user.name}<span class="caret"></span>
+						<small>欢迎</small> ${user.name}<span class="caret"></span>
 				</a>
 					<ul class="nav nav-pills nav-stacked dropdown-menu">
 						<li class="active"><a href="#"> <span
-								class="glyphicon glyphicon-cog"></span> Setting
+								class="glyphicon glyphicon-cog"></span> 设置
 						</a></li>
 						<li class="divider"></li>
 						<li><a href="#"> <span class="glyphicon glyphicon-user"></span>
 								Profile
 						</a></li>
 						<li class="divider"></li>
-						<li><a href="<c:url   value="/logout"/>"> <span class="glyphicon glyphicon-off"></span>
-								Logout
+						<li><a href="<c:url   value="/logout"/>"> <span
+								class="glyphicon glyphicon-off"></span> 登出
 						</a></li>
 					</ul></li>
 			</ul>
@@ -104,8 +109,9 @@
 							<div class="panel-collapse collapse" id="collapseA">
 								<div class="panel-body">
 									<ul class="nav nav-pills nav-stacked">
-										<li class="on"><a href="#">用户管理</a></li>
-										<li class="on"><a href="#"  onclick="menuClick('role-permission')" >角色分配</a></li>
+										<li class="on"><a href="#" onclick="menuClick('userlist')">用户管理</a></li>
+										<li class="on"><a href="#"
+											onclick="menuClick('role-permission')">角色分配</a></li>
 									</ul>
 								</div>
 							</div>
@@ -166,7 +172,7 @@
 			<div class="col-md-10">
 				<div class="bread-crumb" id="breadcrumbs">
 					<ul class="breadcrumb">
-						<li id="ddd"><span class="glyphicon glyphicon-home"></span><a
+						<li ><span class="glyphicon glyphicon-home"></span><a
 							href="#" onclick="menuClick('list')">Home</a><span
 							class="glyphicon glyphicon-remove clo" style="display: none"></span></li>
 					</ul>
@@ -185,15 +191,11 @@
 
 	<script>
 		$(function() {
-			$(".on")
-					.click(
+			$(".on").click(
 							function() {
 								var ab = this.innerHTML;
 								$(".breadcrumb").empty();
-
-								$(".breadcrumb")
-										.append(
-												"<li id ='ddd'><span class='glyphicon glyphicon-home'></span><a  href=''#' onclick='menuClick('list')'>Home</a><span class='glyphicon glyphicon-remove clo' style='display:none'></span></li>  ");
+								$(".breadcrumb").append("<li ><span class='glyphicon glyphicon-home'  ></span><a  href='#' onclick=  menuClick('list')  >Home</a><span class='glyphicon glyphicon-remove clo' style='display:none'></span></li>  ");
 								$(".breadcrumb").append("<li>" + ab + "</li>");
 
 							});

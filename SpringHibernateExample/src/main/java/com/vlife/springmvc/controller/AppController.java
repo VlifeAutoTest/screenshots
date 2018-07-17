@@ -53,7 +53,7 @@ import com.vlife.springmvc.model.Runinfo;
 import com.vlife.springmvc.service.ApplicationService;
 import com.vlife.springmvc.service.MobileService;
 import com.vlife.springmvc.service.MobileStatusService;
-
+import com.vlife.springmvc.service.MobileStatusServiceImpl;
 import com.vlife.springmvc.service.ResourceService;
 import com.vlife.springmvc.service.RoleService;
 import com.vlife.springmvc.service.RuninfoService;
@@ -133,6 +133,8 @@ public class AppController {
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public String home(ModelMap model, @ModelAttribute("logSuccessUser") User user) {
 		model.addAttribute("user", user);
+		model.addAttribute("countrunningcase", runinfo_services.countRunningCase());
+		model.addAttribute("counectnum",status_services.countConnnectMobile());
 		return "home";
 	}
 
@@ -174,6 +176,77 @@ public class AppController {
 		return res;
 
 	}
+	
+	@RequestMapping(value = { "/userlist" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String userManage(ModelMap model) {
+
+		List<User> users = user_services.findAllUser();
+		model.addAttribute("users", users);
+		return "allusers";
+	}
+	
+	@RequestMapping(value = { "/newuser" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String newuser(ModelMap model) {
+		User user = new User();
+		Role role = new Role();
+		List<Role> roles = role_services.findAllRole();
+		model.addAttribute("roles", roles);
+		model.addAttribute("user", user);
+		model.addAttribute("role",role);
+		return "user";
+	}
+
+	@RequestMapping(value = { "/newuser" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	public String saveUser(@Valid User user, BindingResult result, ModelMap model) throws UnsupportedEncodingException {
+
+		if (result.hasErrors()) {
+			return "user";
+		}
+
+		String temp = new String(user.getName().getBytes("iso-8859-1"), "utf-8");
+		user.setName(temp);
+		
+		Date curday = new Date();
+		
+		user.setJoined_date(curday);
+		user.setLasted_update(curday);
+
+		user_services.saveUser(user);
+		return "redirect:/userlist";
+	}
+	
+	@RequestMapping(value = { "/edit-{id}-user" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String editUser(@PathVariable int id, ModelMap model) {
+		User user = user_services.findById(id);
+		List<Role> roles = role_services.findAllRole();
+		model.addAttribute("roles", roles);
+		model.addAttribute("user", user);
+		model.addAttribute("edit", true);
+		return "user";
+	}
+
+	@RequestMapping(value = { "/edit-{id}-user" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	public String updateUser(@Valid User user, BindingResult result, ModelMap model, @PathVariable int id)
+			throws UnsupportedEncodingException {
+
+		if (result.hasErrors()) {
+			return "user";
+		}
+
+		String temp = new String(user.getName().getBytes("iso-8859-1"), "utf-8");
+		user.setName(temp);
+
+//		user_services.removeRelRoles(user);
+		user_services.updateUser(user);
+		return "redirect:/userlist";
+	}
+
+	@RequestMapping(value = { "/delete-{id}-user" }, method = RequestMethod.GET)
+	public String deleteUser(@PathVariable int id) {
+		user_services.deleteUserByID(id);
+		return "redirect:/userlist";
+	}
+
 
 	@RequestMapping(value = { "/role-permission" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String roleManage(ModelMap model) {

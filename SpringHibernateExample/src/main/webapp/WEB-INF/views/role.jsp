@@ -9,6 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Role Update Form</title>
+<script type="text/javascript" src="assets/js/jquery-1.10.2.min.js"></script>
 <link rel="stylesheet" type="text/css"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
 <style type="text/css"></style>
@@ -26,24 +27,27 @@ word-wrap: break-word;
 }
 </style>
 <script>
+$(function(){  
 $("#checkall").click(function(){
 	
-	var el = document.getElementsByTagName('form:checkbox');
-
+// 	var el = document.getElementsByTagName('form:checkbox');
+// 	var len = el.length;
+// 	alert(len);
     if($("#checkall")[0].checked){
-  	  for(var i=0; i <len; i++)    
-	  { 
-  		el[i].checked = "checked"; 
-	  }
+    	
+    	$('form:checkbox').not(this).prop('checked', this.checked);
+        $('form:checkbox').each(function(){
+            $(this).prop('checked',true);
+       })    
     }
 
     if(!($("#checkall")[0].checked)){
-    	  for(var i=0; i <len; i++)    
-    	  { 
-      		el[i].checked = ""; 
-    	  }
+  	  if ($('form:checkbox').is('checked')) {
+	      $('form:checkbox').prop('checked',false);
+	  } 
     }
 
+});
 });
 </script>
 

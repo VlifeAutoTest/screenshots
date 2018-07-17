@@ -22,6 +22,7 @@ public class VendorDaoImpl extends AbstractDao<Integer, Vendor> implements Vendo
 	@SuppressWarnings("unchecked")
 	public List<Vendor> findAllVendor() {
 		Criteria criteria = createEntityCriteria();
+		criteria.setResultTransformer(criteria.DISTINCT_ROOT_ENTITY);
 		return (List<Vendor>) criteria.list();
 	}
 

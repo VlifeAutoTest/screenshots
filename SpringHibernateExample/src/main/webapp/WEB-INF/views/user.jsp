@@ -37,62 +37,59 @@ select {
 
 	<div class="panle panel-success">
 		<div class="panel-heading">
-			<a class="panel-title">手机应用</a>
+			<a class="panel-title">用户</a>
 		</div>
 		<div class="panel-body">
 
-			<form:form method="POST" modelAttribute="application">
+			<form:form method="POST" modelAttribute="user">
 				<form:input type="hidden" path="id" id="id" />
 				<table class="table table-striped table-hover table-responsive">
 					<tr>
-						<td><label for="name">应用名: </label></td>
+						<td><label for="name">用户名: </label></td>
 						<td><form:input path="name" id="name" /></td>
 						<td><form:errors path="name" cssClass="error" /></td>
 					</tr>
 					<tr>
-						<td><label for="packagename">包名: </label></td>
-						<td><form:input path="packagename" id="package" /></td>
-						<td><form:errors path="packagename" cssClass="error" /></td>
+						<td><label for="passwd">密码: </label></td>
+						<td><form:input path="passwd" id="passwd" type="password"/></td>
+						<td><form:errors path="passwd" cssClass="error" /></td>
 					</tr>
 					<tr>
-						<td><label for="activity">启动activity: </label></td>
-						<td><form:input path="activity" id="activity" /></td>
-						<td><form:errors path="activity" cssClass="error" /></td>
+						<td><label for="email">Email: </label></td>
+						<td><form:input path="email" id="uemail" /></td>
+						<td><form:errors path="email" cssClass="error" /></td>
 					</tr>
 					<tr>
-						<td><label for="style">截图方式: </label></td>
-						<td><form:select path="style" multiple="false" id="style">
-<%-- 								<form:option value="Custom">Custom</form:option> --%>
-								<form:option value="Random">Random</form:option>
-							</form:select></td>
-						<td><form:errors path="style" cssClass="error" /></td>
+						<td><label for="is_active">生效: </label></td>
+						<td><form:checkbox path="is_active" id="available" value="1" checked="checked"/></td>
+						<td><form:errors path="is_active" cssClass="error" /></td>
 					</tr>
 					<tr>
-						<td><label for="vendor">厂商: </label></td>
+						<td><label for="role">角色: </label></td>
 						<c:choose>
 							<c:when test="${edit}">
-								<td><form:select path="vendor">
-										<c:forEach var="item" items="${vendors}">
+								<td><form:select path="role.id">
+										<c:forEach var="item" items="${roles}">
 											<c:choose>
-												<c:when test="${vname==item.getName()}">
+												<c:when test="${rname==item.getName()}">
 													<form:option selected="true" value="${item.getId()}"
-														label="${item.getName()}" />
-												</c:when>
+ 														label="${item.getName()}" /> 
+												</c:when> 
 
-												<c:otherwise>
-													<form:option value="${item.getId()}"
-														label="${item.getName()}" />
-												</c:otherwise>
-											</c:choose>
-										</c:forEach>
-									</form:select></td>
+ 												<c:otherwise> 
+ 													<form:option value="${item.getId()}" 
+ 														label="${item.getName()}" /> 
+ 												</c:otherwise> 
+ 											</c:choose> 
+ 										</c:forEach> 
+ 									</form:select></td> 
 
 							</c:when>
 
 							<c:otherwise>
-								<td><form:select path="vendor.id" items="${vendors}"
-										multiple="false" itemValue="id" itemLabel="name" /></td>
-								<td><form:errors path="vendor.id" cssClass="error" /></td>
+								<td><form:select path="role.id" items="${roles}"
+										multiple="false"  itemValue="id" itemLabel="name"/></td>
+								<td><form:errors path="role" cssClass="error" /></td>
 							</c:otherwise>
 						</c:choose>
 					</tr>
@@ -113,5 +110,10 @@ select {
 	</div>
 	Go back to
 	<a href="<c:url value='/applicationlist-0-0' />">应用列表</a>
+</body>
+</html><title>Insert title here</title>
+</head>
+<body>
+
 </body>
 </html>

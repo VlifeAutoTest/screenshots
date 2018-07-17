@@ -24,13 +24,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 			request.getRequestDispatcher("/login").forward(request, response);
 			return false;
 		}
-//		if (!path.trim().equals("/login") && !path.trim().equals("/home")) {
-//			request.getRequestDispatcher("/home").forward(request, response);
-//			return false;
-//		}
-
 		if (tvendorid == null || searchValue == null || pageType == null) {
-			request.getRequestDispatcher("/home").forward(request, response);
+			request.getRequestDispatcher("/query").forward(request, response);
 			return false;
 		}
 

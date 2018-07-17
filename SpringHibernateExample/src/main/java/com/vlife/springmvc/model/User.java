@@ -4,30 +4,55 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name = "auth_user",uniqueConstraints = {@UniqueConstraint(columnNames="name")})
-public class User {
+public class User implements java.io.Serializable{
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(name = "name", nullable = false)
 	
+	@Column(name = "name", nullable = false)
 	private String name;
+	@Column(name = "passwd", nullable = false)
+	@Size(min = 5, max = 8)
 	private String passwd;
 	@Email
 	private String email;
+	
 	private Date joined_date;
 	private Date lasted_update;
+	
 	@Column(name = "is_active", nullable = false)
 	private int is_active;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "role_id", nullable = true)
+	private Role role;
+	
+	public User() {
+		
+		
+	}
+	public Role getRole() {
+		return this.role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
 
 	public int getId() {
 		return id;

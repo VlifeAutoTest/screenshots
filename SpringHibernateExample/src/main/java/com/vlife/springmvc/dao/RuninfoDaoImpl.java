@@ -76,4 +76,16 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 		return (List<Runinfo>) criteria.list();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer countRunningCase() {
+		String sql = "select *  from  runinfo WHERE YEAR(stime) = YEAR(NOW()) and  MONTH(stime)= MONTH(NOW()) and  DAY(stime)= DAY(NOW())  and status= 'Running'";
+		List<Runinfo> list = getSession().createSQLQuery(sql).list();
+		if (list == null) {
+			return 0;
+		} else {
+			return list.size();
+		}
+	}
+
 }

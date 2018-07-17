@@ -147,4 +147,10 @@ public class MobileStatusServiceImpl implements MobileStatusService {
 
 	}
 
+	@Override
+	public Integer countConnnectMobile() {
+		// TODO 自动生成的方法存根
+		return dao.countConnnectMobile();
+	}
+
 }

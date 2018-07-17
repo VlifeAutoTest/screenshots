@@ -22,13 +22,15 @@
 					<tr>
 						<th>厂商名称</th>
 						<th></th>
+						<td><a href="<c:url value='/newvendor' />">+ 增加厂商</a></td>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach items="${vendors}" var="vendor">
 						<tr>
 							<td>${vendor.name}</td>
-							<td>
+							<td><a
+								href="<c:url value='/edit-${vendor.id}-vendor' />">编辑</a>
 							</td>
 							<td><a href="<c:url value='/delete-${vendor.id}-vendor' />">删除</a></td>
 						</tr>

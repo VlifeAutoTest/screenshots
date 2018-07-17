@@ -28,6 +28,7 @@ public interface RuninfoService {
 
 	void execShellCommand(Session session, String python);
 
-
 	String doCommand(Session session, String command);
+
+	Integer countRunningCase();
 }

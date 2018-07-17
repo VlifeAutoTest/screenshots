@@ -228,6 +228,12 @@ public class RuninfoServiceImpl implements RuninfoService {
 
 	}
 
+	@Override
+	public Integer countRunningCase() {
+		// TODO 自动生成的方法存根
+		return dao.countRunningCase();
+	}
+
 
 
 }

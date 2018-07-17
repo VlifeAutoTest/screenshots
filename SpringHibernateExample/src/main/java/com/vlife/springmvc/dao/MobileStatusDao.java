@@ -12,5 +12,6 @@ public interface MobileStatusDao {
 
 	@SuppressWarnings("rawtypes")
 	List getConnectDevices();
+	Integer countConnnectMobile();
 
 }

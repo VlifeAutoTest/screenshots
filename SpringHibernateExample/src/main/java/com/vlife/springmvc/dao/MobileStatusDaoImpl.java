@@ -34,4 +34,17 @@ public class MobileStatusDaoImpl extends AbstractDao<Integer, MobileStatus> impl
 
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer countConnnectMobile() {
+		String sql = "select *  from  mobile_status where status = 'busy' or status = 'free'";
+		List<MobileStatus> list = getSession().createSQLQuery(sql).list();
+		if (list == null) {
+			return 0;
+		} else {
+
+			return list.size();
+		}
+	}
+
 }

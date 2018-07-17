@@ -41,7 +41,7 @@ public class Application {
 	private String style;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "vendor_id", nullable = false)
+	@JoinColumn(name = "vendor_id", nullable = true)
 	private Vendor vendor;
 
 	public Vendor getVendor() {

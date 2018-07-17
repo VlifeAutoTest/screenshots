@@ -16,4 +16,6 @@ public interface RuninfoDao {
 
 	List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime);
 
+	Integer countRunningCase();
+
 }

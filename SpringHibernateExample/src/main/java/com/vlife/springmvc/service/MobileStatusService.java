@@ -14,5 +14,6 @@ public interface MobileStatusService {
 	List getOriginStatusInfo();
 
 	List<Mobile> getFreeDevices();
+	Integer countConnnectMobile();
 
 }
