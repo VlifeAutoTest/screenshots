@@ -544,6 +544,7 @@ public class AppController {
 	public List<Mobile> listAllMobiles(@PathVariable int vendorid, ModelMap model) {
 		Vendor vendor = vendor_service.findById(vendorid);
 		List<Mobile> res = mobile_service.findMobileByVendor(vendor);
+		System.out.println(res.size()+"sizeppppppppppppppppppppppppppppppppppppppppp");
 		return res;
 	}
 
@@ -1206,6 +1207,11 @@ public class AppController {
 			return "redirect:/home";
 		}
 		return "login";
+	}
+	@RequestMapping(value = { "/error", }, method = RequestMethod.GET)
+	public String error(HttpServletRequest request) {
+		
+		return "error";
 	}
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)

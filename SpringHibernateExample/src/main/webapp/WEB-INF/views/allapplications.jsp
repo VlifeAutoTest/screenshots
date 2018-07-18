@@ -16,7 +16,7 @@
 	function changeFunc() {
 		var selectBox = document.getElementById("selectBox");
 		var selectedValue = selectBox.options[selectBox.selectedIndex].value;
-		var link = "applicationlist-1-" + selectedValue.toString();
+		var link = "applicationlist-1-" + Number(selectedValue) ;
 		window.location.href = link;
 
 	}

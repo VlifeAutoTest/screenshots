@@ -1,11 +1,17 @@
 package com.vlife.springmvc.Interceptor;
 
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.vlife.springmvc.model.Resources;
+import com.vlife.springmvc.model.Role;
 import com.vlife.springmvc.model.User;
 
 public class SessionInterceptor implements HandlerInterceptor {
@@ -19,11 +25,68 @@ public class SessionInterceptor implements HandlerInterceptor {
 		String pageType = (String) request.getSession().getAttribute("pageType");
 		User user = (User) request.getSession().getAttribute("logSuccessUser");
 		String path = request.getServletPath();
+		String method=request.getMethod().toLowerCase().trim();
+	
 
 		if (user == null) {
 			request.getRequestDispatcher("/login").forward(request, response);
 			return false;
+		} 
+		
+		else if (!path.equals("/logout")) {
+
+			Role role = user.getRole();
+			Set<Resources> set = role.getRelresources();
+			Boolean boo = false;
+			for (Resources res : set) {
+				String value = res.getResource();
+				String requestMethod=res.getMethod().trim();
+				if(requestMethod.equals(method)) {
+
+				if (value.contains("{page}")) {
+					value = value.replace("{page}", "\\d*");
+				} 
+				 if (value.contains("{type}")) {
+					value = value.replace("{type}", "\\d*");
+				} 
+				 if (value.contains("{id}")) {
+					value=value.replace("{id}", "\\d*");
+				}
+				 if(value.contains("{uid}")) {
+					value=value.replace("{uid}", "\\d*");
+				}
+				 if (value.contains("{ssn}")) {
+					value=value.replace("{ssn}", "\\d*");
+				}
+				 if(value.contains("{vendorid}")) {
+					value=value.replace("{vendorid}","\\d*");
+					
+				}
+				 if(value.contains("d*")) {
+					 Pattern pattern = Pattern.compile(value);
+					 Matcher matcher = pattern.matcher(path);
+					 boo = matcher.matches();
+					 if(boo==true) {
+						 break;
+					 }
+				 }
+				 
+				 else if (res.getResource().trim().equals(path)) {
+					boo = true;
+					break;
+				}
+				 
+				} 
+				 
+			}
+
+			if (boo == false) {
+				request.getRequestDispatcher("/error").forward(request, response);
+				return false;
+			}
+
 		}
+		
 		if (tvendorid == null || searchValue == null || pageType == null) {
 			request.getRequestDispatcher("/query").forward(request, response);
 			return false;
