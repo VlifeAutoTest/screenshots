@@ -948,8 +948,7 @@ public class AppController {
 		String vname = "";
 		try {
 			vname = mobile.getVendor().getName();
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println(e);
 		}
 		model.addAttribute("vname", vname);
@@ -1183,8 +1182,7 @@ public class AppController {
 		String vname = "";
 		try {
 			vname = app.getVendor().getName();
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println(e);
 		}
 		model.addAttribute("vname", vname);

@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name = "auth_user",uniqueConstraints = {@UniqueConstraint(columnNames="name")})
-public class User implements java.io.Serializable{
+public class User {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
