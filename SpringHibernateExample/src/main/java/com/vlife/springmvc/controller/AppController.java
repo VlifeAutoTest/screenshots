@@ -53,7 +53,6 @@ import com.vlife.springmvc.model.Runinfo;
 import com.vlife.springmvc.service.ApplicationService;
 import com.vlife.springmvc.service.MobileService;
 import com.vlife.springmvc.service.MobileStatusService;
-import com.vlife.springmvc.service.MobileStatusServiceImpl;
 import com.vlife.springmvc.service.ResourceService;
 import com.vlife.springmvc.service.RoleService;
 import com.vlife.springmvc.service.RuninfoService;
@@ -134,7 +133,7 @@ public class AppController {
 	public String home(ModelMap model, @ModelAttribute("logSuccessUser") User user) {
 		model.addAttribute("user", user);
 		model.addAttribute("countrunningcase", runinfo_services.countRunningCase());
-		model.addAttribute("counectnum",status_services.countConnnectMobile());
+		model.addAttribute("counectnum", status_services.countConnnectMobile());
 		return "home";
 	}
 
@@ -176,7 +175,7 @@ public class AppController {
 		return res;
 
 	}
-	
+
 	@RequestMapping(value = { "/userlist" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String userManage(ModelMap model) {
 
@@ -184,7 +183,7 @@ public class AppController {
 		model.addAttribute("users", users);
 		return "allusers";
 	}
-	
+
 	@RequestMapping(value = { "/newuser" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String newuser(ModelMap model) {
 		User user = new User();
@@ -192,7 +191,7 @@ public class AppController {
 		List<Role> roles = role_services.findAllRole();
 		model.addAttribute("roles", roles);
 		model.addAttribute("user", user);
-		model.addAttribute("role",role);
+		model.addAttribute("role", role);
 		return "user";
 	}
 
@@ -205,16 +204,16 @@ public class AppController {
 
 		String temp = new String(user.getName().getBytes("iso-8859-1"), "utf-8");
 		user.setName(temp);
-		
+
 		Date curday = new Date();
-		
+
 		user.setJoined_date(curday);
 		user.setLasted_update(curday);
 
 		user_services.saveUser(user);
 		return "redirect:/userlist";
 	}
-	
+
 	@RequestMapping(value = { "/edit-{id}-user" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String editUser(@PathVariable int id, ModelMap model) {
 		User user = user_services.findById(id);
@@ -247,7 +246,6 @@ public class AppController {
 		return "redirect:/userlist";
 	}
 
-
 	@RequestMapping(value = { "/role-permission" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String roleManage(ModelMap model) {
 
@@ -262,7 +260,6 @@ public class AppController {
 		List<Resources> resources = resource_service.findAllResource();
 		model.addAttribute("resources", resources);
 		model.addAttribute("role", role);
-		;
 		model.addAttribute("edit", false);
 		return "role";
 	}
@@ -544,7 +541,13 @@ public class AppController {
 	public List<Mobile> listAllMobiles(@PathVariable int vendorid, ModelMap model) {
 		Vendor vendor = vendor_service.findById(vendorid);
 		List<Mobile> res = mobile_service.findMobileByVendor(vendor);
-		System.out.println(res.size()+"sizeppppppppppppppppppppppppppppppppppppppppp");
+//		List <Mobile> mobile=new ArrayList<>();
+//		for(Mobile m:res) {
+//			Mobile mo=new Mobile();
+//			mo.setId(m.getId());
+//			mo.setName(m.getName());
+//			mobile.add(mo);
+//		}
 		return res;
 	}
 
@@ -1208,9 +1211,10 @@ public class AppController {
 		}
 		return "login";
 	}
+
 	@RequestMapping(value = { "/error", }, method = RequestMethod.GET)
 	public String error(HttpServletRequest request) {
-		
+
 		return "error";
 	}
 
@@ -1223,7 +1227,6 @@ public class AppController {
 			if (user2.getPasswd().trim().equals(logpass)) {
 				user2.setLasted_update(new Date());
 				user_services.updateUserLastLogin(user2);
-				;
 				model.addAttribute("logSuccessUser", user2);
 				model.addAttribute("searchValue", "");
 				model.addAttribute("tvendorid", "0");

@@ -82,7 +82,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(new SessionInterceptor())
 				.excludePathPatterns("/login", "/signin", "/findpwd", "/error", "/list-apps-with-{para}",
 						"/list-mobiles-by-{vendorid}", "/list-all-resources", "/list-apps-by-{vendorid}",
-						"/list-all-mobiles-{vendorid}")
+						"/list-all-mobiles-{vendorid}","/")
 				.addPathPatterns("/**");
 
 	}

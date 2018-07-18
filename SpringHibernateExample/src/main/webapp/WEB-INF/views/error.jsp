@@ -37,11 +37,11 @@ select {
 
 	<div class="panle panel-success">
 		<div class="panel-heading">
-			<a class="panel-title"></a>
+			<a class="panel-title">权限不足</a>
 		</div>
 		<div class="panel-body">
 
-			<h1 align="center" >权限不足,无法访问该项</h1>
+			<h1 align="center" >您不具备该项操作权限</h1>
 		</div>
 	</div>
 	
