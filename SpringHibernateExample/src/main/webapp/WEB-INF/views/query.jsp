@@ -80,7 +80,6 @@ select {
 						url : "list-all-mobiles-" + vid,
 						dataType : "json",
 						success : function(data) {
-							alert(data);
 							$("#mobile").empty();
 							/* 		                $("#mobile").append("<option value='' selected='selected'>Nothing selected</option>");   */
 							$.each(data, function(index, item) {

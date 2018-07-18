@@ -71,7 +71,7 @@ select {
 						<td><label for="vendor">厂商: </label></td>
 						<c:choose>
 							<c:when test="${edit}">
-								<td><form:select path="vendor">
+								<td><form:select path="vendor.id">
 										<c:forEach var="item" items="${vendors}">
 											<c:choose>
 												<c:when test="${vname==item.getName()}">

@@ -24,8 +24,8 @@ public class Vendor {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "vendor", cascade=CascadeType.REMOVE)
-	private Set<Application> appInfo = new HashSet<Application>(0);
+//	@OneToMany(fetch = FetchType.EAGER, mappedBy = "vendor", cascade=CascadeType.REMOVE)
+//	private Set<Application> appInfo = new HashSet<Application>(0);
 
 	public int getId() {
 		return id;
@@ -43,12 +43,12 @@ public class Vendor {
 		this.name = name;
 	}
 	
-	public Set<Application> getAppInfo() {
-		return this.appInfo;
-	}
-
-	public void setAppInfo(Set<Application> appinfo) {
-		this.appInfo = appinfo;
-	}
+//	public Set<Application> getAppInfo() {
+//		return this.appInfo;
+//	}
+//
+//	public void setAppInfo(Set<Application> appinfo) {
+//		this.appInfo = appinfo;
+//	}
 
 }

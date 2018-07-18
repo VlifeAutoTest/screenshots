@@ -945,7 +945,13 @@ public class AppController {
 	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String editmobile(@PathVariable String uid, ModelMap model) {
 		Mobile mobile = mobile_service.findMobileByUid(uid);
-		String vname = mobile.getVendor().getName();
+		String vname = "";
+		try {
+			vname = mobile.getVendor().getName();
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
 		model.addAttribute("vname", vname);
 		model.addAttribute("mobile", mobile);
 		model.addAttribute("edit", true);
@@ -1174,7 +1180,13 @@ public class AppController {
 			"/edit-{id}-application" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String editApplication(@PathVariable int id, ModelMap model) {
 		Application app = app_service.findById(id);
-		String vname = app.getVendor().getName();
+		String vname = "";
+		try {
+			vname = app.getVendor().getName();
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
 		model.addAttribute("vname", vname);
 		model.addAttribute("application", app);
 		model.addAttribute("edit", true);
