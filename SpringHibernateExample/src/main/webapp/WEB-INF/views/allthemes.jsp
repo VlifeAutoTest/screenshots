@@ -46,7 +46,7 @@
 							<td><a id="aa"
 								href="http://192.168.1.230:8080/${fn:substring(theme.path, 7, -1)}"
 								target="_blank">${theme.path}</a></td>
-							<td><a href="<c:url value='/delete-${theme.id}-theme-${page}' />">delete</a></td>
+							<td><%-- <a href="<c:url value='/delete-${theme.id}-theme-${page}' />">delete</a> --%></td>
 							<td></td>
 						</tr>
 					</c:forEach>

@@ -26,31 +26,6 @@ table-layout: fixed;
 word-wrap: break-word;
 }
 </style>
-<script>
-$(function(){  
-$("#checkall").click(function(){
-	
-// 	var el = document.getElementsByTagName('form:checkbox');
-// 	var len = el.length;
-// 	alert(len);
-    if($("#checkall")[0].checked){
-    	
-    	$('form:checkbox').not(this).prop('checked', this.checked);
-        $('form:checkbox').each(function(){
-            $(this).prop('checked',true);
-       })    
-    }
-
-    if(!($("#checkall")[0].checked)){
-  	  if ($('form:checkbox').is('checked')) {
-	      $('form:checkbox').prop('checked',false);
-	  } 
-    }
-
-});
-});
-</script>
-
 </head>
 
 <body>
@@ -87,7 +62,7 @@ $("#checkall").click(function(){
 					</tr>
 					<tr>
 						<td><label>分配权限:</label></td>
-						<td><input type="checkbox" id="checkall" value=""/>选择全部</td>
+						<td><input type="checkbox" id="checkall" value=""  />选择全部</td>
 						<td></td>
 						<td colspan="2"></td>
 					</tr>
@@ -118,10 +93,10 @@ $("#checkall").click(function(){
 <%-- 		                		<tr><td><label>分配权限</label></td><td width="1%">${res.description}: <form:checkbox path="relresources" checked="<%=status%>" value ="${res.id}" style="float: left"/></td> --%>
 <%-- 		                	</c:when> --%>
 		                	<c:when test="${status.index % 4 != '0'}">
-		                		<td width="1%">${res.description}: <form:checkbox path="relresources" value ="${res.id}" checked="<%=status%>" style="float: left"/></td>
+		                		<td width="1%">${res.description}: <form:checkbox  name ="qwe2" class ="ss" path="relresources" value ="${res.id}" checked="<%=status%>" style="float: left"/></td>
 		                	</c:when>
 		                	<c:otherwise>
-		                		</tr><tr><td></td><td width="1%">${res.description}: <form:checkbox path="relresources" value ="${res.id}" checked="<%=status%>" style="float: left"/></td>
+		                		</tr><tr><td></td><td width="1%">${res.description}: <form:checkbox  name ="qwe2" class="ss" path="relresources" value ="${res.id}" checked="<%=status%>" style="float: left"/></td>
 		                	</c:otherwise>
 		                </c:choose>
 		            </c:forEach>
@@ -142,4 +117,22 @@ $("#checkall").click(function(){
 	Go back to
 	<a href="<c:url value='/role-permission' />">角色管理</a>
 </body>
+
+<script type="text/javascript">
+//全选/不选
+
+$(function(){
+document.getElementById('checkall').onclick=function()
+{
+
+	if (this.checked) {
+		$(".ss").prop("checked",true);
+		}
+	else{
+		$(".ss").prop("checked",false);
+	}
+}
+});
+
+</script>
 </html>

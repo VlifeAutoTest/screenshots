@@ -199,6 +199,8 @@ public class AppController {
 	public String saveUser(@Valid User user, BindingResult result, ModelMap model) throws UnsupportedEncodingException {
 
 		if (result.hasErrors()) {
+			List<Role> roles = role_services.findAllRole();
+			model.addAttribute("roles", roles);
 			return "user";
 		}
 
@@ -229,6 +231,9 @@ public class AppController {
 			throws UnsupportedEncodingException {
 
 		if (result.hasErrors()) {
+			List<Role> roles = role_services.findAllRole();
+			model.addAttribute("roles", roles);
+
 			return "user";
 		}
 
@@ -541,13 +546,6 @@ public class AppController {
 	public List<Mobile> listAllMobiles(@PathVariable int vendorid, ModelMap model) {
 		Vendor vendor = vendor_service.findById(vendorid);
 		List<Mobile> res = mobile_service.findMobileByVendor(vendor);
-//		List <Mobile> mobile=new ArrayList<>();
-//		for(Mobile m:res) {
-//			Mobile mo=new Mobile();
-//			mo.setId(m.getId());
-//			mo.setName(m.getName());
-//			mobile.add(mo);
-//		}
 		return res;
 	}
 
@@ -728,7 +726,7 @@ public class AppController {
 				file2.deleteOnExit();
 				Integer maxNum = theme_service.getMaxCheckNumberByName(name);
 				if (maxNum == null) {
-					maxNum = 1;
+					maxNum = 0;
 				}
 				theme.setChecknumber(maxNum + 1);
 				theme.setName(name);
@@ -932,6 +930,7 @@ public class AppController {
 			FieldError ssnError = new FieldError("mobile", "uid",
 					messageSource.getMessage("non.unique.uid", new String[] { mobile.getUid() }, Locale.getDefault()));
 			result.addError(ssnError);
+
 			return "mobile";
 		}
 
@@ -944,6 +943,7 @@ public class AppController {
 
 	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String editmobile(@PathVariable String uid, ModelMap model) {
+
 		Mobile mobile = mobile_service.findMobileByUid(uid);
 		String vname = "";
 		try {
@@ -973,9 +973,7 @@ public class AppController {
 
 		String temp = new String(mobile.getName().getBytes("iso-8859-1"), "utf-8");
 		mobile.setName(temp.trim().replace(" ", ""));
-
 		mobile_service.updateMobile(mobile);
-
 		return "redirect:/mobilelist-1";
 	}
 
@@ -1228,12 +1226,26 @@ public class AppController {
 		return "error";
 	}
 
+	@RequestMapping(value = { "/help", }, method = RequestMethod.GET)
+	public String help(HttpServletRequest request) {
+
+		return "help";
+	}
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
 	public String assertLogIn(ModelMap model, String logname, String logpass) {
 		if (logname.trim().length() != 0 && user_services.findByName(logname)) {
 
 			List<User> list = user_services.findUserByName(logname);
 			User user2 = list.get(0);
+			if (user2.getIs_active() == 0 || user2.getRole() == null) {
+				model.addAttribute("message", "您的账号未被授权,无法登陆");
+				return "login";
+			}
+			if (user2.getRole().getAvailable() == 0) {
+				model.addAttribute("message", "您账号所在的用户组未被授权登录");
+				return "login";
+			}
+
 			if (user2.getPasswd().trim().equals(logpass)) {
 				user2.setLasted_update(new Date());
 				user_services.updateUserLastLogin(user2);
@@ -1272,13 +1284,23 @@ public class AppController {
 	@ResponseBody
 	public String signIn(ModelMap model, String signinemail, String signinname, String signpasswd) {
 
-		if (signinname.trim().length() != 0 && signpasswd.trim().length() != 0 && signinemail.trim().length() != 0
-				&& !user_services.findByName(signinname)) {
+		if (signinname.trim().length() != 0 && signpasswd.trim().length() != 0 && signinemail.trim().length() != 0) {
+
+			if (signpasswd.trim().length() <= 4 || signpasswd.trim().length() >= 9) {
+				return "密码长度应为5-8位";
+			}
+
+		} else {
+			return "邮箱,用户名,密码全部为必填项";
+		}
+
+		if (!user_services.findByName(signinname)) {
 			User user = new User();
 			user.setEmail(signinemail);
-			user.setIs_active(0);
+			user.setIs_active(1);
 			user.setName(signinname);
 			user.setPasswd(signpasswd);
+			user.setRole(role_services.findById(9));
 			Date date = new Date();
 			user.setJoined_date(date);
 			user.setLasted_update(date);

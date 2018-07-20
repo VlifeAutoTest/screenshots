@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -29,6 +30,7 @@ public class User {
 	@Column(name = "passwd", nullable = false)
 	@Size(min = 5, max = 8)
 	private String passwd;
+	@NotNull
 	@Email
 	private String email;
 	

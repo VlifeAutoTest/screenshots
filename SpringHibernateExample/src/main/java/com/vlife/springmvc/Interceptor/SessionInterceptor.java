@@ -25,14 +25,15 @@ public class SessionInterceptor implements HandlerInterceptor {
 		String searchValue = (String) request.getSession().getAttribute("searchValue");
 		String pageType = (String) request.getSession().getAttribute("pageType");
 		String path = request.getServletPath();
-		String method=request.getMethod().toLowerCase().trim();
-	System.out.println("进入拦截器了-------------------------------------");
-
-		if (user == null) {
+		String method = request.getMethod().toLowerCase().trim();
+		System.out.println("进入拦截器了-------------------------------------");
+		
+		if (user == null ) {
 			request.getRequestDispatcher("/login").forward(request, response);
 			return false;
-		} 
+		}
 		
+
 		else if (!path.equals("/logout")) {
 
 			Role role = user.getRole();
@@ -40,44 +41,44 @@ public class SessionInterceptor implements HandlerInterceptor {
 			Boolean boo = false;
 			for (Resources res : set) {
 				String value = res.getResource();
-				String requestMethod=res.getMethod().trim();
-				if(requestMethod.equals(method)) {
+				String requestMethod = res.getMethod().trim();
+				if (requestMethod.equals(method)) {
 
-				if (value.contains("{page}")) {
-					value = value.replace("{page}", "\\d+");
-				} 
-				 if (value.contains("{type}")) {
-					value = value.replace("{type}", "\\d+");
-				} 
-				 if (value.contains("{id}")) {
-					value=value.replace("{id}", "\\d+");
+					if (value.contains("{page}")) {
+						value = value.replace("{page}", "\\d+");
+					}
+					if (value.contains("{type}")) {
+						value = value.replace("{type}", "\\d+");
+					}
+					if (value.contains("{id}")) {
+						value = value.replace("{id}", "\\d+");
+					}
+					if (value.contains("{uid}")) {
+						value = value.replace("{uid}", "[A-Za-z0-9]+");
+					}
+					if (value.contains("{ssn}")) {
+						value = value.replace("{ssn}", "[A-Za-z0-9]+");
+					}
+					if (value.contains("{vendorid}")) {
+						value = value.replace("{vendorid}", "\\d+");
+
+					}
+					if (value.contains("d+") || value.contains("[A-Za-z0-9]+")) {
+						Pattern pattern = Pattern.compile(value);
+						Matcher matcher = pattern.matcher(path);
+						boo = matcher.matches();
+						if (boo == true) {
+							break;
+						}
+					}
+
+					else if (res.getResource().trim().equals(path)) {
+						boo = true;
+						break;
+					}
+
 				}
-				 if(value.contains("{uid}")) {
-					value=value.replace("{uid}", "[A-Za-z0-9]+");
-				}
-				 if (value.contains("{ssn}")) {
-					value=value.replace("{ssn}", "[A-Za-z0-9]+");
-				}
-				 if(value.contains("{vendorid}")) {
-					value=value.replace("{vendorid}","\\d+");
-					
-				}
-				 if(value.contains("d+") || value.contains("[A-Za-z0-9]+")) {
-					 Pattern pattern = Pattern.compile(value);
-					 Matcher matcher = pattern.matcher(path);
-					 boo = matcher.matches();
-					 if(boo==true) {
-						 break;
-					 }
-				 }
-				 
-				 else if (res.getResource().trim().equals(path)) {
-					boo = true;
-					break;
-				}
-				 
-				} 
-				 
+
 			}
 
 			if (boo == false) {
@@ -86,7 +87,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 			}
 
 		}
-		
+
 		if (tvendorid == null || searchValue == null || pageType == null) {
 			request.getRequestDispatcher("/query").forward(request, response);
 			return false;

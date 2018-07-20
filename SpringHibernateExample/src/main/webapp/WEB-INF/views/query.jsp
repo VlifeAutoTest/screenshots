@@ -108,7 +108,7 @@ select {
 								console.info("item:" + item.id);
 								$("#resource").append(
 										"<option value='"+item.id+"'>"
-												+ item.name + "</option>");
+												+ item.name +":  "+item.checknumber+ "</option>");
 							});
 							$("#resource").selectpicker("refresh");
 							$("#resource").selectpicker("render");

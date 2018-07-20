@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.persistence.JoinColumn;
@@ -26,9 +27,9 @@ public class Mobile {
 	@Size(min = 1, max = 32)
 	@Column(name = "name", nullable = false)
 	private String name;
-
+	
 	@NotEmpty
-	@Column(name = "uid", nullable = false)
+	@Column(name = "uid", nullable = false,unique = true)
 	private String uid;
 
 	@Size(min = 1, max = 32)

@@ -59,7 +59,7 @@
 				</div>
 			</div>
 			<ul class="nav navbar-nav nav-stacked navbar-right">
-				<li title="当前连接的手机数"><a href="http://10.0.11.0:7100"
+				<li title="当前连接的手机数"><a href="http://10.2.10.84:7100"
 					target="_blank"> <span class="glyphicon glyphicon-phone"></span>
 						<i class="badge">${ counectnum }</i>
 				</a></li>
@@ -78,13 +78,13 @@
 						<small>欢迎  </small> ${user.name}<span class="caret"></span>
 				</a>
 					<ul class="nav nav-pills nav-stacked dropdown-menu">
-						<!-- <li class="active"><a href="#"> <span
+						<!--  <li class="active"><a href="#"> <span
 								class="glyphicon glyphicon-cog"></span> 设置
-						</a></li>
-						<li class="divider"></li>
-						<li><a href="#"> <span class="glyphicon glyphicon-user"></span>
-								个人信息
 						</a></li> -->
+						<li class="divider"></li>
+						<li><a href="#" onclick="menuClick('help')"> <span class="	glyphicon glyphicon-book"></span>
+								帮助中心
+						</a></li> 
 						<li class="divider"></li>
 						<li><a href="<c:url   value="/logout"/>"> <span
 								class="glyphicon glyphicon-off"></span> 登出
@@ -113,6 +113,7 @@
 											onclick="menuClick('userlist')">用户管理</a></li>
 										<li class="on"><a href="#"
 											onclick="menuClick('role-permission')">角色分配</a></li>
+										
 
 									</ul>
 								</div>
@@ -177,6 +178,12 @@
 						<li><span class="glyphicon glyphicon-home"></span><a
 							href="#" onclick="menuClick('list')">Home</a><span
 							class="glyphicon glyphicon-remove clo" style="display: none"></span></li>
+					</ul>
+					<ul >
+					
+					
+					
+					
 					</ul>
 				</div>
 

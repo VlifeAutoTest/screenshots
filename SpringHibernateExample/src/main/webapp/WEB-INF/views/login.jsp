@@ -144,7 +144,7 @@ body {
 							<label for="password" class="col-md-3 control-label">密码</label>
 							<div class="col-md-9">
 								<input type="password" class="form-control" name="signpasswd"
-									placeholder="请设置登录密码" value="">
+									placeholder="请设置登录密码(5-8位)" value="">
 							</div>
 						</div>
 
