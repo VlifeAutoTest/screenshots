@@ -54,7 +54,7 @@ word-wrap: break-word;
 						<td colspan="2"></td>
 					</tr>
 
-					<tr>
+					<tr hidden="true">
 						<td><label for="available">生效: </label></td>
 						<td><form:checkbox path="available" id="available" value="1" checked="checked"/></td>
 						<td><form:errors path="available" cssClass="error" /></td>

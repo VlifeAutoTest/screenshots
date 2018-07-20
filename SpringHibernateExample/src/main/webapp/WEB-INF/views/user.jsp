@@ -59,7 +59,7 @@ select {
 						<td><form:input path="email" id="uemail" /></td>
 						<td><form:errors path="email" cssClass="error" /></td>
 					</tr>
-					<tr>
+					<tr hidden="true" >
 						<td><label for="is_active">生效: </label></td>
 						<td><form:checkbox path="is_active" id="available" value="1" checked="checked"/></td>
 						<td><form:errors path="is_active" cssClass="error" /></td>
