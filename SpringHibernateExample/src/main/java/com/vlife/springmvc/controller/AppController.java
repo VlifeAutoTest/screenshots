@@ -424,7 +424,8 @@ public class AppController {
 
 	@RequestMapping(value = { "/check" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String checkResource(ModelMap model) {
-
+		CheckMobileSattus cms = new CheckMobileSattus();
+		cms.run();
 		List<Vendor> vendors = vendor_service.findAllVendor();
 		Runinfo runinfo = new Runinfo();
 		model.addAttribute("runinfo", runinfo);

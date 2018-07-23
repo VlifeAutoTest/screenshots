@@ -143,6 +143,10 @@ public class Methods {
 
 	public String getMobilename(Session session, String device) {
 		String re = execCommand(session, device, "shell getprop ro.product.model");
+		if(re.contains(" ")) {
+			re=re.replace(" ", "_");
+		}
+		
 		return re;
 	}
 
