@@ -357,7 +357,6 @@ public class AppController {
 			mytime[0] = null;
 			mytime[1] = null;
 		}
-
 		List<Runinfo> qresult = runinfo_services.queryData(cmap, mytime);
 
 		if (qresult.size() > 0) {
