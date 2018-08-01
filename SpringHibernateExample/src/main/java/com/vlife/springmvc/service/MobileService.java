@@ -25,4 +25,6 @@ public interface MobileService {
 
 	List<Mobile> findMobileByPage(int offset, int length);
 
+	Boolean connectMobile(String ip, String port);
+
 }

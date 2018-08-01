@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import com.jcraft.jsch.ChannelExec;
@@ -33,7 +35,7 @@ public class Methods {
 	Session session = null;
 	ChannelExec channelExec = null;
 	InputStream in = null;
-
+	//从application.properties里面获取参数的方法
 	public static String getProperty(String propertyName) {
 		Properties pro = new Properties();
 		try {
@@ -128,7 +130,8 @@ public class Methods {
 	public String getSize(Session session, String device) {
 
 		String re = execCommand(session, device, "shell wm size");
-		return re.substring(re.indexOf(":") + 1).trim();
+		System.out.println(re.trim());
+		return re.substring(re.indexOf(":") + 1,re.indexOf(":")+11).trim();
 	}
 
 	// 获取系统版本
@@ -143,10 +146,10 @@ public class Methods {
 
 	public String getMobilename(Session session, String device) {
 		String re = execCommand(session, device, "shell getprop ro.product.model");
-		if(re.contains(" ")) {
-			re=re.replace(" ", "_");
+		if (re.contains(" ")) {
+			re = re.replace(" ", "_");
 		}
-		
+
 		return re;
 	}
 
@@ -179,6 +182,8 @@ public class Methods {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	
+		
 		return result;
 
 	}
@@ -187,7 +192,7 @@ public class Methods {
 
 	public void insertMobile(String name, String uid, String size, String os, int vendor_id) {
 		try {
-			String sql = "insert into mobile values(null,?,?,?,?,?)";
+			String sql = "insert into mobile values(null,?,?,?,?,?,null,null,null,null)";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -211,7 +216,7 @@ public class Methods {
 
 	public void insertMobileVendor(String name) {
 		try {
-			String sql = "insert into vendor values(null,?)";
+			String sql = "insert into vendor values(null,?,null)";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -568,6 +573,16 @@ public class Methods {
 			e.printStackTrace();
 		}
 		return result;
+
+	}
+
+	// 正则表达式匹配下输入的是否是正确的ipv4的地址
+
+	public Boolean matcherIP(String ip) {
+		String match = "([1-9]|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])(\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])){3}";
+		Pattern pattern = Pattern.compile(match);
+		Matcher matcher = pattern.matcher(ip);
+		return matcher.matches();
 
 	}
 

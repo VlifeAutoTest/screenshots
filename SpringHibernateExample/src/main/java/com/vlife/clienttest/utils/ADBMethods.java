@@ -44,8 +44,8 @@ public class ADBMethods {
 
 		try {
 			Runtime rt = Runtime.getRuntime();
-			Process p = rt.exec("cmd.exe /c adb -s " + "  " + devcie + "  "
-					+ "shell dumpsys power | findstr \"Display Power:state=\"");
+			Process p = rt
+					.exec("adb -s " + "  " + devcie + "  " + "shell dumpsys power | findstr \"Display Power:state=\"");
 			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String line;
 			String content = "";
@@ -72,7 +72,7 @@ public class ADBMethods {
 					"adb -s " + "  " + device + "  " + "shell dumpsys window policy  | findstr \"mShowingLockscreen\"");
 
 			// 第二种方法
-			// Process p = rt.exec("cmd.exe /c adb -s "+" "+Data.PhoneDevice+" "
+			// Process p = rt.exec("adb -s "+" "+Data.PhoneDevice+" "
 			// +"shell dumpsys window policy | findstr
 			// \"isStatusBarKeyguard\"");
 
@@ -234,6 +234,53 @@ public class ADBMethods {
 			e.printStackTrace();
 		}
 
+	}
+
+	/*
+	 * adb connect 尝试连接手机,返回连接是否成功的boolean类型
+	 */
+	public static Boolean connectMobile(String ip, String port) {
+		Boolean statu = false;
+		try {
+			Runtime rt = Runtime.getRuntime();
+			String path = ip + ":" + port;
+			Process p = rt.exec("adb  connect    " + path);
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			String content = "";
+			while ((line = in.readLine()) != null)
+				content = content + line;
+			if (content.contains("connected to ")) {
+				statu = true;
+			} else {
+				statu = false;
+			}
+			p.destroy();
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		return statu;
+	}
+	
+	//获取wifi连接的手机的uuid
+	
+	public static String getUUID(String ip_port) {
+		String content = "";
+		try {
+			Runtime rt = Runtime.getRuntime();
+			Process p = rt.exec("adb -s "+" "+ip_port + "  "+"shell   cat /sys/class/android_usb/android0/iSerial");
+			BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			String line;
+			
+			while ((line = in.readLine()) != null)
+				content = content + line;
+			p.destroy();
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		return content.trim();
 	}
 
 }
