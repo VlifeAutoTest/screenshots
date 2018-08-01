@@ -23,7 +23,7 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 	}
 
 	public void deleteApplicationByID(int id) {
-		Query query = getSession().createSQLQuery("delete from application where id = :id");
+		Query query = getSession().createSQLQuery("update application set delete_flag=1 where id = :id");
 		query.setInteger("id", id);
 		query.executeUpdate();
 	};
@@ -31,6 +31,7 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 	@SuppressWarnings("unchecked")
 	public List<Application> findAllApplication() {
 		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("delflag", 0));
 		return (List<Application>) criteria.list();
 	}
 
@@ -39,6 +40,7 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("vendor", id));
+		criteria.add(Restrictions.eq("delflag", 0));
 		criteria.addOrder(Order.desc("style"));
 		return (List<Application>) criteria.list();
 
@@ -50,6 +52,7 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("vendor", id));
 		criteria.add(Restrictions.eq("style", style));
+		criteria.add(Restrictions.eq("delflag", 0));
 		criteria.addOrder(Order.desc("style"));
 		return (List<Application>) criteria.list();
 
@@ -59,6 +62,7 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 	@Override
 	public List<Application> findApplicationByPage(int offset, int length) {
 		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("delflag", 0));
 		criteria.setFirstResult(offset);
 		criteria.setMaxResults(length);
 		return (List<Application>) criteria.list();
@@ -70,6 +74,7 @@ public class ApplicationDaoImpl extends AbstractDao<Integer, Application> implem
 	public List<Application> findApplicationByVendorIDaAndPage(Vendor id, int offset, int length) {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("vendor", id));
+		criteria.add(Restrictions.eq("delflag", 0));
 		criteria.addOrder(Order.desc("style"));
 		criteria.setFirstResult(offset);
 		criteria.setMaxResults(length);

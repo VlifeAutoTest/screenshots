@@ -46,6 +46,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		Application entity = dao.findById(app.getId());
 		if (entity != null) {
 			entity.setName(app.getName());
+			entity.setAlias(app.getAlias());
 			entity.setActivity(app.getActivity());
 			entity.setPackagename(app.getPackagename());
 			entity.setVendor(app.getVendor());

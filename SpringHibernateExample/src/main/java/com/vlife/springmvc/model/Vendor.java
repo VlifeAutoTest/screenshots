@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.criterion.Restrictions;
+
 @Entity
 @Table(name = "vendor")
 public class Vendor {
@@ -24,6 +26,9 @@ public class Vendor {
 	@Column(name = "name", nullable = false)
 	private String name;
 	
+	@Column(name = "delete_flag", nullable = false)
+	private int delflag;
+
 //	@OneToMany(fetch = FetchType.EAGER, mappedBy = "vendor", cascade=CascadeType.REMOVE)
 //	private Set<Application> appInfo = new HashSet<Application>(0);
 
@@ -50,5 +55,13 @@ public class Vendor {
 //	public void setAppInfo(Set<Application> appinfo) {
 //		this.appInfo = appinfo;
 //	}
+	
+	public int getDelflag() {
+		return delflag;
+	}
+
+	public void setDelflag(int value) {
+		this.delflag = value;
+	}
 
 }

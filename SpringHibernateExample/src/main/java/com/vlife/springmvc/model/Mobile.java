@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -39,6 +40,19 @@ public class Mobile {
 	@Size(min = 1, max = 32)
 	@Column(name = "os", nullable = false)
 	private String os;
+	
+	@Column(name = "delete_flag", nullable = false)
+	private int delflag;
+	
+	@Pattern(message = "IP address format is not right", regexp = "((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))")
+	@Column(name = "address", nullable = false)
+	private String address;
+	
+	@Column(name = "wifi_flag", nullable = false)
+	private int wififlag;
+	
+	@Column(name = "port", nullable = false)
+	private int port;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vendor_id", nullable = true)
@@ -94,5 +108,38 @@ public class Mobile {
 
 	public void setOs(String os) {
 		this.os = os;
+	}
+	
+	public int getDelflag() {
+		return delflag;
+	}
+
+	public void setDelflag(int value) {
+		this.delflag = value;
+	}
+	
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	
+	
+	public int getWififlag() {
+		return wififlag;
+	}
+
+	public void setWififlag(int value) {
+		this.wififlag = value;
+	}
+	
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
 	}
 }

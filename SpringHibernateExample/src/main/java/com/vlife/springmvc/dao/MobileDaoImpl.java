@@ -20,13 +20,14 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 	}
 
 	public void deleteMobileByUid(String uid) {
-		Query query = getSession().createSQLQuery("delete from mobile where uid = :uid");
+		Query query = getSession().createSQLQuery("update mobile set delete_flag=1 where uid = :uid");
 		query.setString("uid", uid);
 		query.executeUpdate();
 	}
 
 	public Mobile findMobileByUid(String uid) {
 		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("delflag", 0));
 		criteria.add(Restrictions.eq("uid", uid));
 		return (Mobile) criteria.uniqueResult();
 	}
@@ -34,6 +35,7 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 	@SuppressWarnings("unchecked")
 	public List<Mobile> findAllMobile() {
 		Criteria criteria = createEntityCriteria();
+//		criteria.add(Restrictions.eq("delflag", 0));
 		criteria.setResultTransformer(criteria.DISTINCT_ROOT_ENTITY);
 		return (List<Mobile>) criteria.list();
 	}
@@ -41,6 +43,7 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 	@SuppressWarnings("unchecked")
 	public List<Mobile> findMobileByVendor(Vendor vendor) {
 		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("delflag", 0));
 		criteria.add(Restrictions.eq("vendor", vendor));
 		criteria.setResultTransformer(criteria.DISTINCT_ROOT_ENTITY);
 		return (List<Mobile>) criteria.list();
@@ -50,7 +53,7 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Mobile> findMobileByPage(int offset, int length) {
-		Query query = getSession().createQuery("from Mobile");
+		Query query = getSession().createQuery("from Mobile where delete_flag=0");
 		query.setFirstResult(offset);
 		query.setMaxResults(length);
 		return (List<Mobile>) query.list();

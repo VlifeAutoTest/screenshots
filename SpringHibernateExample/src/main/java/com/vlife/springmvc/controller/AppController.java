@@ -1169,6 +1169,8 @@ public class AppController {
 		}
 		String temp = new String(app.getName().getBytes("iso-8859-1"), "utf-8");
 		app.setName(temp);
+		temp = new String(app.getAlias().getBytes("iso-8859-1"), "utf-8");
+		app.setAlias(temp);
 		app_service.saveApplication(app);
 		return "redirect:/applicationlist-0-0";
 	}
@@ -1200,6 +1202,8 @@ public class AppController {
 
 		String temp = new String(app.getName().getBytes("iso-8859-1"), "utf-8");
 		app.setName(temp);
+		temp = new String(app.getAlias().getBytes("iso-8859-1"), "utf-8");
+		app.setAlias(temp);
 		app_service.updateApplication(app);
 
 		return "redirect:/applicationlist-0-0";

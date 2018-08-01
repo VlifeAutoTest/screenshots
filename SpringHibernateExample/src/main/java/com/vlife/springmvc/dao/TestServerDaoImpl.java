@@ -23,11 +23,12 @@ public class TestServerDaoImpl extends AbstractDao<Integer, TestServer> implemen
 	@SuppressWarnings("unchecked")
 	public List<TestServer> findAllTestServer() {
 		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("delflag", 0));
 		return (List<TestServer>) criteria.list();
 	}
 
 	public void deleteTestServerByID(int id) {
-		Query query = getSession().createSQLQuery("delete from testserver where id = :id");
+		Query query = getSession().createSQLQuery("update testserver set delete_flag=1 where id = :id");
 		query.setInteger("id", id);
 		query.executeUpdate();
 	}
@@ -40,13 +41,14 @@ public class TestServerDaoImpl extends AbstractDao<Integer, TestServer> implemen
 	}
 
 	public void deleteTestServerBySsn(String ssn) {
-		Query query = getSession().createSQLQuery("delete from testserver where ssn = :ssn");
+		Query query = getSession().createSQLQuery("update testserver set delete_flag=1 where ssn = :ssn");
 		query.setString("ssn", ssn);
 		query.executeUpdate();
 	}
 
 	public TestServer findTestServerBySsn(String ssn) {
 		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("delflag", 0));
 		criteria.add(Restrictions.eq("ssn", ssn));
 		return (TestServer) criteria.uniqueResult();
 	}

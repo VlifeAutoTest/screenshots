@@ -33,7 +33,10 @@ public class TestServer {
 	@NotEmpty(message = "user name 不能为空")
 	@Column(name = "uname", nullable = false)
 	private String uname;
-
+	
+	@Column(name = "delete_flag", nullable = false)
+	private int delflag;
+	
 	public TestServer() {
 
 	}
@@ -80,6 +83,14 @@ public class TestServer {
 
 	public void setPasswd(String passwd) {
 		this.passwd = passwd;
+	}
+	
+	public int getDelflag() {
+		return delflag;
+	}
+
+	public void setDelflag(int value) {
+		this.delflag = value;
 	}
 
 	@Override

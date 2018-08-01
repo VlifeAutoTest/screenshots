@@ -50,6 +50,11 @@ select {
 						<td><form:errors path="name" cssClass="error" /></td>
 					</tr>
 					<tr>
+						<td><label for="alias">中文别名: </label></td>
+						<td><form:input path="alias" id="alias" /></td>
+						<td><form:errors path="alias" cssClass="error" /></td>
+					</tr>
+					<tr>
 						<td><label for="packagename">包名: </label></td>
 						<td><form:input path="packagename" id="package" /></td>
 						<td><form:errors path="packagename" cssClass="error" /></td>

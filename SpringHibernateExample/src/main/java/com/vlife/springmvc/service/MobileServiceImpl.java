@@ -49,6 +49,8 @@ public class MobileServiceImpl implements MobileService {
 			entity.setUid(mobile.getUid());
 			entity.setSize(mobile.getSize());
 			entity.setOs(mobile.getOs());
+			entity.setAddress(mobile.getAddress());
+			entity.setPort(mobile.getPort());
 
 		}
 	}

@@ -64,7 +64,7 @@ select {
 								console.info("item:" + item.id);
 								$("#app").append(
 										"<option value='"+item.id+"'>"
-												+ item.name + "</option>");
+												+ item.alias + "</option>");
 							});
 							$("#app").selectpicker("refresh");
 							$("#app").selectpicker("render");

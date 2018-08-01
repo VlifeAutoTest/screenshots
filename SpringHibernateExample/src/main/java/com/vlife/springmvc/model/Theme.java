@@ -27,7 +27,10 @@ public class Theme {
 
 	@Column(name = "checknumber", nullable = true)
 	private int checknumber;
-
+	
+	@Column(name = "delete_flag", nullable = false)
+	private int delflag;
+	
 	public int getId() {
 		return id;
 	}
@@ -59,4 +62,15 @@ public class Theme {
 	public void setChecknumber(int number) {
 		this.checknumber = number;
 	}
+	
+
+	
+	public int getDelflag() {
+		return delflag;
+	}
+
+	public void setDelflag(int value) {
+		this.delflag = value;
+	}
+
 }
