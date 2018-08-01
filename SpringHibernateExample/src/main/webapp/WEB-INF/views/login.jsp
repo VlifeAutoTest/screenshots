@@ -76,8 +76,6 @@ body {
 							<div class="col-sm-12 controls">
 								<a id="btn-login" href="javascript:document.f.submit();"
 									class="btn btn-success">登录 </a>
-								<!--     <a id="btn-fblogin" href="#" class="btn btn-primary">Login with Facebook</a>
- -->
 							</div>
 						</div>
 
@@ -167,8 +165,6 @@ body {
 
 						</div>
 
-
-
 					</form>
 				</div>
 			</div>
@@ -217,7 +213,7 @@ body {
 						<div class="form-group">
 							<!-- Button -->
 							<div class="col-md-offset-3 col-md-9">
-								<button id="btn-signup" type="button" class="btn btn-success"
+								<button id="btn-findpass" type="button" class="btn btn-success"
 									onclick="findpass()">
 									<i class="icon-hand-right"></i> &nbsp确认提交
 								</button>
@@ -229,31 +225,12 @@ body {
 							class="form-group">
 
 							<div class="col-md-offset-3 col-md-9"></div>
-
 						</div>
-
-
-
 					</form>
 				</div>
 			</div>
-
-
-
-
 		</div>
-
-
-
-
-
-
-
-
 	</div>
-
-
-
 	<script type="text/javascript">
 		function sigin() {
 			$.ajax({
@@ -263,11 +240,11 @@ body {
 				data : $("#signupform").serialize(),
 				success : function(result) {
 					alert(result);
-					window.location.reload();
+					//window.location.reload();
 				},
 				error : function() {
 					alert("注册失败!请检测信息填写是否符合规范.");
-					window.location.reload();
+					//window.location.reload();
 				}
 			});
 		}
@@ -282,19 +259,30 @@ body {
 				data : $("#findpass").serialize(),
 				success : function(result) {
 					alert(result);
-					window.location.reload();
+					//window.location.reload();
 				},
 				error : function() {
 					alert("找回密码失败请重试!");
-					window.location.reload();
+					//window.location.reload();
 				}
 			});
 		}
 	</script>
 
+	<script type="text/javascript">
+		$(document).keydown(function(event) {
+			if (event.keyCode == 13) {
+				if ($("#loginbox").css("display") == "block") {
+					$("#loginform").submit();
+				} else if ($("#signupbox").css("display") == "block") {
+					$("#btn-signup").click();
+				} else if ($("#findpasswd").css("display") == "block") {
+					$("#btn-findpass").click();
+				}
 
-
-
+			}
+		});
+	</script>
 
 </body>
 </html>

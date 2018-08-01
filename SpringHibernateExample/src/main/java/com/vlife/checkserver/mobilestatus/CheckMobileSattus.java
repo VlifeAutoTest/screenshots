@@ -59,12 +59,13 @@ public class CheckMobileSattus extends TimerTask {
 							String os = methods.getOS(session, device);
 							String vendor = methods.getMobileVendor(session, device);
 							String name = methods.getMobilename(session, device);
+							System.out.println(size +"   "+os+"   "+vendor+"   "+name);
 							// 不存在这个新厂商
 							if (methods.getVendorID(vendor) == null) {
 								methods.insertMobileVendor(vendor);
 							}
 							// 给mobile插入手机的信息
-							methods.insertMobile(name, device, size, os, methods.getVendorID(vendor));
+							methods.insertMobile(name.trim(), device.trim(), size.trim(), os.trim(), methods.getVendorID(vendor));
 							// 给mobilestatus表插入此手机的信息
 							int mobileID = methods.getMobileID(device);
 							methods.insertMobileStatus(mobileID, serverID, "free");

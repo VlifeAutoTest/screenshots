@@ -216,7 +216,7 @@ public class Methods {
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			PreparedStatement ps = conn.prepareStatement(sql);
 			// 从1开始 不是0
-			ps.setString(1, name);
+			ps.setString(1, name.toLowerCase());
 
 			ps.execute();
 			conn.close();
@@ -238,7 +238,7 @@ public class Methods {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, vendorName);
+			ps.setString(1, vendorName.toLowerCase());
 			ps.execute();
 			ResultSet res = ps.executeQuery();
 			while (res.next()) {
