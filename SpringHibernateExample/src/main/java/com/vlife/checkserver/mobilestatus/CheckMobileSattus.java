@@ -59,7 +59,6 @@ public class CheckMobileSattus extends TimerTask {
 							String os = methods.getOS(session, device);
 							String vendor = methods.getMobileVendor(session, device);
 							String name = methods.getMobilename(session, device);
-							System.out.println(size +"   "+os+"   "+vendor+"   "+name);
 							// 不存在这个新厂商
 							if (methods.getVendorID(vendor) == null) {
 								methods.insertMobileVendor(vendor);

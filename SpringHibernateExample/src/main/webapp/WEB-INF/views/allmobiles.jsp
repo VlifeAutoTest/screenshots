@@ -37,6 +37,7 @@
 							<td>${mobile.os}</td>
 							<td>${mobile.getVendor().getName()}</td>
 							<td><a href="<c:url value='/edit-${mobile.uid}-mobile' />">编辑</a></td>
+							<td><a href="<c:url value='/delete-${mobile.uid}-mobile-${page}' />">删除</a></td>
 						</tr>
 					</c:forEach>
 				</tbody>

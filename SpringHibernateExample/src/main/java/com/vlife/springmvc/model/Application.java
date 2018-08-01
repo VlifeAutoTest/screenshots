@@ -28,11 +28,9 @@ public class Application {
 	@Column(name = "name", nullable = false)
 	private String name;
 
-	@NotEmpty
 	@Column(name = "packagename", nullable = false)
 	private String packagename;
 
-	@NotEmpty
 	@Column(name = "activity", nullable = false)
 	private String activity;
 
@@ -43,6 +41,13 @@ public class Application {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vendor_id", nullable = true)
 	private Vendor vendor;
+	
+	@Column(name = "delete_flag", nullable = false)
+	private int delflag;
+	
+	@NotEmpty
+	@Column(name = "alias", nullable = false)
+	private String alias;
 
 	public Vendor getVendor() {
 		return this.vendor;
@@ -95,4 +100,21 @@ public class Application {
 	public void setPackagename(String packagename) {
 		this.packagename = packagename;
 	}
+	
+	public int getDelflag() {
+		return delflag;
+	}
+
+	public void setDelflag(int value) {
+		this.delflag = value;
+	}
+	
+	public String getAlias() {
+		return alias;
+	}
+
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
+
 }

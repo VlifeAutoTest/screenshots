@@ -50,20 +50,12 @@
 				<tbody>
 					<c:forEach items="${applications}" var="app">
 						<tr>
-							<td>${app.name}</td>
+							<td>${app.alias}</td>
 							<td>${app.getVendor().getName()}</td>
 							<td>${app.style}</td>
 							
-							<td>
-							<c:if test="${app.style  == 'Random'}">
-							<a href="<c:url value='/edit-${app.id}-application' />">编辑</a>
-							</c:if>
-							</td>
-							<td>
-							  <c:if test="${app.style  == 'Random'}">
-								<a href="<c:url value='/delete-${app.id}-application-${page}' />">删除</a>
-							  </c:if>
-							  </td>
+							<td><a href="<c:url value='/edit-${app.id}-application' />">编辑</a></td>
+							<td><a href="<c:url value='/delete-${app.id}-application-${page}' />">删除</a></td>
 						</tr>
 					</c:forEach>
 				</tbody>

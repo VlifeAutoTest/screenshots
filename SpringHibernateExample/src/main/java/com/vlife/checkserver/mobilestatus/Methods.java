@@ -130,7 +130,6 @@ public class Methods {
 	public String getSize(Session session, String device) {
 
 		String re = execCommand(session, device, "shell wm size");
-		System.out.println(re.trim());
 		return re.substring(re.indexOf(":") + 1,re.indexOf(":")+11).trim();
 	}
 
