@@ -24,7 +24,7 @@
 
 	<div class="panle panel-success">
 		<div class="panel-heading">
-			<a class="panel-title">测试服务器</a>
+			<a class="panel-title" >测试服务器</a>
 		</div>
 		<div class="panel-body">
 
