@@ -85,7 +85,7 @@ select {
 		                $("#app").empty();  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
-		                    $("#app").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
+		                    $("#app").append( "<option value='"+item.id+"'>"+item.alias+"</option>");  
 		                }); 
 		                $("#app").selectpicker("refresh");
 		                $("#app").selectpicker("render");    
@@ -108,7 +108,7 @@ select {
 		                $("#app").empty();  
 		                $.each(data,function(index,item){  
 		                    console.info("item:"+item.id);  
-		                    $("#app").append( "<option value='"+item.id+"'>"+item.name+"</option>");  
+		                    $("#app").append( "<option value='"+item.id+"'>"+item.alias+"</option>");  
 		                }); 
 		                $("#app").selectpicker("refresh");
 		                $("#app").selectpicker("render");    
@@ -219,7 +219,7 @@ select {
 					<tr>
 						<td><label for="app">应用: </label></td>
 						<td><form:select path="app" multiple="multiple"
-								itemValue="id" itemLabel="name" id="app"
+								itemValue="id" itemLabel="alias" id="app"
 								class="selectpicker bla bla bli" data-live-search="true" /></td>
 						<td><form:errors path="app" cssClass="error" /></td>
 					</tr>

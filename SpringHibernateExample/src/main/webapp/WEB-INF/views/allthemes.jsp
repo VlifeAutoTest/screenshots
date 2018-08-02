@@ -47,6 +47,8 @@
 								href="http://192.168.1.230:8080/${fn:substring(theme.path, 7, -1)}"
 								target="_blank">${theme.path}</a></td>
 							<td><a href="<c:url value='/delete-${theme.id}-theme-${page}' />">删除</a></td>
+
+
 							<td></td>
 						</tr>
 					</c:forEach>
