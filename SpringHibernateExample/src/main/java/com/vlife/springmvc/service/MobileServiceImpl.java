@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.vlife.clienttest.utils.ADBMethods;
 import com.vlife.springmvc.dao.MobileDao;
 import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.model.Vendor;
@@ -65,12 +64,6 @@ public class MobileServiceImpl implements MobileService {
 	public List<Mobile> findMobileByPage(int offset, int length) {
 		return dao.findMobileByPage(offset, length);
 
-	}
-
-	@Override
-	public Boolean connectMobile(String ip, String port) {
-		// TODO 自动生成的方法存根
-		return ADBMethods.connectMobile(ip, port);
 	}
 
 }

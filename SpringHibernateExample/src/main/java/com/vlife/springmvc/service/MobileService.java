@@ -24,5 +24,4 @@ public interface MobileService {
 	boolean isMobileUidUnique(Integer id, String uid);
 
 	List<Mobile> findMobileByPage(int offset, int length);
-	Boolean connectMobile(String ip, String port);
 }
