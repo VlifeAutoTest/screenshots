@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimerTask;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.jcraft.jsch.Session;
 
 public class CheckMobileSattus extends TimerTask {
@@ -64,7 +67,22 @@ public class CheckMobileSattus extends TimerTask {
 								methods.insertMobileVendor(vendor);
 							}
 							// 给mobile插入手机的信息
-							methods.insertMobile(name.trim(), device.trim(), size.trim(), os.trim(), methods.getVendorID(vendor));
+							
+							 String match = "((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d))):([0-9]|[1-9]\\d{1,3}|[1-5]\\d{4}|6[0-4]\\d{4}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])";
+								Pattern pattern = Pattern.compile(match);
+						        Matcher matcher = pattern.matcher(device);
+						        if(matcher.matches()) {
+						        	String udid=methods.getMobileUUID(session, device);
+						        	methods.insertMobile(name.trim(), udid, size.trim(), os.trim(), methods.getVendorID(vendor), 1, device.trim().split(":")[0].trim(), Integer.parseInt(device.trim().split(":")[1].trim()));
+						        }else {
+						        	
+						        	methods.insertMobile(name.trim(), device.trim(), size.trim(), os.trim(), methods.getVendorID(vendor),0,null,0);
+						        }
+							
+							
+							
+							
+							
 							// 给mobilestatus表插入此手机的信息
 							int mobileID = methods.getMobileID(device);
 							methods.insertMobileStatus(mobileID, serverID, "free");
@@ -122,7 +140,7 @@ public class CheckMobileSattus extends TimerTask {
 			e.printStackTrace();
 		} finally {
 			if (session != null) {
-				methods.endSSH();
+				methods.endSSH(session);
 			}
 		}
 	}

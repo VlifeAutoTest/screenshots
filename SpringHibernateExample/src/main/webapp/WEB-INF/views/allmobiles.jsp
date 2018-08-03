@@ -52,9 +52,7 @@
 									<c:set var="active" value="${loop.index==page?'active':''}" />
 									<li class="${active}"><a
 										href="<c:url value="/mobilelist-${loop.index}"/>">${loop.index}</a></li>
-
 								</c:forEach>
-
 								<li><a href="<c:url value="/mobilelist-${page+1<totalPages?page+1:totalPages}"/>">&raquo;</a></li>
 								<li><a href="<c:url value="/mobilelist-${totalPages}"/>">末页</a></li>
 							</ul>

@@ -66,4 +66,12 @@ public class MobileServiceImpl implements MobileService {
 
 	}
 
+	@Override
+	public boolean notContainUid(String uid) {
+		Mobile mobile = findMobileByUid(uid);
+		System.out.println(mobile ==null);
+		System.out.println();
+		return (mobile==null);
+	}
+
 }

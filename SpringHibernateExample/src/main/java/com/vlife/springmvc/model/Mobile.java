@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -50,7 +52,8 @@ public class Mobile {
 	
 	@Column(name = "wifi_flag", nullable = false)
 	private int wififlag;
-	
+	@Max(value = 65535)
+	@Min(value =1)
 	@Column(name = "port", nullable = false)
 	private int port;
 

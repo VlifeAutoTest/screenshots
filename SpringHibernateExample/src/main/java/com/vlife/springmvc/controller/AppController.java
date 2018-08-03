@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -45,6 +46,8 @@ import com.vlife.checkserver.mobilestatus.CheckMobileSattus;
 import com.vlife.checkserver.mobilestatus.Methods;
 import com.vlife.checkserver.mobilestatus.SSHCopyFile;
 import com.vlife.checkserver.mobilestatus.SendEmailMethods;
+import com.vlife.clienttest.utils.ADBMethods;
+import com.vlife.clienttest.utils.OtherMethods;
 import com.vlife.springmvc.model.Application;
 import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.model.Resources;
@@ -885,6 +888,8 @@ public class AppController {
 	@RequestMapping(value = { "/newmobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String newMobile(ModelMap model) {
 		Mobile app = new Mobile();
+		app.setAddress("1.1.1.1");
+		app.setPort(1);
 		model.addAttribute("mobile", app);
 		model.addAttribute("edit", false);
 		return "mobile";
@@ -925,6 +930,17 @@ public class AppController {
 		if (result.hasErrors()) {
 			return "mobile";
 		}
+//		if (mobile.getWififlag() == 1) {
+//			Methods methods =new Methods();
+//			//**********************************************************************************
+//			Session session=methods.getSession("10.2.10.123", 22, "lang", "963852");
+//			String device=mobile.getAddress()+":"+mobile.getPort();
+//			mobile.setSize(methods.getSize(session, device));
+//			mobile.setName(methods.getMobilename(session, device));
+//			mobile.setOs(methods.getOS(session, device));
+//			mobile.setUid(methods.getMobileUUID(session, device));
+//			mobile_service.saveMobile(mobile);
+//		}else {
 
 		if (!mobile_service.isMobileUidUnique(mobile.getId(), mobile.getUid())) {
 			FieldError ssnError = new FieldError("mobile", "uid",
@@ -933,11 +949,22 @@ public class AppController {
 
 			return "mobile";
 		}
+		
+//		if(mobile_service.isContainUid(mobile.getUid())) {
+//			
+//			
+//			Mobile mobile2=mobile_service.findMobileByUid(mobile.getUid());
+//			mobile2.setWififlag(mobile.getWififlag());
+//			mobile2.setAddress(mobile.getAddress());
+//			mobile2.setName(mobile.getName());
+//			mobile2.setOs(mobile.getOs());
+//		}
 
 		String temp = new String(mobile.getName().getBytes("iso-8859-1"), "utf-8");
 		// delete spaces
 		mobile.setName(temp.trim().replace(" ", ""));
 		mobile_service.saveMobile(mobile);
+//		}
 		return "redirect:/mobilelist-1";
 	}
 
@@ -1235,6 +1262,7 @@ public class AppController {
 
 		return "help";
 	}
+
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
 	public String assertLogIn(ModelMap model, String logname, String logpass) {
 		if (logname.trim().length() != 0 && user_services.findByName(logname)) {
@@ -1281,6 +1309,54 @@ public class AppController {
 		sessionStatus.setComplete();
 
 		return "redirect:/login";
+	}
+
+	@RequestMapping(value = { "/trywificonnect" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String tryWifiConnectMobile(ModelMap model, String value) {
+		String result="false";
+		value = value.substring(1, value.length() - 1).trim();
+		String ipAndPort[] = value.split(":");
+		Methods methods = new Methods();
+		if (!methods.matcherIP(ipAndPort[0].trim()) || Integer.parseInt(ipAndPort[1]) <= 0
+				|| Integer.parseInt(ipAndPort[1]) > 65535) {
+			result= "messwarn";
+		}
+		else {
+			
+		
+		 
+		Session session = methods.getSession("10.2.10.123", 22, "lang", "963852");
+		methods.exeShellCommand(session, "adb connect " + value);
+
+		String str = methods.exeShellCommand(session, "adb devices");
+
+		if (str.contains(value)) {
+			result = "true";
+			String uuid = methods.getMobileUUID(session, value).trim();
+			String size="";
+			String name="";
+			String os ="";
+			System.out.println(uuid);
+			//System.out.println(mobile_service.notContainUid("1df0cd1f"));
+			//System.out.println(mobile_service.isMobileUidUnique(45, "dasda222"));
+//			if(mobile_service.isMobileUidUnique(, "dasda222")) {
+				System.out.println(value);
+				size = methods.getSize(session, value);
+				 name = methods.getMobilename(session, value);
+				 os = methods.getOS(session, value);
+//			}else {
+//			Mobile mobile=mobile_service.findMobileByUid(uuid);
+//			size=mobile.getSize();
+//			name=mobile.getName();
+//			os=mobile.getOs();
+//			}
+			
+			result = result+"#" + size + "#" + name + "#" + os + "#" + uuid;
+		}
+		methods.endSSH(session);
+		}
+		return result;
 	}
 
 	// 注册

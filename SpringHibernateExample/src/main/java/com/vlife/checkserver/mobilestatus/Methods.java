@@ -35,7 +35,8 @@ public class Methods {
 	Session session = null;
 	ChannelExec channelExec = null;
 	InputStream in = null;
-	//从application.properties里面获取参数的方法
+
+	// 从application.properties里面获取参数的方法
 	public static String getProperty(String propertyName) {
 		Properties pro = new Properties();
 		try {
@@ -63,7 +64,7 @@ public class Methods {
 		return session;
 	}
 
-	public void endSSH() {
+	public void endSSH(Session session) {
 		if (channelExec != null) {
 			channelExec.disconnect();
 		}
@@ -92,7 +93,6 @@ public class Methods {
 
 				for (int i = 0; i < result.length; i++) {
 					result[i] = result[i].trim();
-
 				}
 			} else {
 
@@ -107,7 +107,25 @@ public class Methods {
 		return result;
 	}
 
-	public String execCommand(Session session, String device, String command) {
+	public String exeShellCommand(Session session, String command) {
+		String result = null;
+		try {
+			channelExec = (ChannelExec) session.openChannel("exec");
+			in = channelExec.getInputStream();
+			channelExec.setCommand("source /etc/profile  &&  " + command);
+			channelExec.setErrStream(System.err);
+			channelExec.connect();
+			result = IOUtils.toString(in, "UTF-8");
+			in.close();
+		} catch (JSchException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+	public String execADBCommand(Session session, String device, String command) {
 		String result = null;
 		try {
 			channelExec = (ChannelExec) session.openChannel("exec");
@@ -129,14 +147,14 @@ public class Methods {
 
 	public String getSize(Session session, String device) {
 
-		String re = execCommand(session, device, "shell wm size");
-		return re.substring(re.indexOf(":") + 1,re.indexOf(":")+11).trim();
+		String re = execADBCommand(session, device, "shell wm size");
+		return re.substring(re.indexOf(":") + 1, re.indexOf(":") + 11).trim();
 	}
 
 	// 获取系统版本
 	public String getOS(Session session, String device) {
 
-		String re = execCommand(session, device, "shell getprop ro.build.version.release");
+		String re = execADBCommand(session, device, "shell getprop ro.build.version.release");
 
 		return re;
 	}
@@ -144,7 +162,7 @@ public class Methods {
 	// 获取型号
 
 	public String getMobilename(Session session, String device) {
-		String re = execCommand(session, device, "shell getprop ro.product.model");
+		String re = execADBCommand(session, device, "shell getprop ro.product.model");
 		if (re.contains(" ")) {
 			re = re.replace(" ", "_");
 		}
@@ -154,8 +172,13 @@ public class Methods {
 
 	// 获取厂商
 	public String getMobileVendor(Session session, String device) {
-		String re = execCommand(session, device, "shell getprop ro.product.manufacturer");
+		String re = execADBCommand(session, device, "shell getprop ro.product.manufacturer");
 		return re;
+	}
+
+	// 获取uuid
+	public String getMobileUUID(Session session, String device) {
+		return execADBCommand(session, device, "shell cat /sys/class/android_usb/android0/iSerial");
 	}
 
 	// 查询mobile表是否含有指定的device
@@ -181,17 +204,16 @@ public class Methods {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	
-		
+
 		return result;
 
 	}
 
 	// 给数据库增加新手机的信息
 
-	public void insertMobile(String name, String uid, String size, String os, int vendor_id) {
+	public void insertMobile(String name, String uid, String size, String os, int vendor_id,int wififlag,String address,int port) {
 		try {
-			String sql = "insert into mobile values(null,?,?,?,?,?,null,null,null,null)";
+			String sql = "insert into mobile values(null,?,?,?,?,?,?,?,?,0)";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -201,6 +223,9 @@ public class Methods {
 			ps.setString(3, size);
 			ps.setString(4, os);
 			ps.setInt(5, vendor_id);
+			ps.setInt(6, wififlag);
+			ps.setString(7, address);
+			ps.setInt(8, port);
 			ps.execute();
 			conn.close();
 		} catch (ClassNotFoundException e) {
@@ -388,6 +413,7 @@ public class Methods {
 		return result;
 
 	}
+	
 
 	// 给mobilestatus 表插入最新的手机信息
 
