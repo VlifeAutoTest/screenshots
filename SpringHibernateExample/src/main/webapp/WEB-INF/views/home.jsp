@@ -59,7 +59,7 @@
 				</div>
 			</div>
 			<ul class="nav navbar-nav nav-stacked navbar-right">
-				<li title="当前连接的手机数"><a href="http://10.2.10.123:7100"
+				<li title="当前连接的手机数"><a href=" <c:url value="${stfaddress}" /> "
 					target="_blank"> <span class="glyphicon glyphicon-phone"></span>
 						<i class="badge">${ counectnum }</i>
 				</a></li>

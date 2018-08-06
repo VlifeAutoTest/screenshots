@@ -135,6 +135,7 @@ public class AppController {
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public String home(ModelMap model, @ModelAttribute("logSuccessUser") User user) {
 		model.addAttribute("user", user);
+		model.addAttribute("stfaddress",Methods.getProperty("stf.address"));
 		model.addAttribute("countrunningcase", runinfo_services.countRunningCase());
 		model.addAttribute("counectnum", status_services.countConnnectMobile());
 		return "home";
@@ -418,6 +419,7 @@ public class AppController {
 			model.addAttribute("message", "没有符合条件的记录!");
 		}
 		runinfo = new Runinfo();
+		model.addAttribute("downloadfilepath", Methods.getProperty("file.server.downloadfile"));
 		model.addAttribute("runinfo", runinfo);
 		model.addAttribute("vendors", vendors);
 
@@ -585,6 +587,7 @@ public class AppController {
 			model.addAttribute("totalPages", totalPages);
 			// 当前的页数
 			model.addAttribute("page", page);
+			model.addAttribute("downfilepath", Methods.getProperty("file.server.downloadfile"));
 			return "allthemes";
 		}
 
@@ -604,7 +607,7 @@ public class AppController {
 			if (totalPages == 0) {
 				totalPages = 1;
 			}
-
+			model.addAttribute("downfilepath", Methods.getProperty("file.server.downloadfile"));
 			model.addAttribute("themes", Themes);
 			model.addAttribute("totalPages", totalPages);
 			model.addAttribute("page", page);
@@ -1326,7 +1329,7 @@ public class AppController {
 			
 		
 		 
-		Session session = methods.getSession("10.2.10.123", 22, "lang", "963852");
+		Session session = methods.getSession("192.168.1.100", 22, "lang", "963852");
 		methods.exeShellCommand(session, "adb connect " + value);
 
 		String str = methods.exeShellCommand(session, "adb devices");

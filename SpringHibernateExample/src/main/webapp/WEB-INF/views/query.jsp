@@ -45,6 +45,8 @@ select {
 	});
 </script>
 
+   
+
 
 
 <script>
@@ -213,22 +215,22 @@ select {
 							<td><label for="resource">资源: </label></td>
 							<td><form:select path="resource" multiple="multiple"
 									itemValue="id" itemLabel="name" id="resource"
-									class="selectpicker bla bla bli" data-live-search="true">
+									class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true" >
 								</form:select></td>
 							<td><form:errors path="resource" cssClass="error" /></td>
 						</tr>
 						<tr>
 							<td><label for="mid">手机: </label></td>
 							<td><form:select path="mid" multiple="multiple"
-									itemValue="id" itemLabel="name" id="mobile"
-									class="selectpicker bla bla bli" />
+									itemValue="id" itemLabel="name" id="mobile" 
+									class="selectpicker bla bla bli"  data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true" />
 						</tr>
 
 						<tr>
 							<td><label for="app">应用: </label></td>
 							<td><form:select path="app" multiple="multiple"
 									itemValue="id" itemLabel="name" id="app"
-									class="selectpicker bla bla bli" data-live-search="true">
+									class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true">
 								</form:select></td>
 							<td><form:errors path="app" cssClass="error" /></td>
 						</tr>
@@ -285,7 +287,7 @@ select {
 											<td>${dt[4]}</td>
 											<td>${dt[11]}</td>
 											<td><a href="#" value="${dt[7]}" id="ww">预览 </a><br>
-												<a href="http://192.168.1.230:8080${dt[7]}/${dt[8]} "
+												<a href="${downloadfilepath}${dt[7]}/${dt[8]} "
 												target="_blank">下载</a></td>
 											<td><b id="qdf" style="display: none;">\\192.168.1.230${dt[7]}</b>
 											</td>

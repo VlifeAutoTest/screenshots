@@ -191,8 +191,8 @@ select {
 						<td><label for="style">截图方式: </label></td>
 						<td><form:select path="style" multiple="false" id="style"
 								class="selectpicker bla bla bli" data-live-search="true">
-								<form:option value="Custom" selected='selected'>Custom</form:option>
-								<form:option value="Random">Random</form:option>
+								<form:option value="Custom" selected='selected'>定制截图</form:option>
+								<form:option value="Random">随机截图</form:option>
 							</form:select></td>
 						<td><form:errors path="style" cssClass="error" /></td>
 					</tr>
@@ -210,7 +210,7 @@ select {
 						<td><label for="resource">资源: </label></td>
 						<td><form:select path="resource" multiple="multiple"
 								itemValue="id" itemLabel="name" id="resource"
-								class="selectpicker bla bla bli" data-live-search="true" /> <a
+								class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true" /> <a
 							href="<c:url value='/newtheme-1' />"> +增加资源</a></td>
 						<td><form:errors path="resource" cssClass="error" /></td>
 					</tr>
@@ -220,7 +220,7 @@ select {
 						<td><label for="app">应用: </label></td>
 						<td><form:select path="app" multiple="multiple"
 								itemValue="id" itemLabel="alias" id="app"
-								class="selectpicker bla bla bli" data-live-search="true" /></td>
+								class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true"  /></td>
 						<td><form:errors path="app" cssClass="error" /></td>
 					</tr>
 
