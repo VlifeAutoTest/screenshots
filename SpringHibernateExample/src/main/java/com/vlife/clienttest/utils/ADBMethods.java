@@ -209,7 +209,7 @@ public class ADBMethods {
 	public static void installAPP(String device, String APPPath) {
 		try {
 
-			Process ss = Runtime.getRuntime().exec("adb -s " + "  " + device + "  " + "install" + "  " + APPPath);
+			Process ss = Runtime.getRuntime().exec("adb -s " + "  " + device + "  " + "install  -r " + "  " + APPPath);
 			ss.waitFor();
 
 		} catch (Exception e) {
