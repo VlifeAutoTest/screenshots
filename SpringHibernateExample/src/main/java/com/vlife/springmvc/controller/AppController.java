@@ -903,8 +903,13 @@ public class AppController {
 		// 每页显示多少个手机
 		int pageSize = Integer.parseInt(Methods.getProperty("mobile.management.page.size"));
 		List<Mobile> allMobiles = mobile_service.findAllMobile();
+		
+		System.out.println(allMobiles.size() / pageSize + 1);
+		System.out.println(allMobiles.size());
+		System.out.println(pageSize);
 		int totalPages = allMobiles.size() % pageSize == 0 ? allMobiles.size() / pageSize
 				: allMobiles.size() / pageSize + 1;
+		System.out.println(totalPages);
 		int offset = 1;
 		if (page <= 0) {
 			offset = 0;

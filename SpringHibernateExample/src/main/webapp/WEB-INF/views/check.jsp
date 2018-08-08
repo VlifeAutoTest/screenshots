@@ -281,13 +281,7 @@ function replaceAll(str, oldStr, newStr){
 		 showTime();  
 		
 			}
-
-});
-	 
-	 
-	 
-	 
-	 
+				});
 </script>
 
 

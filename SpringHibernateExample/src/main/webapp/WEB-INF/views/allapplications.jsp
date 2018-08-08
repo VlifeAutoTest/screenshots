@@ -52,9 +52,19 @@
 						<tr>
 							<td>${app.alias}</td>
 							<td>${app.getVendor().getName()}</td>
-							<td>${app.style}</td>
+							<td>${app.style == 'Custom'? '定制截图' : '随机截图'}
 							
+							
+							
+							</td>
+							<c:if test="${app.style =='Custom' }">
+							<td><a href="<c:url value='/edit-${app.id}-application' />"></a></td>
+							</c:if>
+							
+							<c:if test="${app.style =='Random' }">
 							<td><a href="<c:url value='/edit-${app.id}-application' />">编辑</a></td>
+							</c:if>
+							
 							<td><a href="<c:url value='/delete-${app.id}-application-${page}' />">删除</a></td>
 						</tr>
 					</c:forEach>

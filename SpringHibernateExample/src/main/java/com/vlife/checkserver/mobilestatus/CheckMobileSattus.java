@@ -118,7 +118,8 @@ public class CheckMobileSattus extends TimerTask {
 										e.printStackTrace();
 									}
 									long getTime = date2.getTime();
-									long oneDay = 1 * 24 * 60 * 60 * 1000;
+									int time=Integer.parseInt(Methods.getProperty("change.mobile.busy.time"));
+									long oneDay = time * 60 * 1000;
 									// 如果忙碌状态的最后连接时间于今天比超过一天那么更改为free
 									if (thistime - getTime >= oneDay) {
 										methods.updateMobileStatus(mobileID, serverID, "free");
