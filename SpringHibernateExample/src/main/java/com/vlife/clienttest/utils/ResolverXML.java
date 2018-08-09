@@ -69,7 +69,6 @@ public class ResolverXML {
 		return element2;
 
 	}
-//asdasdas
 	// 用来获取XML对象的对应属性名名的值
 
 	@SuppressWarnings("unchecked")

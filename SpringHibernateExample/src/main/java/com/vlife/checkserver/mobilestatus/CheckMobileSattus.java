@@ -36,6 +36,7 @@ public class CheckMobileSattus extends TimerTask {
 
 	}
 
+	@SuppressWarnings("null")
 	public void status(String host, int port, String user, String password) {
 
 		Session session = null;
@@ -57,14 +58,22 @@ public class CheckMobileSattus extends TimerTask {
 						// 本次的server_id
 						// 判断是数据里是否有这个手机
 						// 如果数据库中没有这个手机device
-						if (methods.getMobileID(device) == null) {
+						Integer  mobileID = methods.getMobileID(device);
+						if (mobileID == null) {
 							String size = methods.getSize(session, device);
 							String os = methods.getOS(session, device);
 							String vendor = methods.getMobileVendor(session, device);
 							String name = methods.getMobilename(session, device);
 							// 不存在这个新厂商
+							Integer vendorID;
+							Integer mobileVendorID=methods.getMobileVendorID(device);
+							if(mobileVendorID!=null) {
+								vendorID=mobileVendorID;
+							}else {
 							if (methods.getVendorID(vendor) == null) {
 								methods.insertMobileVendor(vendor);
+							}
+							vendorID=methods.getVendorID(vendor);
 							}
 							// 给mobile插入手机的信息
 							
@@ -73,32 +82,26 @@ public class CheckMobileSattus extends TimerTask {
 						        Matcher matcher = pattern.matcher(device);
 						        if(matcher.matches()) {
 						        	String udid=methods.getMobileUUID(session, device);
-						        	methods.insertMobile(name.trim(), udid, size.trim(), os.trim(), methods.getVendorID(vendor), 1, device.trim().split(":")[0].trim(), Integer.parseInt(device.trim().split(":")[1].trim()));
+						        	methods.insertMobile(name.trim(), udid, size.trim(), os.trim(), vendorID, 1, device.trim().split(":")[0].trim(), Integer.parseInt(device.trim().split(":")[1].trim()));
 						        }else {
 						        	
-						        	methods.insertMobile(name.trim(), device.trim(), size.trim(), os.trim(), methods.getVendorID(vendor),0,null,0);
+						        	methods.insertMobile(name.trim(), device.trim(), size.trim(), os.trim(), vendorID,0,null,0);
 						        }
 							
-							
-							
-							
-							
 							// 给mobilestatus表插入此手机的信息
-							int mobileID = methods.getMobileID(device);
 							methods.insertMobileStatus(mobileID, serverID, "free");
 							mobileStatusID = methods.getMobileStatusID(mobileID, serverID);
 						}
 
 						// 如果已含有的手机
 						else {
-							int mobileID = methods.getMobileID(device);
 
 							// 如果没有使用过
 							if (methods.getMobileStatus(mobileID, serverID) == null) {
 								methods.insertMobileStatus(mobileID, serverID, "free");
 							} else { // 使用过的
 								String status = methods.getMobileStatus(mobileID, serverID);
-								// 空闲状态直接跳过
+								// 空闲状态
 								if (status.trim().equalsIgnoreCase("free")) {
 									// 更新下日期
 									methods.updateMobileStatus(mobileID, serverID, "free");

@@ -19,6 +19,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.persistence.criteria.CriteriaBuilder.In;
+
 import org.apache.commons.io.IOUtils;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
@@ -95,7 +97,6 @@ public class Methods {
 					result[i] = result[i].trim();
 				}
 			} else {
-
 			}
 			in.close();
 		} catch (JSchException e) {
@@ -187,7 +188,7 @@ public class Methods {
 
 		Integer result = null;
 		try {
-			String sql = "select  * from mobile where uid =?";
+			String sql = "select  * from mobile where uid =? and delete_flag = 0";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -236,6 +237,31 @@ public class Methods {
 
 	}
 
+	//获取删除了的手机的厂商
+	public Integer getMobileVendorID(String device) {
+
+		Integer result = null;
+		try {
+			String sql = "select  distinct(vendor_id) from mobile where uid =? and  delete_flag = 1";
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			conn = DriverManager.getConnection(URL, USER, PASSWORD);
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, device);
+			ps.execute();
+			ResultSet res = ps.executeQuery();
+			
+
+				result = res.getInt("vendor_id");
+			
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+			return result;
+	}
 	// 给数据库增加新厂商
 
 	public void insertMobileVendor(String name) {
@@ -343,7 +369,7 @@ public class Methods {
 
 		Integer result = null;
 		try {
-			String sql = "select * from testserver where address=? ";
+			String sql = "select * from testserver where address=? amd delete_flag =0";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			PreparedStatement ps = conn.prepareStatement(sql);
