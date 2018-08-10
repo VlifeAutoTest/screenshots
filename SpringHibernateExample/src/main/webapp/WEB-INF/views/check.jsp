@@ -210,7 +210,7 @@ select {
 						<td><label for="resource">资源: </label></td>
 						<td><form:select path="resource" multiple="multiple"
 								itemValue="id" itemLabel="name" id="resource"
-								class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true" /> <a
+								class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索"  /> <a
 							href="<c:url value='/newtheme-1' />"> +增加资源</a></td>
 						<td><form:errors path="resource" cssClass="error" /></td>
 					</tr>

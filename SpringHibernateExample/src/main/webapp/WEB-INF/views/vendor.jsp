@@ -37,6 +37,7 @@
 						<td><label for="name">名称: </label></td>
 						<td><form:input path="name" id="name" /></td>
 						<td><form:errors path="name" cssClass="error" /></td>
+						<td>${mess } </td>
 					</tr>
 					<tr>
 						<td colspan="3"><c:choose>

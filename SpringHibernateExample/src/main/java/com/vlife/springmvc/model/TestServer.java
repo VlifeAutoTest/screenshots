@@ -22,15 +22,15 @@ public class TestServer {
 	@Column(name = "ssn", unique = true, nullable = false)
 	private String ssn;
 
-	@Pattern(message = "IP address format is not right", regexp = "((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))")
+	@Pattern(message = "IP 地址格式不正确", regexp = "((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))")
 	@Column(name = "address", nullable = false)
 	private String address;
 
-	@NotEmpty(message = "pass word 不能为空")
+	@NotEmpty(message = "密码 不能为空")
 	@Column(name = "passwd", nullable = false)
 	private String passwd;
 
-	@NotEmpty(message = "user name 不能为空")
+	@NotEmpty(message = "账户名不能为空")
 	@Column(name = "uname", nullable = false)
 	private String uname;
 	

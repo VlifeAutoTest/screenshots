@@ -867,12 +867,21 @@ public class AppController {
 		if (result.hasErrors()) {
 			return "vendor";
 		}
+		if(vendor.getName().trim().length()==0) {
+			Vendor vendor2 = new Vendor();
+			model.addAttribute("vendor", vendor2);
+			model.addAttribute("edit", false);
+			model.addAttribute("mess","厂商名不能为空");
+			return "vendor";
+			
+		}else {
 
 		String temp = new String(vendor.getName().getBytes("iso-8859-1"), "utf-8");
 		vendor.setName(temp);
 		vendor_service.saveVendor(vendor);
 		return "redirect:/vendorlist";
 	}
+		}
 
 	@RequestMapping(value = { "/edit-{id}-vendor" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String editVendor(@PathVariable int id, ModelMap model) {
@@ -1102,7 +1111,6 @@ public class AppController {
 	@RequestMapping(value = { "/servernew" }, method = RequestMethod.POST)
 	public String saveServer(@Valid TestServer server, BindingResult result, ModelMap model)
 			throws UnsupportedEncodingException {
-
 		if (result.hasErrors()) {
 			String errors = getErrorString(result);
 			model.addAttribute("errorInfo", errors);

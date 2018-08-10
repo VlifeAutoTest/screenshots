@@ -46,7 +46,7 @@ public class Mobile {
 	@Column(name = "delete_flag", nullable = false)
 	private int delflag;
 	
-	@Pattern(message = "IP address format is not right", regexp = "((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))")
+	@Pattern(message = "IP 地址格式不正确", regexp = "((25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))\\.){3}(25[0-5]|2[0-4]\\d|((1\\d{2})|([1-9]?\\d)))")
 	@Column(name = "address", nullable = false)
 	private String address;
 	

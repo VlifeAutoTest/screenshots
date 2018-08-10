@@ -95,17 +95,20 @@ select {
 					<tr class="wifi" style="display: none;">
 						<td><label>手机的ip: </label></td>
 						<td><form:input path="address" id="address" /></td>
+						<td><form:errors path="address" cssClass="error" /></td>
 
 					</tr>
 					<tr class="wifi" style="display: none;">
 						<td><label>端口号:</label></td>
 						<td><form:input path="port" id="port" /> <a id="tryconnect"
 							href="#" onclick="assert()" > +Wifi连接测试</a></td>
+							<td><form:errors path="port" cssClass="error" /></td>
 
 					</tr>
 					<tr style="display: none;">
 						<td><label>wifi_flag</label></td>
 						<td><form:input path="wififlag" id="wififlag" /></td>
+						<td><form:errors path="wififlag" cssClass="error" /></td>
 
 					</tr>
 

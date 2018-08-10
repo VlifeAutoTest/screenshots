@@ -215,7 +215,7 @@ select {
 							<td><label for="resource">资源: </label></td>
 							<td><form:select path="resource" multiple="multiple"
 									itemValue="id" itemLabel="name" id="resource"
-									class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true" >
+									class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索"  >
 								</form:select></td>
 							<td><form:errors path="resource" cssClass="error" /></td>
 						</tr>
@@ -223,14 +223,14 @@ select {
 							<td><label for="mid">手机: </label></td>
 							<td><form:select path="mid" multiple="multiple"
 									itemValue="id" itemLabel="name" id="mobile" 
-									class="selectpicker bla bla bli"  data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true" />
+									class="selectpicker bla bla bli"  data-live-search="true" data-live-search-placeholder="搜索"  />
 						</tr>
 
 						<tr>
 							<td><label for="app">应用: </label></td>
 							<td><form:select path="app" multiple="multiple"
 									itemValue="id" itemLabel="name" id="app"
-									class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true">
+									class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索" >
 								</form:select></td>
 							<td><form:errors path="app" cssClass="error" /></td>
 						</tr>
