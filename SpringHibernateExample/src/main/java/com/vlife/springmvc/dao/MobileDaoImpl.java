@@ -32,7 +32,7 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 		return (Mobile) criteria.uniqueResult();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "static-access", "unchecked" })
 	public List<Mobile> findAllMobile() {
 		Criteria criteria = createEntityCriteria();
 		criteria.add(Restrictions.eq("delflag", 0));

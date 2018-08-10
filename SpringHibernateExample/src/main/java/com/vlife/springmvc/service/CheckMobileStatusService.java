@@ -14,7 +14,7 @@ public class CheckMobileStatusService implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent arg0) {
-		
+		System.out.println("2222222222222222222222222222222222222222222");
 		new TimerManager();
 	}
 

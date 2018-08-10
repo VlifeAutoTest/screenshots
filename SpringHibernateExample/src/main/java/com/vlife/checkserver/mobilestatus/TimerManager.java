@@ -17,7 +17,6 @@ public class TimerManager {
 		int day = calendar.get(Calendar.DAY_OF_MONTH);// 每天
 		calendar.set(year, month, day, 9, 0, 0);
 		Date date = calendar.getTime(); // 第一次执行定时任务的时间
-	
 		// 如果当前时间已经过去所定时的时间点，则在第二天时间点开始执行
 		while(true) {
 			if (date.before(new Date())) {

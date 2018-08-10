@@ -18,7 +18,6 @@ public class CheckMobileSattus extends TimerTask {
 
 	@Override
 	public void run() {
-
 		List<String[]> serverList = methods.getTestServerValues();
 		for (String[] temp : serverList) {
 			try {

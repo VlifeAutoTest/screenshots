@@ -369,7 +369,7 @@ public class Methods {
 
 		Integer result = null;
 		try {
-			String sql = "select * from testserver where address=? amd delete_flag =0";
+			String sql = "select * from testserver where address=? and delete_flag =0";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -547,7 +547,7 @@ public class Methods {
 
 		List<String[]> list = new ArrayList<String[]>();
 		try {
-			String sql = "select * from testserver ";
+			String sql = "select * from testserver where delete_flag =0 ";
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(URL, USER, PASSWORD);
 			PreparedStatement ps = conn.prepareStatement(sql);

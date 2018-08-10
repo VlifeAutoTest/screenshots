@@ -35,15 +35,12 @@ select {
 <body>
 	<script type="text/javascript">
 		$(function() {
-			var sta = $
-			{
-				mobile.getWififlag()
-			}
-			;
-			if (sta == 1) {
 
-				$("#optwifi").prop("selected", "selected");
-				$("#optusb").prop("selected", "");
+			var sta = ${mobile.wififlag};
+			if (sta == 1) {
+					$("#optwifi").prop("selected", "selected");
+						$("#optusb").removeAttr("selected");
+						module();
 			}
 
 		});
@@ -61,7 +58,7 @@ select {
 
 					<tr>
 						<td><label>连接类型:</label></td>
-						<td><select id="sel" onchange="module()">
+						<td><select id="sel" onchange="module()" >
 
 								<option id="optusb" selected="selected" value="usb">Usb模式
 								</option>
@@ -103,7 +100,7 @@ select {
 					<tr class="wifi" style="display: none;">
 						<td><label>端口号:</label></td>
 						<td><form:input path="port" id="port" /> <a id="tryconnect"
-							href="#"> +Wifi连接测试</a></td>
+							href="#" onclick="assert()" > +Wifi连接测试</a></td>
 
 					</tr>
 					<tr style="display: none;">
@@ -164,22 +161,28 @@ select {
 
 
 <script type="text/javascript">
+
+
+
 	function module() {
 		var value = $("#sel option:selected").val();
 		var sta2 = ${ edit };
 		if (sta2 == true) {
 
 			if (value == "wifi") {
-				$(".usb").hide();
+				$("#tryconnect").attr("onclick","assert()");
+				$(".usb").show();
 				$(".wifi").show();
+				$("#wififlag").val("1");
 				$("#edi").attr("disabled", "true")
 
-			} else {
+			}  else {
+				$("#tryconnect").removeAttr("onclick");
 				$(".usb").show();
-				$(".wifi").hide();
-
-				$("#sub").removeAttr("disabled");
-			}
+				$(".wifi").show();
+				$("#wififlag").val("0");
+				$("#edi").removeAttr("disabled");
+			} 
 
 		} else if (sta2 == false) {
 			if (value == "wifi") {
@@ -195,7 +198,6 @@ select {
 				$("uid").val("");
 				$("size").val("");
 				$("os").val("");
-
 				$("#wififlag").val("0");
 				$(".usb").show();
 				$(".wifi").hide();
@@ -207,7 +209,7 @@ select {
 
 	}
 
-	$("#tryconnect").click(function() {
+	function assert() {
 		var text = $("#address").val() + ":" + $("#port").val();
 		var str = JSON.stringify(text);
 		$.ajax({
@@ -243,6 +245,6 @@ select {
 			}
 		});
 
-	});
+	};
 </script>
 </html>

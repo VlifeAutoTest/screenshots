@@ -135,7 +135,7 @@ public class AppController {
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public String home(ModelMap model, @ModelAttribute("logSuccessUser") User user) {
 		model.addAttribute("user", user);
-		model.addAttribute("stfaddress",Methods.getProperty("stf.address"));
+		model.addAttribute("stfaddress", Methods.getProperty("stf.address"));
 		model.addAttribute("countrunningcase", runinfo_services.countRunningCase());
 		model.addAttribute("counectnum", status_services.countConnnectMobile());
 		return "home";
@@ -903,7 +903,7 @@ public class AppController {
 		// 每页显示多少个手机
 		int pageSize = Integer.parseInt(Methods.getProperty("mobile.management.page.size"));
 		List<Mobile> allMobiles = mobile_service.findAllMobile();
-		
+
 		System.out.println(allMobiles.size() / pageSize + 1);
 		System.out.println(allMobiles.size());
 		System.out.println(pageSize);
@@ -938,42 +938,67 @@ public class AppController {
 		if (result.hasErrors()) {
 			return "mobile";
 		}
-//		if (mobile.getWififlag() == 1) {
-//			Methods methods =new Methods();
-//			//**********************************************************************************
-//			Session session=methods.getSession("10.2.10.123", 22, "lang", "963852");
-//			String device=mobile.getAddress()+":"+mobile.getPort();
-//			mobile.setSize(methods.getSize(session, device));
-//			mobile.setName(methods.getMobilename(session, device));
-//			mobile.setOs(methods.getOS(session, device));
-//			mobile.setUid(methods.getMobileUUID(session, device));
-//			mobile_service.saveMobile(mobile);
-//		}else {
+		if (mobile.getWififlag() == 1) {
+			Mobile mobile2 = mobile_service.findMobileByUid(mobile.getUid().trim());
+			if (mobile2 == null) {
+				mobile_service.saveMobile(mobile);
+			} else {
+				mobile2.setWififlag(1);
+				mobile2.setAddress(mobile.getAddress());
+				mobile2.setPort(mobile.getPort());
+				mobile_service.updateMobile(mobile2);
+			}
+		} else {
 
-		if (!mobile_service.isMobileUidUnique(mobile.getId(), mobile.getUid())) {
-			FieldError ssnError = new FieldError("mobile", "uid",
-					messageSource.getMessage("non.unique.uid", new String[] { mobile.getUid() }, Locale.getDefault()));
-			result.addError(ssnError);
+			if (!mobile_service.isMobileUidUnique(mobile.getId(), mobile.getUid())) {
+				FieldError ssnError = new FieldError("mobile", "uid", messageSource.getMessage("non.unique.uid",
+						new String[] { mobile.getUid() }, Locale.getDefault()));
+				result.addError(ssnError);
 
-			return "mobile";
+				return "mobile";
+			}
+			String temp = new String(mobile.getName().getBytes("iso-8859-1"), "utf-8");
+			// delete spaces
+			mobile.setName(temp.trim().replace(" ", ""));
+			mobile_service.saveMobile(mobile);
 		}
-		
-//		if(mobile_service.isContainUid(mobile.getUid())) {
-//			
-//			
-//			Mobile mobile2=mobile_service.findMobileByUid(mobile.getUid());
-//			mobile2.setWififlag(mobile.getWififlag());
-//			mobile2.setAddress(mobile.getAddress());
-//			mobile2.setName(mobile.getName());
-//			mobile2.setOs(mobile.getOs());
-//		}
-
-		String temp = new String(mobile.getName().getBytes("iso-8859-1"), "utf-8");
-		// delete spaces
-		mobile.setName(temp.trim().replace(" ", ""));
-		mobile_service.saveMobile(mobile);
-//		}
 		return "redirect:/mobilelist-1";
+	}
+
+	@RequestMapping(value = { "/trywificonnect" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
+	@ResponseBody
+	public String tryWifiConnectMobile(ModelMap model, String value) {
+		String result = "false";
+		value = value.substring(1, value.length() - 1).trim();
+		String ipAndPort[] = value.split(":");
+		Methods methods = new Methods();
+		if (!methods.matcherIP(ipAndPort[0].trim()) || Integer.parseInt(ipAndPort[1]) <= 0
+				|| Integer.parseInt(ipAndPort[1]) > 65535) {
+			result = "messwarn";
+		} else {
+			TestServer server = tserver_service.findTestServerBySsn(Methods.getProperty("connect.mobile.serverSSn"));
+			Session session = methods.getSession(server.getAddress(), 22, server.getAddress(), server.getPasswd());
+			methods.exeShellCommand(session, "adb connect " + value);
+			String str = methods.exeShellCommand(session, "adb devices");
+			if (str.contains(value)) {
+				result = "true";
+				String uuid = methods.getMobileUUID(session, value).trim();
+				String size = "";
+				String name = "";
+				String os = "";
+				try {
+					size = methods.getSize(session, value);
+					name = methods.getMobilename(session, value);
+					os = methods.getOS(session, value);
+				} catch (Exception e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+				}
+				result = result + "#" + size + "#" + name + "#" + os + "#" + uuid;
+			}
+			methods.endSSH(session);
+		}
+		return result;
 	}
 
 	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
@@ -1317,54 +1342,6 @@ public class AppController {
 		sessionStatus.setComplete();
 
 		return "redirect:/login";
-	}
-
-	@RequestMapping(value = { "/trywificonnect" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	@ResponseBody
-	public String tryWifiConnectMobile(ModelMap model, String value) {
-		String result="false";
-		value = value.substring(1, value.length() - 1).trim();
-		String ipAndPort[] = value.split(":");
-		Methods methods = new Methods();
-		if (!methods.matcherIP(ipAndPort[0].trim()) || Integer.parseInt(ipAndPort[1]) <= 0
-				|| Integer.parseInt(ipAndPort[1]) > 65535) {
-			result= "messwarn";
-		}
-		else {
-			
-		
-		 
-		Session session = methods.getSession("192.168.1.100", 22, "lang", "963852");
-		methods.exeShellCommand(session, "adb connect " + value);
-
-		String str = methods.exeShellCommand(session, "adb devices");
-
-		if (str.contains(value)) {
-			result = "true";
-			String uuid = methods.getMobileUUID(session, value).trim();
-			String size="";
-			String name="";
-			String os ="";
-			System.out.println(uuid);
-			//System.out.println(mobile_service.notContainUid("1df0cd1f"));
-			//System.out.println(mobile_service.isMobileUidUnique(45, "dasda222"));
-//			if(mobile_service.isMobileUidUnique(, "dasda222")) {
-				System.out.println(value);
-				size = methods.getSize(session, value);
-				 name = methods.getMobilename(session, value);
-				 os = methods.getOS(session, value);
-//			}else {
-//			Mobile mobile=mobile_service.findMobileByUid(uuid);
-//			size=mobile.getSize();
-//			name=mobile.getName();
-//			os=mobile.getOs();
-//			}
-			
-			result = result+"#" + size + "#" + name + "#" + os + "#" + uuid;
-		}
-		methods.endSSH(session);
-		}
-		return result;
 	}
 
 	// 注册
