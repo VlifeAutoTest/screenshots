@@ -30,6 +30,7 @@ public class Runinfo {
 	private String zip_file;
 	private String status;
 	private String style;
+	private int user_id;
 
 	public int getId() {
 		return id;
@@ -141,5 +142,13 @@ public class Runinfo {
 
 	public void setStyle(String style) {
 		this.style = style;
+	}
+	
+	public int getUid() {
+		return user_id;
+	}
+
+	public void setUid(int id) {
+		this.user_id = id;
 	}
 }

@@ -16,6 +16,8 @@ public interface MobileDao {
 	List<Mobile> findMobileByVendor(Vendor vendor);
 
 	void deleteMobileByUid(String uid);
+	
+	void deleteMobileByID(int id);
 
 	Mobile findMobileByUid(String uid);
 

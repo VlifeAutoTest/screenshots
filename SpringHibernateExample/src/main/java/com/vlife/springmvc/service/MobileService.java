@@ -16,6 +16,8 @@ public interface MobileService {
 	List<Mobile> findMobileByVendor(Vendor vendor);
 
 	void deleteMobileByUid(String uid);
+	
+	void deleteMobileByID(int id);
 
 	void updateMobile(Mobile mobile);
 

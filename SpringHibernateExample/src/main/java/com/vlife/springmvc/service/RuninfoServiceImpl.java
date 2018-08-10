@@ -104,7 +104,7 @@ public class RuninfoServiceImpl implements RuninfoService {
 			String apps = "";
 			for (int j = 0; j < application.length; j++) {
 				int id = Integer.parseInt(application[j]);
-				apps = apps + app_service.findById(id).getName() + ",";
+				apps = apps + app_service.findById(id).getAlias() + ",";
 			}
 			tmp[4] = apps;
 

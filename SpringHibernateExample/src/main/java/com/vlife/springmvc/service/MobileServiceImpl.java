@@ -28,6 +28,10 @@ public class MobileServiceImpl implements MobileService {
 	public void deleteMobileByUid(String uid) {
 		dao.deleteMobileByUid(uid);
 	}
+	
+	public void deleteMobileByID(int id) {
+		dao.deleteMobileByID(id);
+	}
 
 	public Mobile findMobileByUid(String uid) {
 		return dao.findMobileByUid(uid);
