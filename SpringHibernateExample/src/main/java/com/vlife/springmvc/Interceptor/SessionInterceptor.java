@@ -27,12 +27,11 @@ public class SessionInterceptor implements HandlerInterceptor {
 		String path = request.getServletPath();
 		String method = request.getMethod().toLowerCase().trim();
 		System.out.println("进入拦截器了-------------------------------------");
-		
-		if (user == null ) {
+
+		if (user == null) {
 			request.getRequestDispatcher("/login").forward(request, response);
 			return false;
 		}
-		
 
 		else if (!path.equals("/logout")) {
 

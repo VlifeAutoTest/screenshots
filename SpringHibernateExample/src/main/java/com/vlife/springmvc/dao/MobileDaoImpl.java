@@ -24,6 +24,12 @@ public class MobileDaoImpl extends AbstractDao<Integer, Mobile> implements Mobil
 		query.setString("uid", uid);
 		query.executeUpdate();
 	}
+	
+	public void deleteMobileByID(int id) {
+		Query query = getSession().createSQLQuery("update mobile set delete_flag=1 where id = :id");
+		query.setInteger("id", id);
+		query.executeUpdate();
+	}
 
 	public Mobile findMobileByUid(String uid) {
 		Criteria criteria = createEntityCriteria();

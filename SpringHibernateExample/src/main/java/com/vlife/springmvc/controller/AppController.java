@@ -34,6 +34,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.vlife.springmvc.model.Theme;
 import com.vlife.springmvc.model.User;
 import com.vlife.springmvc.model.Vendor;
@@ -41,6 +43,7 @@ import com.vlife.springmvc.service.ThemeService;
 import com.vlife.springmvc.service.UploadFilesServices;
 import com.vlife.springmvc.service.UserService;
 import com.vlife.springmvc.service.VendorService;
+import com.vlife.springmvc.service.WebSocketService;
 import com.jcraft.jsch.Session;
 import com.vlife.checkserver.mobilestatus.CheckMobileSattus;
 import com.vlife.checkserver.mobilestatus.Methods;
@@ -49,6 +52,7 @@ import com.vlife.checkserver.mobilestatus.SendEmailMethods;
 import com.vlife.clienttest.utils.ADBMethods;
 import com.vlife.clienttest.utils.OtherMethods;
 import com.vlife.springmvc.model.Application;
+//import com.vlife.springmvc.model.HelloMessage;
 import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.model.Resources;
 import com.vlife.springmvc.model.Role;
@@ -119,6 +123,18 @@ public class AppController {
 	public List<TestServer> initializeServers() {
 		return tserver_service.findAllTestServer();
 	}
+	
+    @Autowired
+    private WebSocketService webSocketService;
+
+//    @RequestMapping(value = "/websocketdemo", method = RequestMethod.GET)
+//    public ModelAndView greeting(HelloMessage message) throws Exception {
+//        webSocketService.sendMessage();
+//        ModelAndView model = new ModelAndView();
+//        model.setViewName("log");
+//        model.addObject("message", "Hello World, Hello Kitty");
+//        return model;
+//    }
 
 	@RequestMapping(value = { "/list" }, method = RequestMethod.GET)
 	public String showMobile(ModelMap model) {
@@ -440,7 +456,7 @@ public class AppController {
 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = { "/check" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public String saveRuninfo(@Valid Runinfo runinfo, BindingResult result, ModelMap model)
+	public String saveRuninfo(@Valid Runinfo runinfo, BindingResult result, ModelMap model, @ModelAttribute("logSuccessUser") User user)
 			throws UnsupportedEncodingException, ParseException {
 
 		if (runinfo.getVid() == 0 || runinfo.getMid() == null || runinfo.getApp() == null
@@ -478,7 +494,7 @@ public class AppController {
 					runinfo.setSid(sid);
 				}
 			}
-
+			runinfo.setUid(user.getId());
 			runinfo_services.saveRuninfo(runinfo);
 
 			// need runid for python program
@@ -1002,10 +1018,10 @@ public class AppController {
 		return result;
 	}
 
-	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public String editmobile(@PathVariable String uid, ModelMap model) {
+	@RequestMapping(value = { "/edit-{id}-mobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String editmobile(@PathVariable int id, ModelMap model) {
 		
-		Mobile mobile = mobile_service.findMobileByUid(uid);
+		Mobile mobile = mobile_service.findById(id);
 		String vname = "";
 		try {
 			vname = mobile.getVendor().getName();
@@ -1018,7 +1034,7 @@ public class AppController {
 		return "mobile";
 	}
 
-	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/edit-{id}-mobile" }, method = RequestMethod.POST)
 	public String updatemobile(@Valid Mobile mobile, BindingResult result, ModelMap model)
 			throws UnsupportedEncodingException {
 		mobile.setUid(mobile.getUid().trim());
@@ -1039,9 +1055,9 @@ public class AppController {
 		return "redirect:/mobilelist-1";
 	}
 
-	@RequestMapping(value = { "/delete-{uid}-mobile-{page}" }, method = RequestMethod.GET)
-	public String deleteMobile(@PathVariable String uid, @PathVariable String page) {
-		mobile_service.deleteMobileByUid(uid);
+	@RequestMapping(value = { "/delete-{id}-mobile-{page}" }, method = RequestMethod.GET)
+	public String deleteMobile(@PathVariable int id, @PathVariable String page) {
+		mobile_service.deleteMobileByID(id);
 		return "redirect:/mobilelist-" + page;
 	}
 

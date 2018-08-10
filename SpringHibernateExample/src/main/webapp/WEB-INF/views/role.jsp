@@ -2,7 +2,7 @@
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="java.util.*" %>
+<%@ page import="java.util.*"%>
 
 <html>
 
@@ -22,8 +22,8 @@
 
 <style>
 table {
-table-layout: fixed;
-word-wrap: break-word;
+	table-layout: fixed;
+	word-wrap: break-word;
 }
 </style>
 </head>
@@ -56,50 +56,58 @@ word-wrap: break-word;
 
 					<tr hidden="true">
 						<td><label for="available">生效: </label></td>
-						<td><form:checkbox path="available" id="available" value="1" checked="checked"/></td>
+						<td><form:checkbox path="available" id="available" value="1"
+								checked="checked" /></td>
 						<td><form:errors path="available" cssClass="error" /></td>
 						<td colspan="2"></td>
 					</tr>
 					<tr>
 						<td><label>分配权限:</label></td>
-						<td><input type="checkbox" id="checkall" value=""  />选择全部</td>
+						<td><input type="checkbox" id="checkall" value="" />选择全部</td>
 						<td></td>
 						<td colspan="2"></td>
 					</tr>
-		            <c:forEach var="res" items="${resources}" varStatus="status">
-		            	<c:set var= "resid" value ="${res.id}" scope="session"/>
+					<c:forEach var="res" items="${resources}" varStatus="status">
+						<c:set var="resid" value="${res.id}" scope="session" />
 
-			            		<% 
-			            		String resid = String.valueOf(pageContext.findAttribute("resid"));
-			            		int value = Integer.parseInt(resid);      		
-			            		String status = "";
-			            		boolean edit_flag = (boolean)request.getAttribute("edit");
-			            		if (edit_flag){
-									List<Integer> rlist = (List<Integer>)request.getAttribute("relID");
-				            		for(int i=0; i<rlist.size(); i++){
-				            			Integer temp = rlist.get(i);
-					            		if(value == temp){
-					            			status="checked";
-					            			break;
-					            		}
-				            		}
-			            			
-			            		}
-			            		%>
+						<%
+							String resid = String.valueOf(pageContext.findAttribute("resid"));
+									int value = Integer.parseInt(resid);
+									String status = "";
+									boolean edit_flag = (boolean) request.getAttribute("edit");
+									if (edit_flag) {
+										List<Integer> rlist = (List<Integer>) request.getAttribute("relID");
+										for (int i = 0; i < rlist.size(); i++) {
+											Integer temp = rlist.get(i);
+											if (value == temp) {
+												status = "checked";
+												break;
+											}
+										}
+
+									}
+						%>
 
 
-		            	<c:choose>
-<%-- 							<c:when test="${status.index=='0'}"> --%>
-<%-- 		                		<tr><td><label>分配权限</label></td><td width="1%">${res.description}: <form:checkbox path="relresources" checked="<%=status%>" value ="${res.id}" style="float: left"/></td> --%>
-<%-- 		                	</c:when> --%>
-		                	<c:when test="${status.index % 4 != '0'}">
-		                		<td width="1%">${res.description}: <form:checkbox  name ="qwe2" class ="ss" path="relresources" value ="${res.id}" checked="<%=status%>" style="float: left"/></td>
-		                	</c:when>
-		                	<c:otherwise>
-		                		</tr><tr><td></td><td width="1%">${res.description}: <form:checkbox  name ="qwe2" class="ss" path="relresources" value ="${res.id}" checked="<%=status%>" style="float: left"/></td>
-		                	</c:otherwise>
-		                </c:choose>
-		            </c:forEach>
+						<c:choose>
+							<%-- 							<c:when test="${status.index=='0'}"> --%>
+							<%-- 		                		<tr><td><label>分配权限</label></td><td width="1%">${res.description}: <form:checkbox path="relresources" checked="<%=status%>" value ="${res.id}" style="float: left"/></td> --%>
+							<%-- 		                	</c:when> --%>
+							<c:when test="${status.index % 4 != '0'}">
+								<td width="1%">${res.description}:<form:checkbox
+										name="qwe2" class="ss" path="relresources" value="${res.id}"
+										checked="<%=status%>" style="float: left" /></td>
+							</c:when>
+							<c:otherwise>
+								</tr>
+								<tr>
+									<td></td>
+									<td width="1%">${res.description}:<form:checkbox
+											name="qwe2" class="ss" path="relresources" value="${res.id}"
+											checked="<%=status%>" style="float: left" /></td>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
 					<tr>
 						<td colspan="5"><c:choose>
 								<c:when test="${edit}">
@@ -119,20 +127,17 @@ word-wrap: break-word;
 </body>
 
 <script type="text/javascript">
-//全选/不选
+	//全选/不选
 
-$(function(){
-document.getElementById('checkall').onclick=function()
-{
+	$(function() {
+		document.getElementById('checkall').onclick = function() {
 
-	if (this.checked) {
-		$(".ss").prop("checked",true);
+			if (this.checked) {
+				$(".ss").prop("checked", true);
+			} else {
+				$(".ss").prop("checked", false);
+			}
 		}
-	else{
-		$(".ss").prop("checked",false);
-	}
-}
-});
-
+	});
 </script>
 </html>

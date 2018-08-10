@@ -44,6 +44,9 @@ public class User {
 	@JoinColumn(name = "role_id", nullable = true)
 	private Role role;
 	
+	@Column(name = "delete_flag", nullable = false)
+	private int delflag;
+	
 	public User() {
 		
 		
@@ -111,5 +114,12 @@ public class User {
 	public void setIs_active(int is_active) {
 		this.is_active = is_active;
 	}
+	
+	public int getDelflag() {
+		return delflag;
+	}
 
+	public void setDelflag(int value) {
+		this.delflag = value;
+	}
 }

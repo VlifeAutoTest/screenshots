@@ -25,7 +25,7 @@
 						<th>分辨率</th>
 						<th>操作系统版本</th>
 						<th>厂商</th>
-						<th>连接方式 </th>
+						<th>连接方式</th>
 						<td><a href="<c:url value='/newmobile' />">+ 增加手机</a></td>
 					</tr>
 				</thead>
@@ -37,10 +37,11 @@
 							<td>${mobile.size}</td>
 							<td>${mobile.os}</td>
 							<td>${mobile.getVendor().getName()}</td>
-							<td> <c:if test="${mobile.wififlag == 0}"> USB</c:if> 
-							<c:if test="${mobile.wififlag == 1 }"> Wifi</c:if></td>
-							<td><a href="<c:url value='/edit-${mobile.uid}-mobile' />">编辑</a></td>
-							<td><a href="<c:url value='/delete-${mobile.uid}-mobile-${page}' />">删除</a></td>
+							<td><c:if test="${mobile.wififlag == 0}"> USB</c:if> <c:if
+									test="${mobile.wififlag == 1 }"> Wifi</c:if></td>
+							<td><a href="<c:url value='/edit-${mobile.id}-mobile' />">编辑</a></td>
+							<td><a
+								href="<c:url value='/delete-${mobile.id}-mobile-${page}' />">删除</a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -56,7 +57,8 @@
 									<li class="${active}"><a
 										href="<c:url value="/mobilelist-${loop.index}"/>">${loop.index}</a></li>
 								</c:forEach>
-								<li><a href="<c:url value="/mobilelist-${page+1<totalPages?page+1:totalPages}"/>">&raquo;</a></li>
+								<li><a
+									href="<c:url value="/mobilelist-${page+1<totalPages?page+1:totalPages}"/>">&raquo;</a></li>
 								<li><a href="<c:url value="/mobilelist-${totalPages}"/>">末页</a></li>
 							</ul>
 						</td>
