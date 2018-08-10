@@ -934,7 +934,7 @@ public class AppController {
 	@RequestMapping(value = { "/newmobile" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	public String saveMobile(@Valid Mobile mobile, BindingResult result, ModelMap model)
 			throws UnsupportedEncodingException {
-
+			mobile.setUid(mobile.getUid().trim());
 		if (result.hasErrors()) {
 			return "mobile";
 		}
@@ -981,7 +981,7 @@ public class AppController {
 			methods.exeShellCommand(session, "adb connect " + value);
 			String str = methods.exeShellCommand(session, "adb devices");
 			if (str.contains(value)) {
-				result = "true";
+				
 				String uuid = methods.getMobileUUID(session, value).trim();
 				String size = "";
 				String name = "";
@@ -990,6 +990,7 @@ public class AppController {
 					size = methods.getSize(session, value);
 					name = methods.getMobilename(session, value);
 					os = methods.getOS(session, value);
+					result = "true";
 				} catch (Exception e) {
 					// TODO 自动生成的 catch 块
 					e.printStackTrace();
@@ -1003,7 +1004,7 @@ public class AppController {
 
 	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String editmobile(@PathVariable String uid, ModelMap model) {
-
+		
 		Mobile mobile = mobile_service.findMobileByUid(uid);
 		String vname = "";
 		try {
@@ -1020,6 +1021,7 @@ public class AppController {
 	@RequestMapping(value = { "/edit-{uid}-mobile" }, method = RequestMethod.POST)
 	public String updatemobile(@Valid Mobile mobile, BindingResult result, ModelMap model)
 			throws UnsupportedEncodingException {
+		mobile.setUid(mobile.getUid().trim());
 		if (result.hasErrors()) {
 			return "mobile";
 		}
