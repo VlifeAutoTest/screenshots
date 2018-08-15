@@ -21,4 +21,6 @@ public interface TestServerService {
 
 	boolean isTestServerSsnUnique(Integer id, String ssn);
 
+	public void deleteTestServerByID(int id);
+
 }

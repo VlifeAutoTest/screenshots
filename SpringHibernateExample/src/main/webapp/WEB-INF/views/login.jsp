@@ -49,7 +49,7 @@ body {
 							<span class="input-group-addon"><i
 								class="glyphicon glyphicon-user"></i></span> <input id="login-username"
 								type="text" class="form-control" name="logname" value=""
-								placeholder="请输入用户名">
+								placeholder="请输入用户名(支持邮箱登录)">
 						</div>
 
 						<div style="margin-bottom: 25px" class="input-group">
@@ -125,7 +125,7 @@ body {
 							<label for="email" class="col-md-3 control-label">邮箱</label>
 							<div class="col-md-9">
 								<input type="text" class="form-control" name="signinemail"
-									placeholder="请填写邮件地址">
+									placeholder="请填写邮件地址(功能多多,请正确填写)">
 							</div>
 						</div>
 
@@ -134,7 +134,7 @@ body {
 								用户名</label>
 							<div class="col-md-9">
 								<input type="text" class="form-control" name="signinname"
-									placeholder="请设置用户名">
+									placeholder="请设置用户名(不允许包含@)">
 							</div>
 						</div>
 
@@ -240,11 +240,11 @@ body {
 				data : $("#signupform").serialize(),
 				success : function(result) {
 					alert(result);
-					//window.location.reload();
+					window.location.reload();
 				},
 				error : function() {
 					alert("注册失败!请检测信息填写是否符合规范.");
-					//window.location.reload();
+					window.location.reload();
 				}
 			});
 		}
@@ -259,11 +259,11 @@ body {
 				data : $("#findpass").serialize(),
 				success : function(result) {
 					alert(result);
-					//window.location.reload();
+					window.location.reload();
 				},
 				error : function() {
 					alert("找回密码失败请重试!");
-					//window.location.reload();
+					window.location.reload();
 				}
 			});
 		}

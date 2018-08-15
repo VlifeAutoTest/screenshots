@@ -10,24 +10,28 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 import com.vlife.springmvc.model.Runinfo;
-
+/**
+ * 
+ * @author Administrator
+ *
+ */
 @Repository("runinfoDao")
 public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements RuninfoDao {
-
+	@Override
 	public Runinfo findById(int id) {
 		return getByKey(id);
 	}
-
+	@Override
 	public void saveRuninfo(Runinfo runinfo) {
 		persist(runinfo);
 	}
-
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<Runinfo> findAllRuninfo() {
 		Criteria criteria = createEntityCriteria();
 		return (List<Runinfo>) criteria.list();
 	}
-
+	@Override
 	@SuppressWarnings("unchecked")
 	public List<Runinfo> queryData(Map<String, String> conditions, Date[] mytime) {
 
@@ -86,6 +90,22 @@ public class RuninfoDaoImpl extends AbstractDao<Integer, Runinfo> implements Run
 		} else {
 			return list.size();
 		}
+	}
+
+	@Override
+	public List<Runinfo> findRuninfoByUserID(Integer userID) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("user_id", userID));
+		return (List<Runinfo>) criteria.list();
+	}
+	@Override
+	public List<Runinfo> findRuninfoByUserIDAndPage(Integer userID, int offset, int length) {
+		Criteria criteria = createEntityCriteria();
+		criteria.add(Restrictions.eq("user_id", userID));
+		criteria.addOrder(Order.desc("stime"));
+		criteria.setFirstResult(offset);
+		criteria.setMaxResults(length);
+		return (List<Runinfo>) criteria.list();
 	}
 
 }

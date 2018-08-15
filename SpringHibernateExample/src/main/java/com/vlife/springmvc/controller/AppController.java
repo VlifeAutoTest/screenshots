@@ -123,9 +123,9 @@ public class AppController {
 	public List<TestServer> initializeServers() {
 		return tserver_service.findAllTestServer();
 	}
-	
-    @Autowired
-    private WebSocketService webSocketService;
+
+	@Autowired
+	private WebSocketService webSocketService;
 
 //    @RequestMapping(value = "/websocketdemo", method = RequestMethod.GET)
 //    public ModelAndView greeting(HelloMessage message) throws Exception {
@@ -165,6 +165,81 @@ public class AppController {
 		return "redirect:/list";
 	}
 
+	//个人审核历史
+	@RequestMapping(value = { "/checkhistory-{page}" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String checkHistory(ModelMap model,@ModelAttribute("logSuccessUser") User user,@PathVariable() int page ) {
+		
+		int pageSize = Integer.parseInt(Methods.getProperty("check.history.page.size"));
+		List<Runinfo> allresult =	runinfo_services.findRuninfoByUserID(user.getId());
+		
+		int totalPages = allresult.size() % pageSize == 0 ? allresult.size() / pageSize
+				: allresult.size() / pageSize + 1;
+		int offset = 1;
+		if (page <= 0) {
+			offset = 0;
+		} else if (page > totalPages) {
+			offset = (totalPages - 1) * pageSize;
+		} else {
+			offset = (page - 1) * pageSize;
+		}
+		if (totalPages == 0) {
+			totalPages = 1;
+		}
+		
+		List<Runinfo> qresult=runinfo_services.findRuninfoByUserIDAndPage(user.getId(), offset,pageSize);
+		
+			List<Object[]> detail = runinfo_services.translaterinfo(qresult);
+			for (Object str[] : detail) {
+				String path = (String) str[7];
+				String bb = path.replaceAll("/", "\\\\");
+				str[7] = bb;
+			}
+
+			for (int i = 0; i < detail.size(); i++) {
+				Object obj[] = detail.get(i);
+				String str = (String) obj[4];
+
+				String str2[] = str.split(",");
+				String res = "";
+				for (int j = 0; j < str2.length; j++) {
+
+					if (j != 0 && j % 8 == 0) {
+
+						res = res + str2[j] + "，" + "<br/>";
+					} else {
+						res = res + str2[j] + "，";
+					}
+
+				}
+				obj[4] = res;
+
+				Object obj2[] = detail.get(i);
+				String str3 = (String) obj[3];
+
+				String str4[] = str3.split(",");
+				String res2 = "";
+				for (int j = 0; j < str4.length; j++) {
+
+					if (j != 0 && j % 2 != 0) {
+						res2 = res2 + str4[j] + "，" + "<br/>";
+					} else {
+						res2 = res2 + str4[j] + "，";
+					}
+
+				}
+				obj2[3] = res2;
+
+			}
+			model.addAttribute("samip",Methods.getProperty("sam.serve.ip"));
+			model.addAttribute("detail", detail);
+			model.addAttribute("queryflag", true);
+			model.addAttribute("totalPages", totalPages);
+			// 当前的页数
+			model.addAttribute("page", page);
+		model.addAttribute("downloadfilepath", Methods.getProperty("file.server.downloadfile"));
+		return "checkhistory";
+	}
+		
 	// 审核查询代码
 
 	public String[] getDetailInfo(Runinfo rinfo) {
@@ -422,10 +497,6 @@ public class AppController {
 				obj2[3] = res2;
 
 			}
-			for (int i = 0; i < detail.size(); i++) {
-
-			}
-
 			model.addAttribute("detail", detail);
 			model.addAttribute("queryflag", true);
 			model.addAttribute("message", "");
@@ -438,7 +509,7 @@ public class AppController {
 		model.addAttribute("downloadfilepath", Methods.getProperty("file.server.downloadfile"));
 		model.addAttribute("runinfo", runinfo);
 		model.addAttribute("vendors", vendors);
-
+		model.addAttribute("samip",Methods.getProperty("sam.serve.ip"));
 		return "query";
 	}
 
@@ -456,8 +527,8 @@ public class AppController {
 
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = { "/check" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
-	public String saveRuninfo(@Valid Runinfo runinfo, BindingResult result, ModelMap model, @ModelAttribute("logSuccessUser") User user)
-			throws UnsupportedEncodingException, ParseException {
+	public String saveRuninfo(@Valid Runinfo runinfo, BindingResult result, ModelMap model,
+			@ModelAttribute("logSuccessUser") User user) throws UnsupportedEncodingException, ParseException {
 
 		if (runinfo.getVid() == 0 || runinfo.getMid() == null || runinfo.getApp() == null
 				|| runinfo.getResource() == null) {
@@ -867,21 +938,21 @@ public class AppController {
 		if (result.hasErrors()) {
 			return "vendor";
 		}
-		if(vendor.getName().trim().length()==0) {
+		if (vendor.getName().trim().length() == 0) {
 			Vendor vendor2 = new Vendor();
 			model.addAttribute("vendor", vendor2);
 			model.addAttribute("edit", false);
-			model.addAttribute("mess","厂商名不能为空");
+			model.addAttribute("mess", "厂商名不能为空");
 			return "vendor";
-			
-		}else {
 
-		String temp = new String(vendor.getName().getBytes("iso-8859-1"), "utf-8");
-		vendor.setName(temp);
-		vendor_service.saveVendor(vendor);
-		return "redirect:/vendorlist";
-	}
+		} else {
+
+			String temp = new String(vendor.getName().getBytes("iso-8859-1"), "utf-8");
+			vendor.setName(temp);
+			vendor_service.saveVendor(vendor);
+			return "redirect:/vendorlist";
 		}
+	}
 
 	@RequestMapping(value = { "/edit-{id}-vendor" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String editVendor(@PathVariable int id, ModelMap model) {
@@ -959,7 +1030,7 @@ public class AppController {
 	@RequestMapping(value = { "/newmobile" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	public String saveMobile(@Valid Mobile mobile, BindingResult result, ModelMap model)
 			throws UnsupportedEncodingException {
-			mobile.setUid(mobile.getUid().trim());
+		mobile.setUid(mobile.getUid().trim());
 		if (result.hasErrors()) {
 			return "mobile";
 		}
@@ -1006,7 +1077,7 @@ public class AppController {
 			methods.exeShellCommand(session, "adb connect " + value);
 			String str = methods.exeShellCommand(session, "adb devices");
 			if (str.contains(value)) {
-				
+
 				String uuid = methods.getMobileUUID(session, value).trim();
 				String size = "";
 				String name = "";
@@ -1029,7 +1100,7 @@ public class AppController {
 
 	@RequestMapping(value = { "/edit-{id}-mobile" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String editmobile(@PathVariable int id, ModelMap model) {
-		
+
 		Mobile mobile = mobile_service.findById(id);
 		String vname = "";
 		try {
@@ -1099,7 +1170,7 @@ public class AppController {
 		return "allservers";
 	}
 
-	@RequestMapping(value = { "/servernew" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/servernew" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
 	public String newServer(ModelMap model) {
 		TestServer server = new TestServer();
 		model.addAttribute("server", server);
@@ -1107,8 +1178,7 @@ public class AppController {
 		return "addserver";
 	}
 
-	@Validated
-	@RequestMapping(value = { "/servernew" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/servernew" }, method = RequestMethod.POST, produces = "text/html;charset=UTF-8")
 	public String saveServer(@Valid TestServer server, BindingResult result, ModelMap model)
 			throws UnsupportedEncodingException {
 		if (result.hasErrors()) {
@@ -1120,7 +1190,7 @@ public class AppController {
 		}
 
 		if (!tserver_service.isTestServerSsnUnique(server.getId(), server.getSsn())) {
-			FieldError ssnError = new FieldError("server", "ssn",
+			FieldError ssnError = new FieldError("testserver", "ssn",
 					messageSource.getMessage("non.unique.ssn", new String[] { server.getSsn() }, Locale.getDefault()));
 			result.addError(ssnError);
 			model.addAttribute("errorInfo", ssnError.getDefaultMessage());
@@ -1136,15 +1206,15 @@ public class AppController {
 	}
 
 	@RequestMapping(value = {
-			"/edit-{ssn}-testserver" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public String editServer(@PathVariable String ssn, ModelMap model) {
-		TestServer server = tserver_service.findTestServerBySsn(ssn);
+			"/edit-{id}-testserver" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String editServer(@PathVariable Integer id, ModelMap model) {
+		TestServer server = tserver_service.findById(id);
 		model.addAttribute("server", server);
 		model.addAttribute("edit", true);
 		return "addserver";
 	}
 
-	@RequestMapping(value = { "/edit-{ssn}-testserver" }, method = RequestMethod.POST)
+	@RequestMapping(value = { "/edit-{id}-testserver" }, method = RequestMethod.POST)
 	public String updateServer(@Valid TestServer server, BindingResult result, ModelMap model)
 			throws UnsupportedEncodingException {
 
@@ -1169,9 +1239,9 @@ public class AppController {
 		return "redirect:/serverlist";
 	}
 
-	@RequestMapping(value = { "/delete-{ssn}-testserver" }, method = RequestMethod.GET)
-	public String deleteTestServer(@PathVariable String ssn) {
-		tserver_service.deleteTestServerBySsn(ssn);
+	@RequestMapping(value = { "/delete-{id}-testserver" }, method = RequestMethod.GET)
+	public String deleteTestServer(@PathVariable Integer id) {
+		tserver_service.deleteTestServerByID(id);
 		return "redirect:/serverlist";
 	}
 
@@ -1305,7 +1375,7 @@ public class AppController {
 	public String login(HttpServletRequest request) {
 		User user = (User) request.getSession().getAttribute("logSuccessUser");
 		if (user != null) {
-			return "redirect:/home";
+			return "redirect:/navigation";
 		}
 		return "login";
 	}
@@ -1324,9 +1394,34 @@ public class AppController {
 
 	@RequestMapping(value = { "/login" }, method = RequestMethod.POST)
 	public String assertLogIn(ModelMap model, String logname, String logpass) {
-		if (logname.trim().length() != 0 && user_services.findByName(logname)) {
+		try {
+			logname = new String(logname.trim().getBytes("iso-8859-1"), "utf-8");
+			logpass = new String(logpass.trim().getBytes("iso-8859-1"), "utf-8");
+		} catch (UnsupportedEncodingException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}
+		if (logname.trim().length() != 0 ) {
 
-			List<User> list = user_services.findUserByName(logname);
+			List<User> list = null;
+			if (logname.contains("@")) {
+				if(user_services.findByEmail(logname)) {
+					
+					list = user_services.findUserByEmail(logname);
+				}else {
+					model.addAttribute("message", "您输入的邮箱未被注册!");
+					return "login";
+				}
+			} else {
+				if(user_services.findByName(logname)) {
+					
+					list = user_services.findUserByName(logname);
+				}else {
+					model.addAttribute("message", "帐号或密码错误，请重新输入");
+					return "login";
+				}
+			}
+
 			User user2 = list.get(0);
 			if (user2.getIs_active() == 0 || user2.getRole() == null) {
 				model.addAttribute("message", "您的账号未被授权,无法登陆");
@@ -1345,7 +1440,7 @@ public class AppController {
 				model.addAttribute("tvendorid", "0");
 				model.addAttribute("pageType", "");
 
-				return "redirect:/home";
+				return "redirect:/navigation";
 			} else {
 				model.addAttribute("message", "帐号或密码错误，请重新输入");
 				return "login";
@@ -1385,7 +1480,10 @@ public class AppController {
 			return "邮箱,用户名,密码全部为必填项";
 		}
 
-		if (!user_services.findByName(signinname)) {
+		if (signinname.contains("@")) {
+			return "用户名中不允许包含@字符!";
+		}
+		if (!user_services.findByName(signinname) && !user_services.findByEmail(signinemail)) {
 			User user = new User();
 			user.setEmail(signinemail);
 			user.setIs_active(1);
@@ -1403,7 +1501,7 @@ public class AppController {
 				return "注册失败,请重试!";
 			}
 		} else {
-			return "用户名已存在,注册失败。";
+			return "用户名或邮箱已存在,注册失败。";
 		}
 
 	}
@@ -1438,6 +1536,11 @@ public class AppController {
 			return "抱歉,密码找回失败,用户名不存在.";
 		}
 
+	}
+
+	@RequestMapping(value = { "/navigation" }, method = RequestMethod.GET)
+	public String navigation(HttpSession session) {
+		return "navigation";
 	}
 
 }

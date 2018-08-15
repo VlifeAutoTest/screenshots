@@ -1,5 +1,8 @@
 package com.vlife.checkserver.mobilestatus;
-
+/**
+ * @author: gaoyaxuan
+ * @date:2018年8月13日 下午5:28:43
+ */
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
@@ -11,7 +14,7 @@ import com.jcraft.jsch.UserInfo;
 /**
  * java远程上传文件
  * 
- * @author lenovo
+ * @author 高亚轩
  * 
  */
 public class SSHCopyFile {
@@ -40,33 +43,32 @@ public class SSHCopyFile {
 		this.password = password;
 		this.port = port;
 	}
-
 	private void initialSession() throws Exception {
 		if (session == null) {
 			JSch jsch = new JSch();
 			session = jsch.getSession(user, host, port);
 			session.setUserInfo(new UserInfo() {
-
+				@Override
 				public String getPassphrase() {
 					return null;
 				}
-
+				@Override
 				public String getPassword() {
 					return null;
 				}
-
+				@Override
 				public boolean promptPassword(String arg0) {
 					return false;
 				}
-
+				@Override
 				public boolean promptPassphrase(String arg0) {
 					return false;
 				}
-
+				@Override
 				public boolean promptYesNo(String arg0) {
 					return true;
 				}
-
+				@Override
 				public void showMessage(String arg0) {
 				}
 

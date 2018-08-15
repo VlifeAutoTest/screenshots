@@ -18,7 +18,10 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.mail.internet.MimeUtility;
-
+/**
+ * @author: gaoyaxuan
+ * @date:2018年8月13日 下午5:28:43
+ */
 public class SendEmailMethods {
 
 	public static void sendEmail(String Recipients, String emailSubject, String messageBody, String filePath)
@@ -44,7 +47,7 @@ public class SendEmailMethods {
 
 		// 身份验证实现
 		Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
-
+			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
 				// 第二个参数，就是我QQ开启smtp的授权码
 				return new PasswordAuthentication(Methods.getProperty("send.email.smtp.name"),
