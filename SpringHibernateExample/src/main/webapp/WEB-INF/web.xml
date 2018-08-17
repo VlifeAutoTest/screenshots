@@ -8,6 +8,10 @@
 		<listener-class>com.vlife.springmvc.service.CheckMobileStatusService
 		</listener-class>
 	</listener>
+	<listener>
+		<listener-class>com.vlife.springmvc.service.LogListeningService
+		</listener-class>
+	</listener>
 	<session-config>
 		<session-timeout>1200</session-timeout>
 	</session-config>

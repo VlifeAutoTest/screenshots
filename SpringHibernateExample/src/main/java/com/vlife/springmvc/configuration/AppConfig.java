@@ -82,11 +82,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
 		registry.addInterceptor(new SessionInterceptor())
 				.excludePathPatterns("/login", "/signin", "/findpwd", "/error", "/list-apps-with-{para}",
 						"/list-mobiles-by-{vendorid}", "/list-all-resources", "/list-apps-by-{vendorid}",
-						"/list-all-mobiles-{vendorid}","/","/help","/trywificonnect")
+						"/list-all-mobiles-{vendorid}","/","/help","/trywificonnect", "/start")
 				.addPathPatterns("/**");
 
 	}
-
+	 
 	// 上传文件解析器
 	@Bean
 	public MultipartResolver multipartResolver() {

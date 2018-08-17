@@ -144,6 +144,7 @@
 									<ul class="nav nav-pills nav-stacked">
 										<li class="on"><a href="#" onclick="menuClick('check')">增加审核</a></li>
 										<li class="on"><a href="#" onclick="menuClick('query')">审核查询</a></li>
+										<li class="on"><a href="#" onclick="menuClick('start')">审核日志</a></li>
 									</ul>
 								</div>
 							</div>

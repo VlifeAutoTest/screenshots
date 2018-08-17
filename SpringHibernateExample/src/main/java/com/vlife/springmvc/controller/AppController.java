@@ -1,6 +1,7 @@
 package com.vlife.springmvc.controller;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -20,6 +21,9 @@ import javax.validation.Valid;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -51,7 +55,10 @@ import com.vlife.checkserver.mobilestatus.SSHCopyFile;
 import com.vlife.checkserver.mobilestatus.SendEmailMethods;
 import com.vlife.clienttest.utils.ADBMethods;
 import com.vlife.clienttest.utils.OtherMethods;
+import com.vlife.springmvc.log.FileLogListening;
 import com.vlife.springmvc.model.Application;
+import com.vlife.springmvc.model.Greeting;
+import com.vlife.springmvc.model.HelloMessage;
 //import com.vlife.springmvc.model.HelloMessage;
 import com.vlife.springmvc.model.Mobile;
 import com.vlife.springmvc.model.Resources;
@@ -123,19 +130,27 @@ public class AppController {
 	public List<TestServer> initializeServers() {
 		return tserver_service.findAllTestServer();
 	}
-	
+    
     @Autowired
-    private WebSocketService webSocketService;
-
-//    @RequestMapping(value = "/websocketdemo", method = RequestMethod.GET)
-//    public ModelAndView greeting(HelloMessage message) throws Exception {
-//        webSocketService.sendMessage();
-//        ModelAndView model = new ModelAndView();
-//        model.setViewName("log");
-//        model.addObject("message", "Hello World, Hello Kitty");
-//        return model;
-//    }
-
+    private FileLogListening filelogService;
+    
+	@MessageMapping("/log" )
+	@SendTo("/topic/showMessage")
+	public Greeting logMessage(HelloMessage input) throws Exception {
+		Thread.sleep(2000);
+		Greeting result = new Greeting(input.getName() + "hello!!!"); 
+		return result;
+	}
+	@RequestMapping("/start")
+	public String start(){
+		return "log";
+	}
+	
+    @Scheduled(fixedRate = 1000)
+    public void outputLogger() {
+        throw new RuntimeException();
+    }
+    
 	@RequestMapping(value = { "/list" }, method = RequestMethod.GET)
 	public String showMobile(ModelMap model) {
 

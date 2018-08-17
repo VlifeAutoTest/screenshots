@@ -17,7 +17,7 @@ public class WebSocketServiceImpl implements WebSocketService {
 
     public void sendMessage() {
                 // 通过Process和Runtime执行linux命令
-        String cmd = "tail -f /var/test.log";
+        String cmd = "tail -f d:/1_Full.txt";
         try {
             Process process = Runtime.getRuntime().exec(cmd);
             //需要另外启动线程进行读取，防止输入流阻塞当前线程
@@ -63,6 +63,7 @@ public class WebSocketServiceImpl implements WebSocketService {
             String lineOne = null;
             int count = 0;
             int lineNum = 1;
+            lineOne = br.readLine();
             while ((lineOne = br.readLine()) != null) {
                 if (count == 100) {
                     this.simpMessageSendingOperations.convertAndSend("/topic/greeting", line.toString());
