@@ -10,7 +10,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-public class ResolverXML {
+public class ResolverXml {
 
 	private static Element element2 = null;
 

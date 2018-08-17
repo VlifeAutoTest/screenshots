@@ -51,9 +51,8 @@ import com.vlife.springmvc.service.WebSocketService;
 import com.jcraft.jsch.Session;
 import com.vlife.checkserver.mobilestatus.CheckMobileSattus;
 import com.vlife.checkserver.mobilestatus.Methods;
-import com.vlife.checkserver.mobilestatus.SSHCopyFile;
 import com.vlife.checkserver.mobilestatus.SendEmailMethods;
-import com.vlife.clienttest.utils.ADBMethods;
+import com.vlife.checkserver.mobilestatus.SshCopyFile;
 import com.vlife.clienttest.utils.OtherMethods;
 import com.vlife.springmvc.log.FileLogListening;
 import com.vlife.springmvc.model.Application;
@@ -729,7 +728,7 @@ public class AppController {
 					return "theme";
 				}
 				// 拷贝文件到230服务器
-				SSHCopyFile sshcf = new SSHCopyFile(Methods.getProperty("file.server.ip"),
+				SshCopyFile sshcf = new SshCopyFile(Methods.getProperty("file.server.ip"),
 						Methods.getProperty("file.server.uname"), Methods.getProperty("file.server.pwd"),
 						Integer.parseInt(Methods.getProperty("file.server.port")));
 				try {

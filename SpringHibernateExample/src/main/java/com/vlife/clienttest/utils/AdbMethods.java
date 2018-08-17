@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class ADBMethods {
+public class AdbMethods {
 
 	// 重启手机
 	public static void ADBReboot(String device) {

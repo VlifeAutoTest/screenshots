@@ -2,7 +2,7 @@ package com.vlife.clienttest.utils;
 
 import org.json.JSONObject;
 
-public class JSONMethds {
+public class JsonMethds {
 
 	public static JSONObject setSearchJSON(String type, int size, String userid, String uri) {
 		JSONObject jsono = new JSONObject();

@@ -14,7 +14,7 @@ import com.jcraft.jsch.UserInfo;
  * @author lenovo
  * 
  */
-public class SSHCopyFile {
+public class SshCopyFile {
 
 	private String host;
 
@@ -34,7 +34,7 @@ public class SSHCopyFile {
 	 * @param password 密码
 	 * @param port     ssh2端口
 	 */
-	public SSHCopyFile(String host, String user, String password, int port) {
+	public SshCopyFile(String host, String user, String password, int port) {
 		this.host = host;
 		this.user = user;
 		this.password = password;
