@@ -10,18 +10,30 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-public class ResolverXML {
+/**
+ * 封装的是解析xml文件的方法 1.首先实例化ResolverXML 2. 调用 assignXML来指定对哪一个xml文件进行操作 3.
+ * 调用getNeedElement 来根据以一个属性俩确定到一个Element对象 4. 调用getElementValue 来获取到指定的属性的值
+ * 
+ * @author 高亚轩
+ *
+ */
+public class ResolverXml {
 
 	private static Element element2 = null;
 
-	// 用来指定XML
+	/**
+	 * 用来指定XML
+	 * 
+	 * @param xmlPath xml文件的路径
+	 * @return 这个XML文件的Element的对象
+	 */
 
-	public Element XML(String XMLPath) {
+	public Element assignXML(String xmlPath) {
 
 		SAXReader reader = new SAXReader();
 		Document document = null;
 		try {
-			document = reader.read(new File(XMLPath));
+			document = reader.read(new File(xmlPath));
 		} catch (DocumentException e) {
 			// TODO 自动生成的 catch 块
 
@@ -34,9 +46,16 @@ public class ResolverXML {
 
 	}
 
-	// 用一个属性值来确认一个需要的elelment
+	/**
+	 * 用一个属性值来确认一个需要的elelment
+	 * 
+	 * @param element       把assignXML返回的对象传进去
+	 * @param attributeName 用来确定element的属性值的名称
+	 * @param value         用来确定element的属性值的value
+	 * @return 定位到这个属性值的Element
+	 */
 	@SuppressWarnings("unchecked")
-	public  Element getNeedElement(Element element, String attributeName, String value) {
+	public Element getNeedElement(Element element, String attributeName, String value) {
 
 		Iterator<Element> itea = element.elementIterator();
 		while (itea.hasNext()) {
@@ -65,14 +84,21 @@ public class ResolverXML {
 				element2 = getNeedElement(e, attributeName, value);
 			}
 
-		}  
+		}
 		return element2;
 
 	}
-	// 用来获取XML对象的对应属性名名的值
+
+	/**
+	 * 用来获取XML对象的对应属性名名的值
+	 * 
+	 * @param element           getNeedElement返回的对象传进去
+	 * @param needAttributeName 需要这个element对象的那个属性名的值
+	 * @return 返回需要属性名的值
+	 */
 
 	@SuppressWarnings("unchecked")
-	public  String getElementValue(Element element, String needAttributeName) {
+	public String getElementValue(Element element, String needAttributeName) {
 
 		if (element == null) {
 			return "element为null";
@@ -87,7 +113,12 @@ public class ResolverXML {
 
 	}
 
-	// 用来计算出图标的中心点
+	/**
+	 * 用来计算出图标的中心点
+	 * 
+	 * @param coordinates 例如: [287,375][530,687]
+	 * @return 返回的是上面那两组坐标的中心点
+	 */
 
 	public int[] calculateCentre(String coordinates) {
 

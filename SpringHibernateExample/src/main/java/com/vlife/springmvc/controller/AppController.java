@@ -14,7 +14,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
@@ -34,8 +33,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
 import com.vlife.springmvc.model.Theme;
 import com.vlife.springmvc.model.User;
 import com.vlife.springmvc.model.Vendor;
@@ -47,10 +44,8 @@ import com.vlife.springmvc.service.WebSocketService;
 import com.jcraft.jsch.Session;
 import com.vlife.checkserver.mobilestatus.CheckMobileSattus;
 import com.vlife.checkserver.mobilestatus.Methods;
-import com.vlife.checkserver.mobilestatus.SSHCopyFile;
 import com.vlife.checkserver.mobilestatus.SendEmailMethods;
-import com.vlife.clienttest.utils.ADBMethods;
-import com.vlife.clienttest.utils.OtherMethods;
+import com.vlife.checkserver.mobilestatus.SshCopyFile;
 import com.vlife.springmvc.model.Application;
 //import com.vlife.springmvc.model.HelloMessage;
 import com.vlife.springmvc.model.Mobile;
@@ -165,13 +160,14 @@ public class AppController {
 		return "redirect:/list";
 	}
 
-	//个人审核历史
-	@RequestMapping(value = { "/checkhistory-{page}" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
-	public String checkHistory(ModelMap model,@ModelAttribute("logSuccessUser") User user,@PathVariable() int page ) {
-		
+	// 个人审核历史
+	@RequestMapping(value = {
+			"/checkhistory-{page}" }, method = RequestMethod.GET, produces = "text/html;charset=UTF-8")
+	public String checkHistory(ModelMap model, @ModelAttribute("logSuccessUser") User user, @PathVariable() int page) {
+
 		int pageSize = Integer.parseInt(Methods.getProperty("check.history.page.size"));
-		List<Runinfo> allresult =	runinfo_services.findRuninfoByUserID(user.getId());
-		
+		List<Runinfo> allresult = runinfo_services.findRuninfoByUserID(user.getId());
+
 		int totalPages = allresult.size() % pageSize == 0 ? allresult.size() / pageSize
 				: allresult.size() / pageSize + 1;
 		int offset = 1;
@@ -185,61 +181,61 @@ public class AppController {
 		if (totalPages == 0) {
 			totalPages = 1;
 		}
-		
-		List<Runinfo> qresult=runinfo_services.findRuninfoByUserIDAndPage(user.getId(), offset,pageSize);
-		
-			List<Object[]> detail = runinfo_services.translaterinfo(qresult);
-			for (Object str[] : detail) {
-				String path = (String) str[7];
-				String bb = path.replaceAll("/", "\\\\");
-				str[7] = bb;
-			}
 
-			for (int i = 0; i < detail.size(); i++) {
-				Object obj[] = detail.get(i);
-				String str = (String) obj[4];
+		List<Runinfo> qresult = runinfo_services.findRuninfoByUserIDAndPage(user.getId(), offset, pageSize);
 
-				String str2[] = str.split(",");
-				String res = "";
-				for (int j = 0; j < str2.length; j++) {
+		List<Object[]> detail = runinfo_services.translaterinfo(qresult);
+		for (Object str[] : detail) {
+			String path = (String) str[7];
+			String bb = path.replaceAll("/", "\\\\");
+			str[7] = bb;
+		}
 
-					if (j != 0 && j % 8 == 0) {
+		for (int i = 0; i < detail.size(); i++) {
+			Object obj[] = detail.get(i);
+			String str = (String) obj[4];
 
-						res = res + str2[j] + "，" + "<br/>";
-					} else {
-						res = res + str2[j] + "，";
-					}
+			String str2[] = str.split(",");
+			String res = "";
+			for (int j = 0; j < str2.length; j++) {
 
+				if (j != 0 && j % 8 == 0) {
+
+					res = res + str2[j] + "，" + "<br/>";
+				} else {
+					res = res + str2[j] + "，";
 				}
-				obj[4] = res;
-
-				Object obj2[] = detail.get(i);
-				String str3 = (String) obj[3];
-
-				String str4[] = str3.split(",");
-				String res2 = "";
-				for (int j = 0; j < str4.length; j++) {
-
-					if (j != 0 && j % 2 != 0) {
-						res2 = res2 + str4[j] + "，" + "<br/>";
-					} else {
-						res2 = res2 + str4[j] + "，";
-					}
-
-				}
-				obj2[3] = res2;
 
 			}
-			model.addAttribute("samip",Methods.getProperty("sam.serve.ip"));
-			model.addAttribute("detail", detail);
-			model.addAttribute("queryflag", true);
-			model.addAttribute("totalPages", totalPages);
-			// 当前的页数
-			model.addAttribute("page", page);
+			obj[4] = res;
+
+			Object obj2[] = detail.get(i);
+			String str3 = (String) obj[3];
+
+			String str4[] = str3.split(",");
+			String res2 = "";
+			for (int j = 0; j < str4.length; j++) {
+
+				if (j != 0 && j % 2 != 0) {
+					res2 = res2 + str4[j] + "，" + "<br/>";
+				} else {
+					res2 = res2 + str4[j] + "，";
+				}
+
+			}
+			obj2[3] = res2;
+
+		}
+		model.addAttribute("samip", Methods.getProperty("sam.serve.ip"));
+		model.addAttribute("detail", detail);
+		model.addAttribute("queryflag", true);
+		model.addAttribute("totalPages", totalPages);
+		// 当前的页数
+		model.addAttribute("page", page);
 		model.addAttribute("downloadfilepath", Methods.getProperty("file.server.downloadfile"));
 		return "checkhistory";
 	}
-		
+
 	// 审核查询代码
 
 	public String[] getDetailInfo(Runinfo rinfo) {
@@ -509,7 +505,7 @@ public class AppController {
 		model.addAttribute("downloadfilepath", Methods.getProperty("file.server.downloadfile"));
 		model.addAttribute("runinfo", runinfo);
 		model.addAttribute("vendors", vendors);
-		model.addAttribute("samip",Methods.getProperty("sam.serve.ip"));
+		model.addAttribute("samip", Methods.getProperty("sam.serve.ip"));
 		return "query";
 	}
 
@@ -785,7 +781,7 @@ public class AppController {
 					return "theme";
 				}
 				// 拷贝文件到230服务器
-				SSHCopyFile sshcf = new SSHCopyFile(Methods.getProperty("file.server.ip"),
+				SshCopyFile sshcf = new SshCopyFile(Methods.getProperty("file.server.ip"),
 						Methods.getProperty("file.server.uname"), Methods.getProperty("file.server.pwd"),
 						Integer.parseInt(Methods.getProperty("file.server.port")));
 				try {
@@ -1401,22 +1397,22 @@ public class AppController {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
 		}
-		if (logname.trim().length() != 0 ) {
+		if (logname.trim().length() != 0) {
 
 			List<User> list = null;
 			if (logname.contains("@")) {
-				if(user_services.findByEmail(logname)) {
-					
+				if (user_services.findByEmail(logname)) {
+
 					list = user_services.findUserByEmail(logname);
-				}else {
+				} else {
 					model.addAttribute("message", "您输入的邮箱未被注册!");
 					return "login";
 				}
 			} else {
-				if(user_services.findByName(logname)) {
-					
+				if (user_services.findByName(logname)) {
+
 					list = user_services.findUserByName(logname);
-				}else {
+				} else {
 					model.addAttribute("message", "帐号或密码错误，请重新输入");
 					return "login";
 				}

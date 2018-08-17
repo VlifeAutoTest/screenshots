@@ -25,7 +25,7 @@ public class TimerManager {
 		// 如果当前时间已经过去所定时的时间点，则在第二天时间点开始执行
 		while(true) {
 			if (date.before(new Date())) {
-				date = this.addDay(date, 10);
+				date = this.addMinute(date, 10);
 			}else {
 				break;
 			}
@@ -43,7 +43,7 @@ public class TimerManager {
 	 * @param	mun		增加的分钟数
 	 * @return	返回一个增加了分钟的Date对象
 	 */
-	private Date addDay(Date date, int num) {
+	private Date addMinute(Date date, int num) {
 		Calendar startDT = Calendar.getInstance();
 		startDT.setTime(date);
 		startDT.add(Calendar.MINUTE, num);
