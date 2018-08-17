@@ -7,6 +7,8 @@
 <title>手机列表</title>
 <link rel="stylesheet" type="text/css"
 	href="assets/css/bootstrap.min.3.css" />
+	<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/alert.js"></script>
 <style type="text/css"></style>
 </head>
 
@@ -40,8 +42,11 @@
 							<td><c:if test="${mobile.wififlag == 0}"> USB</c:if> <c:if
 									test="${mobile.wififlag == 1 }"> Wifi</c:if></td>
 							<td><a href="<c:url value='/edit-${mobile.id}-mobile' />">编辑</a></td>
-							<td><a
-								href="<c:url value='/delete-${mobile.id}-mobile-${page}' />">删除</a></td>
+								<td>
+							<a class="delete"
+								value="<c:url value='/delete-${mobile.id}-mobile-${page}' />"
+								href="#">删除</a>
+							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -70,5 +75,16 @@
 		</div>
 	</div>
 	<br />
+		<script type="text/javascript">
+		$(".delete").bind("click", function() {
+			var va = $(this).attr("value");
+			var vb = $(this);
+			myConfirm('删除手机', '你确定要删除这个手机吗?', function(r) {
+				if (r) {
+					window.location.href = va;
+				}
+			});
+		});
+	</script>
 </body>
 </html>

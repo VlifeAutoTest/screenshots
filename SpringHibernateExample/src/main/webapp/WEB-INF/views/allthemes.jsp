@@ -7,10 +7,10 @@
 <title>Themes and Fonts</title>
 <link rel="stylesheet" type="text/css"
 	href="assets/css/bootstrap.min.3.css" />
-<style type="text/css"></style>
-<script
-	src="assets/js/jquery.min.js"></script>
 
+<style type="text/css"></style>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/alert.js"></script>
 </head>
 <body>
 	<div class="panle panel-success">
@@ -41,12 +41,16 @@
 				<tbody>
 					<c:forEach items="${themes}" var="theme">
 						<tr>
-							<td>${theme.name}</td> 
+							<td>${theme.name}</td>
 							<td>${theme.checknumber}</td>
 							<td><a id="aa"
 								href="${downfilepath}/${fn:substring(theme.path, 7, -1)}"
 								target="_blank">${theme.path}</a></td>
-							<td><a href="<c:url value='/delete-${theme.id}-theme-${page}' />">删除</a></td>
+								<td><a href="<c:url value='/edit-${theme.id}-theme' />">编辑</a></td>
+
+							<td><a class="delete"
+								value="<c:url value='/delete-${theme.id}-theme-${page}' />"
+								href="#">删除</a></td>
 
 
 							<td></td>
@@ -66,7 +70,8 @@
 									<li class="${active}"><a
 										href="<c:url value="/themelist-${loop.index}"/>">${loop.index}</a></li>
 								</c:forEach>
-								<li><a href="<c:url value="/themelist-${page+1<totalPages?page+1:totalPages}"/>">&raquo;</a></li>
+								<li><a
+									href="<c:url value="/themelist-${page+1<totalPages?page+1:totalPages}"/>">&raquo;</a></li>
 								<li><a href="<c:url value="/themelist-${totalPages}"/>">末页</a></li>
 							</ul>
 
@@ -77,6 +82,16 @@
 			</table>
 		</div>
 	</div>
-
+	<script type="text/javascript">
+		$(".delete").bind("click", function() {
+			var va = $(this).attr("value");
+			var vb = $(this);
+			myConfirm('删除主题', '你确定要删除这个资源吗?', function(r) {
+				if (r) {
+					window.location.href = va;
+				}
+			});
+		});
+	</script>
 </body>
 </html>

@@ -234,6 +234,16 @@ public class RuninfoServiceImpl implements RuninfoService {
 		return dao.countRunningCase();
 	}
 
+	@Override
+	public List<Runinfo> findRuninfoByUserID(Integer userID) {
 
+		return dao.findRuninfoByUserID(userID);
+	}
+
+	@Override
+	public List<Runinfo> findRuninfoByUserIDAndPage(Integer userID, int offset, int length) {
+		
+		return dao.findRuninfoByUserIDAndPage(userID, offset, length);
+	}
 
 }

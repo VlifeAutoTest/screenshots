@@ -9,6 +9,7 @@
 	href="assets/css/bootstrap.min.3.css" />
 <script src="assets/js/jquery.min.js"></script>
 <script src="assets/js/bootstrap.js"></script>
+<script src="assets/js/alert.js"></script>
 <style type="text/css"></style>
 </head>
 
@@ -48,7 +49,9 @@
 							<td>${user.email}</td>
 							<td>${user.getRole().getName()}</td>
 							<td><a href="<c:url value='/edit-${user.id}-user' />">编辑</a></td>
-							<td><a href="<c:url value='/delete-${user.id}-user' />">删除</a></td>
+							<td><a class="delete"
+								value="<c:url value='/delete-${user.id}-user' />"
+								href="#">删除</a></td>
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -60,6 +63,16 @@
 		</div>
 	</div>
 	<br />
-
+	<script type="text/javascript">
+		$(".delete").bind("click", function() {
+			var va = $(this).attr("value");
+			var vb = $(this);
+			myConfirm('删除用户', '你确定要删除这个用户吗?', function(r) {
+				if (r) {
+					window.location.href = va;
+				}
+			});
+		});
+	</script>
 </body>
 </html>

@@ -289,7 +289,7 @@ select {
 											<td><a href="#" value="${dt[7]}" id="ww">预览 </a><br>
 												<a href="${downloadfilepath}${dt[7]}/${dt[8]} "
 												target="_blank">下载</a></td>
-											<td><b id="qdf" style="display: none;">\\192.168.1.230${dt[7]}</b>
+											<td><b id="qdf" style="display: none;">${samip}${dt[7]}</b>
 											</td>
 											<td>${dt[5]}</td>
 											<td>${dt[6]}</td>

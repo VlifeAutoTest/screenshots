@@ -11,7 +11,10 @@
 <script type="text/javascript" src="assets/js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="assets/js/bootstrap-select.2.0.js"></script>
 <script src="assets/js/bootstrap.min.3.js"></script>
-<link rel="stylesheet" type="text/css" href="assets/css/bootstrap-select.2.css">
+<style type="text/css"></style>
+<script src="assets/js/alert.js"></script>
+<link rel="stylesheet" type="text/css"
+	href="assets/css/bootstrap-select.2.css">
 <link href="assets/css/bootstrap.min.3.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="assets/css/xcConfirm.css" />
 <script src="assets/js/xcConfirm.js" type="text/javascript"
@@ -65,7 +68,6 @@ select {
 			  $("#bbba").remove() ;
 			  $("#vendor").selectpicker("refresh");
               $("#vendor").selectpicker("render"); 
-			 // alert("222");
 		   });
 		});
 	</script>
@@ -125,9 +127,12 @@ select {
 		            dataType:"json",  
 		            success:function(data){
 		            	if(jQuery.isEmptyObject( data )){
-		            		var txt=  "抱歉,当前选择的厂商下无可用手机!";
-							window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.error);
-						//	alert(txt);
+		            		
+		            		 myAlert('温馨提示','抱歉当前厂商没有手机连接!',function(){   
+		            	            //要回调的方法  
+		            	        });  
+
+		            	
 		            	}
 		                $("#mobile").empty();  
 		                $.each(data,function(index,item){  
@@ -210,7 +215,8 @@ select {
 						<td><label for="resource">资源: </label></td>
 						<td><form:select path="resource" multiple="multiple"
 								itemValue="id" itemLabel="name" id="resource"
-								class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索"  /> <a
+								class="selectpicker bla bla bli" data-live-search="true"
+								data-live-search-placeholder="搜索" /> <a
 							href="<c:url value='/newtheme-1' />"> +增加资源</a></td>
 						<td><form:errors path="resource" cssClass="error" /></td>
 					</tr>
@@ -220,7 +226,8 @@ select {
 						<td><label for="app">应用: </label></td>
 						<td><form:select path="app" multiple="multiple"
 								itemValue="id" itemLabel="alias" id="app"
-								class="selectpicker bla bla bli" data-live-search="true" data-live-search-placeholder="搜索" data-actions-box="true"  /></td>
+								class="selectpicker bla bla bli" data-live-search="true"
+								data-live-search-placeholder="搜索" data-actions-box="true" /></td>
 						<td><form:errors path="app" cssClass="error" /></td>
 					</tr>
 
@@ -261,8 +268,13 @@ function replaceAll(str, oldStr, newStr){
 		        if(n==0){  
 		          
 		        	var path="\\\\192.168.1.230"+$("#bpath").text();
-		        	var txt="截图路径为: <a onclick='copyText()' >点击复制! </a> &nbsp;&nbsp;<font id='kkk' color='red' ></font> <p id='text'>"+path+"</p> <textarea id='mytxt'> </textarea>";
-					window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.success);
+		        	var txt="截图路径为: <a onclick='copyText()' >点击复制! </a> &nbsp;&nbsp;<font id='kkk' color='red' ></font> <p id='text' hidden='true'>"+path+"</p> <textarea id='mytxt' > </textarea>";
+					
+		        	/* window.wxc.xcConfirm(txt, window.wxc.xcConfirm.typeEnum.success); */
+		        	myAlert('截图路径',txt,function(){   
+		                //要回调的方法  
+		              
+		            });  
 					 $("#me").empty();
 					 $("#time").empty();
 					 $("#sess").empty() ;

@@ -7,6 +7,8 @@
 <title>TestServer</title>
 <link rel="stylesheet" type="text/css"
 	href="assets/css/bootstrap.min.3.css" />
+	<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/alert.js"></script>
 <style type="text/css"></style>
 </head>
 
@@ -36,9 +38,14 @@
 							<td>${server.uname}</td>
 							<td>******</td>
 							<td><a
-								href="<c:url value='/edit-${server.ssn}-testserver' />">编辑</a></td>
-							<td><a
-								href="<c:url value='/delete-${server.ssn}-testserver' />">删除</a></td>
+								href="<c:url value='/edit-${server.id}-testserver' />">编辑</a></td>
+							<td><a class="delete"
+								value="<c:url value='/delete-${server.id}-testserver' />"
+								href="#">删除</a></td>	
+								
+								
+								
+								
 						</tr>
 					</c:forEach>
 				</tbody>
@@ -50,6 +57,16 @@
 		</div>
 	</div>
 	<br />
-
+	<script type="text/javascript">
+		$(".delete").bind("click", function() {
+			var va = $(this).attr("value");
+			var vb = $(this);
+			myConfirm('删除测试服务器', '你确定要删除这个测试服务器吗?', function(r) {
+				if (r) {
+					window.location.href = va;
+				}
+			});
+		});
+	</script>
 </body>
 </html>

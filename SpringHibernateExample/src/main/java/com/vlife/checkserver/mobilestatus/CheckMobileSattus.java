@@ -12,6 +12,10 @@ import java.util.regex.Pattern;
 
 import com.jcraft.jsch.Session;
 
+/**
+ * @author: gaoyaxuan
+ * @date:2018年8月13日 下午5:28:43
+ */
 public class CheckMobileSattus extends TimerTask {
 	Methods methods = new Methods();
 	List<Integer> list = new LinkedList<Integer>();

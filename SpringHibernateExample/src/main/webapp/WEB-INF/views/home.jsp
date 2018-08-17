@@ -73,6 +73,11 @@
 				<li title="邮件"><a href="#"> <span
 						class="glyphicon glyphicon-envelope"></span> <i class="badge">1</i>
 				</a></li>
+				<%-- <li title="返回网址导航"><a href=" <c:url value="/navigation" /> "
+					target="_blank"> <span class="glyphicon glyphicon glyphicon-home"></span>
+						<i class="badge">0</i>
+				</a></li> --%>
+				
 				<li><a href="#" data-toggle="dropdown"> <img
 						class="img-circle" src="user_photo.png" width="25" height="25" />
 						<small>欢迎  </small> ${user.name}<span class="caret"></span>
@@ -143,6 +148,7 @@
 								<div class="panel-body">
 									<ul class="nav nav-pills nav-stacked">
 										<li class="on"><a href="#" onclick="menuClick('check')">增加审核</a></li>
+										<li class="on"><a href="#" onclick="menuClick('checkhistory-1')">审核历史</a></li>
 										<li class="on"><a href="#" onclick="menuClick('query')">审核查询</a></li>
 										<li class="on"><a href="#" onclick="menuClick('start')">审核日志</a></li>
 									</ul>
@@ -189,7 +195,7 @@
 				</div>
 
 				<div>
-					<iframe id="iframe-page-content" src="query" width="100%"
+					<iframe id="iframe-page-content" src="query" width="100%" height="100%"
 						frameborder="no" border="0" marginwidth="0" marginheight="0"
 						scrolling="no" onload="autoResize('iframe-page-content')"
 						allowtransparency="yes"></iframe>

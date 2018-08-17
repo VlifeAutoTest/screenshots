@@ -51,10 +51,10 @@
 							id="qwe" size="3" color="red">${message}</font></td>
 						<td><form:errors path="name" cssClass="error" /></td>
 					</tr>
-					<form:input type="hidden" path="path" id="path]" />
+					<form:input type="hidden" path="path" id="path" />
 					<tr id="wq">
 						<td><label for="">文件名: </label></td>
-						<td><input type="file" name="file"><font id="qwe"
+						<td><input type="file" name="file" ><font id="qwe"
 							size="3" color="red"> ${messagetwo}</font></td>
 					</tr>
 					<tr>

@@ -19,14 +19,16 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.persistence.criteria.CriteriaBuilder.In;
 
 import org.apache.commons.io.IOUtils;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-
+/**
+ * @author: gaoyaxuan
+ * @date:2018年8月13日 下午5:28:43
+ */
 public class Methods {
 	private static String jdbcURL = getProperty("jdbc.url").split("\\?")[0];
 	private static final String URL = jdbcURL + "?characterEncoding=utf8&useSSL=true&serverTimezone=GMT";

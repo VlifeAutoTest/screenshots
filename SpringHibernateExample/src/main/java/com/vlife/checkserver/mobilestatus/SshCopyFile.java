@@ -1,31 +1,36 @@
 package com.vlife.checkserver.mobilestatus;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Properties;
+import java.util.Vector;
+
+/**
+ * @author: gaoyaxuan
+ * @date:2018年8月13日 下午5:28:43
+ */
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelSftp;
+import com.jcraft.jsch.ChannelSftp.LsEntry;
 import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.jcraft.jsch.SftpException;
-import com.jcraft.jsch.UserInfo;
 
 /**
  * java远程上传文件
  * 
- * @author lenovo
+ * @author 高亚轩
  * 
  */
 public class SshCopyFile {
-
-	private String host;
-
-	private String user;
-
-	private String password;
-
-	private int port;
-
-	private Session session;
-
+	private Session sshSession =null;
+	private ChannelSftp sftp=null;
+	private Channel channel=null;
 	/**
 	 * 创建一个连接
 	 * 
@@ -34,58 +39,45 @@ public class SshCopyFile {
 	 * @param password 密码
 	 * @param port     ssh2端口
 	 */
-	public SshCopyFile(String host, String user, String password, int port) {
-		this.host = host;
-		this.user = user;
-		this.password = password;
-		this.port = port;
-	}
-
-	private void initialSession() throws Exception {
-		if (session == null) {
+	public SshCopyFile(String host, String username, String password, int port) {
+		try {
 			JSch jsch = new JSch();
-			session = jsch.getSession(user, host, port);
-			session.setUserInfo(new UserInfo() {
+			jsch.getSession(username, host, port);
+			 sshSession = jsch.getSession(username, host, port);
+			System.out.println("Session created.");
+			sshSession.setPassword(password);
+			Properties sshConfig = new Properties();
+			sshConfig.put("StrictHostKeyChecking", "no");
+			sshSession.setConfig(sshConfig);
+			sshSession.connect();
+			channel = sshSession.openChannel("sftp");
+			channel.connect();
+			sftp = (ChannelSftp) channel;
+		} catch (Exception e) {
 
-				public String getPassphrase() {
-					return null;
-				}
-
-				public String getPassword() {
-					return null;
-				}
-
-				public boolean promptPassword(String arg0) {
-					return false;
-				}
-
-				public boolean promptPassphrase(String arg0) {
-					return false;
-				}
-
-				public boolean promptYesNo(String arg0) {
-					return true;
-				}
-
-				public void showMessage(String arg0) {
-				}
-
-			});
-			session.setPassword(password);
-			session.connect();
 		}
 	}
 
 	/**
-	 * 关闭连接
+	 * 关闭连接 	使用完本类一定要调用close方法,否则会出现程序无法结束的情况
 	 * 
 	 * @throws Exception
 	 */
-	public void close() throws Exception {
-		if (session != null && session.isConnected()) {
-			session.disconnect();
-			session = null;
-		}
+	public void close()  {
+		
+		if(sftp!=null){
+            sftp.disconnect();
+            sftp.exit();
+            sftp = null;
+        }
+        if(channel!=null){
+            channel.disconnect();
+            channel = null;
+        }
+        if( sshSession!=null){
+        	sshSession.disconnect();
+        	sshSession = null;
+        }
 	}
 
 	/**
@@ -97,14 +89,11 @@ public class SshCopyFile {
 	 * @throws Exception
 	 */
 	public void putFile(String localPath, String localFile, String remotePath) throws Exception {
-		this.initialSession();
-		Channel channelSftp = session.openChannel("sftp");
-		channelSftp.connect();
-		ChannelSftp c = (ChannelSftp) channelSftp;
+
 		String remoteFile = null;
 		if (remotePath != null && remotePath.trim().length() > 0) {
 			try {
-				c.mkdir(remotePath);
+				sftp.mkdir(remotePath);
 			} catch (Exception e) {
 			}
 			remoteFile = remotePath + "/.";
@@ -124,31 +113,24 @@ public class SshCopyFile {
 				file = localPath + "/" + file;
 			}
 		}
-		c.put(file, remoteFile);
+		sftp.put(file, remoteFile);
 
-		channelSftp.disconnect();
 	}
 
 	/**
-	 * 删除文件
+	 * 删除文件----本版本禁止使用
 	 *
 	 * @param directory  要删除文件所在目录
 	 * @param deleteFile 要删除的文件
 	 * @param sftp
 	 * @throws Exception
 	 */
-	public void deleteFileOrDirector(String fileOrDirectory) {
+	@SuppressWarnings("unused")
+	private void deleteFileOrDirector(String fileOrDirectory) {
 		try {
-			this.initialSession();
-			Channel channelSftp = session.openChannel("sftp");
-			channelSftp.connect();
-			ChannelSftp sftp = (ChannelSftp) channelSftp;
 			// sftp.rmdir(fileOrDirectory);
 //			sftp.cd(fileOrDirectory);
 			sftp.rm(fileOrDirectory);
-		} catch (JSchException e) {
-			// TODO 自动生成的 catch 块
-			e.printStackTrace();
 		} catch (SftpException e) {
 			// TODO 自动生成的 catch 块
 			e.printStackTrace();
@@ -157,6 +139,65 @@ public class SshCopyFile {
 			e.printStackTrace();
 		}
 
+	}
+
+	/**
+	 * 下载文件
+	 * 
+	 * @param directory    下载目录
+	 * @param downloadFile 下载的文件
+	 * @param saveFile     存在本地的路径----不需要文件名
+	 */
+	public void downloadFile(String directory, String downloadFile, String saveFilePath) {
+		 OutputStream out =null;
+		try {
+			sftp.cd(directory); 
+			 out = new FileOutputStream(new File(saveFilePath,downloadFile));
+			 sftp.get(downloadFile, out);
+			 out.flush();
+		} catch (FileNotFoundException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (SftpException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO 自动生成的 catch 块
+			e.printStackTrace();
+		}finally {
+			if(out!=null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					// TODO 自动生成的 catch 块
+					e.printStackTrace();
+				}
+			}
+	         
+		}
+
+         
+         
+
+	}
+
+	/**
+	 * 列出目录下的文件
+	 * 
+	 * @param directory 要列出的目录
+	 * @param sftp
+	 * @return
+	 * @return
+	 * @throws SftpException
+	 */
+	@SuppressWarnings("unchecked")
+	public List<String> listFiles(String directory) throws SftpException {
+		List<String> list = new LinkedList<>();
+		Vector<LsEntry> file = sftp.ls(directory);
+		for (LsEntry s : file) {
+			list.add(s.getFilename());
+		}
+		return list;
 	}
 
 }

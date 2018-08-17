@@ -16,7 +16,6 @@ import org.springframework.orm.hibernate4.HibernateTransactionManager;
 import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.vlife.springmvc.model.Permission;
 import com.vlife.springmvc.model.Resources;
 import com.vlife.springmvc.model.Role;
 

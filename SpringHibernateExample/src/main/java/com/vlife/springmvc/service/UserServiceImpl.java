@@ -77,4 +77,16 @@ public class UserServiceImpl implements UserService {
 		dao.deleteUserByID(id);
 	}
 
+	@Override
+	public Boolean findByEmail(String email) {
+		
+		return dao.findByEmail(email);
+	}
+
+	@Override
+	public List<User> findUserByEmail(String email) {
+		// TODO 自动生成的方法存根
+		return dao.findUserByEmail(email);
+	}
+
 }
